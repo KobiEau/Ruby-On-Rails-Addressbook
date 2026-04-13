@@ -18,7 +18,8 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
+  username: <%= ENV['ADDRESSBOOK_DATABASE_USERNAME'] || 'postgres' %>
+  password: <%= ENV['ADDRESSBOOK_DATABASE_PASSWORD'] %>
 
 development:
   <<: *default
@@ -88,7 +89,7 @@ production:
   primary: &primary_production
     <<: *default
     database: addressbook_production
-    username: addressbook
+    username: postgres
     password: <%= ENV["ADDRESSBOOK_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
