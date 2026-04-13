@@ -1,0 +1,7 @@
+<h1><%= @contact.firstname%> <%= @contact.lastname%></h1>
+<p><strong>Phone Number:</strong>
+<%= @contact.phone_number%></p>
+
+<%=link_to "Edit", edit_contact_path(@contact)%>
+<%=button_to "Delete", @contact, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+<%=link_to "Back", contacts_path%>
