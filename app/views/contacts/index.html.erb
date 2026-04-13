@@ -6,8 +6,7 @@
   <%= form.submit "Search"%>
 <%end%>
 
-
-
+<% if @contacts.any?%>
 <table>
   <thead>
     <tr>
@@ -29,3 +28,8 @@
   </tbody>
 </table>
 
+<% elsif params[:search].present?%>
+  <p>No contacts match "<%= params[:search] %>".<%=link_to "Clear Search", contacts_path%></p>
+<% else%>
+  <p> No contacts yet. <%= link_to "New Contact", new_contact_path%></p>
+<%end%>
