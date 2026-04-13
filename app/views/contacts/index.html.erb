@@ -1,7 +1,10 @@
 <h1>Contacts</h1>
 <%= link_to "New Contact", new_contact_path, class: "btn"%>
 
-
+<%= form_with url: contacts_path, method: :get, local: true do |form|%>
+  <%= form.text_field :search, placeholder: "Search by name"%>
+  <%= form.submit "Search"%>
+<%end%>
 
 
 
