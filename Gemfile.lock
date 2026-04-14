@@ -119,8 +119,6 @@ GEM
       tzinfo
     ffi (1.17.4-x64-mingw-ucrt)
     ffi (1.17.4-x86_64-linux-gnu)
-    foreman (0.90.0)
-      thor (~> 1.4)
     fugit (1.12.1)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
@@ -301,7 +299,7 @@ GEM
       logger
     rubyzip (3.2.2)
     securerandom (0.4.1)
-    selenium-webdriver (4.41.0)
+    selenium-webdriver (4.43.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -380,7 +378,6 @@ DEPENDENCIES
   capybara
   debug
   dotenv-rails
-  foreman
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
