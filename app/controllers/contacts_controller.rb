@@ -2,9 +2,9 @@ class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
   def index
     @contacts = if params[:search].present?
-      Contact.where("firstname ILIKE ? OR lastname ILIKE ?", "%#{params[:search]}%","%#{params[:search]}")
+      Current.user.contacts.where("firstname ILIKE ? OR lastname ILIKE ?", "%#{params[:search]}%","%#{params[:search]}%")
     else
-      Contact.all
+      Current.user.contacts
     end
   end
   
@@ -16,7 +16,7 @@ class ContactsController < ApplicationController
   end
 
   def create
-    @contact = Contact.new(contact_params)
+    @contact = Current.user.contacts.build(contact_params)
     if @contact.save
       redirect_to contacts_path, notice: "Contact created successfully"
     else
@@ -42,7 +42,7 @@ class ContactsController < ApplicationController
 
   private
   def set_contact
-    @contact = Contact.find(params[:id])
+    @contact =Current.user.contacts.find(params[:id])
   end
 
   def contact_params
