@@ -20,22 +20,19 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-  <% if notice %>
-    <div class="alert alert-success">
-      <%= notice %>
-    </div>
-  <% end %>
+  <body class="bg-slate-50">
+  <div class="max-w-6xl mx-auto px-4 py-8">
 
-  <% if alert %>
-    <div class="alert alert-danger">
-      <%= alert %>
-    </div>
-  <% end %>
+    <%= render "shared/navbar" %>
 
-  <%= yield %>
-  </body>
+    <%= render "shared/flash"%>
+
+    <%= yield %>
+
+  </div>
+</body>
 </html>
