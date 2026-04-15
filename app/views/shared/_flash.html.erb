@@ -1,0 +1,20 @@
+    <% if notice %>
+      <div class="bg-green-100 text-green-700 p-3 rounded mb-4 flash-message" id="notice">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="bg-red-100 text-red-700 p-3 rounded mb-4 flash-message" id="alert">
+        <%= alert %>
+      </div>
+    <% end %>
+
+<script>
+  //Auto-hide message after 3 seconds
+  document.querySelectorAll('.flash-message').forEach(element => {
+    setTimeout(() => {
+      element.style.display = 'none';
+    }, 3000);
+  });
+</script>
