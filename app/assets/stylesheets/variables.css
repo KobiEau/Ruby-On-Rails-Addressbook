@@ -1,0 +1,22 @@
+:root {
+  /* Primary Colors */
+  --primary-dark: #3f3f46;      /* slate-700 */
+  --primary-light: #f4f4f5;     /* slate-50 */
+  
+  /* Accent Colors */
+  --accent: #06b6d4;            /* cyan-500 */
+  --accent-hover: #22d3ee;      /* cyan-400 */
+  
+  /* Status Colors */
+  --success: #16a34a;           /* green-600 */
+  --danger: #dc2626;            /* red-600 */
+  --warning: #ca8a04;           /* yellow-600 */
+  
+  /* Text Colors */
+  --text-primary: #18181b;      /* slate-900 */
+  --text-secondary: #71717a;    /* slate-600 */
+  
+  /* Borders & Shadows */
+  --border: #e4e4e7;            /* slate-200 */
+  --shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
