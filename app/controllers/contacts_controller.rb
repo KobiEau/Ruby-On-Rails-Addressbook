@@ -9,6 +9,7 @@ class ContactsController < ApplicationController
   end
   
   def show
+    @user = Current.user
   end
   
   def new
