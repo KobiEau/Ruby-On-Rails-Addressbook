@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
+  root "contacts#index"
   resource :session
   resources :passwords, param: :token
   resources :contacts
   resources :users, only: %i[new create]
+  resource :account, only: %i[show edit update destroy] do
+    get :edit_password
+    patch :update_password
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -14,5 +19,4 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "contacts#index"
 end
