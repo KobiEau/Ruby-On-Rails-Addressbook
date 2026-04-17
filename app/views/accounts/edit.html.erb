@@ -1,0 +1,21 @@
+<div>
+  <h1 class="font-bold text-4xl">Edit Account</h1>
+  <p>Find me in app/views/accounts/edits.html.erb</p>
+
+  <%=form_with model: @user, url: account_path do |form|%>
+    <div>
+      <%= form.label :firstname%>
+      <%= form.text_field :firstname%>
+    </div>
+    <div>
+      <%= form.label :lastname%>
+      <%= form.text_field :lastname%>
+    </div>
+    <div>
+      <%= form.label :email_address%>
+      <%= form.email_field :email_address%>
+    </div>
+   
+    <%= form.submit "Update"%>
+  <%end%>
+</div>
