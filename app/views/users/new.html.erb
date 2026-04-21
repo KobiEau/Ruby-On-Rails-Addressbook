@@ -1,37 +1,82 @@
-<h1> Create Account </h2>
-<%=form_with model:@user do |form|%>
-  <% if @user.errors.any?%>
-    <%@user.errors.full_messages.each do |message|%>
-    <p><%=message%></p>
-    <%end%>  
-  <%end%>
+<div class="max-w-md mx-auto mt-[var(--spacing-8)]">
+  <div class="bg-[var(--color-surface-card)] border 
+    border-[var(--color-border-subtle)] 
+    rounded-lg shadow p-[var(--spacing-6)]">
 
-  <div>
-    <%= form.label :firstname%>
-    <%= form.text_field :firstname%>
+    <h1  class="text-2xl text-center font-black text-[var(--color-text-heading)] mb-[var(--spacing-6)]"> Create Account </h1>
+    <%=form_with model:@user do |form|%>
+      <% if @user.errors.any? %>
+        <div class="bg-[var(--color-error-bg)] border border-[var(--color-error-border)]
+                    text-[var(--color-error-text)] px-4 py-4 rounded-lg mb-[var(--spacing-6)]">
+          <h2 class="font-bold mb-[var(--spacing-2)]">
+            <%= pluralize(@user.errors.count, "error") %> prevented your account from being created
+          </h2>
+          <ul class="list-disc ml-5">
+            <% @user.errors.full_messages.each do |message| %>
+              <li class="text-sm"><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :firstname, class: "block text-sm font-semibold 
+        text-[var(--color-label)] mb-[var(--spacing-2)]"%>
+        <%= form.text_field :firstname, class:" w-full px-4 py-2 text-sm 
+        bg-[var(--color-input-bg)] text-[var(--color-text-heading)] 
+        border border-[var(--color-input-border)] rounded-lg 
+        focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)] transition"%>
+      </div>
+      
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :lastname, class: "block text-sm font-semibold 
+        text-[var(--color-label)] mb-[var(--spacing-2)]"%>
+        <%= form.text_field :lastname, class:" w-full px-4 py-2 text-sm bg-[var(--color-input-bg)] 
+        text-[var(--color-text-heading)] 
+        border border-[var(--color-input-border)] rounded-lg 
+        focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)] transition"%>
+      </div>
+
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :email_address, class: "block text-sm font-semibold 
+                                              text-[var(--color-label)] mb-[var(--spacing-2)]"%>
+        <%= form.text_field :email_address , class:" w-full px-4 py-2 text-sm 
+        bg-[var(--color-input-bg)] text-[var(--color-text-heading)] 
+        border border-[var(--color-input-border)] rounded-lg 
+        focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)] transition"%>
+      </div>
+
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :password,
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= render "shared/password_field",
+              form: form,
+              field_name: :password,
+              placeholder: "Enter your password" %>
+      </div>
+
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :password_confirmation,
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= render "shared/password_field",
+              form: form,
+              field_name: :password_confirmation,
+              placeholder: "Enter your password" %>
+      </div>
+
+     <div class="flex flex-col items-center gap-[var(--spacing-3)]">
+      <%= form.submit class: "px-5 py-2 text-sm font-bold
+                  bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
+                  text-[var(--color-text-on-accent)]
+                  rounded-lg cursor-pointer
+                  transition-colors duration-200" %></div>
+    
+    <%end%>
+
+      <p class="text-sm text-center text-[var(--color-text-body)] mt-[var(--spacing-4)]">
+        Already have an account?
+        <%= link_to "Log in", new_session_path,
+              class: "text-[var(--color-accent)] hover:underline font-semibold" %>
+      </p>
   </div>
-
-  <div>
-    <%= form.label :lastname%>
-    <%= form.text_field :lastname%>
-  </div>
-
-  <div>
-    <%= form.label :email_address%>
-    <%= form.email_field :email_address%>
-  </div>
-
-  <div>
-    <%=form.label :password%>
-    <%= form.password_field :password%>
-  </div>
-
-  <div>
-    <%= form.label :password_confirmation%>
-    <%= form.password_field :password_confirmation%>
-  <div>
-
-  <%= form.submit "Sign Up"%>
-<%end%>
-
-<p> Already have an account? <%= link_to "Log in", new_session_path%>
+</div>
