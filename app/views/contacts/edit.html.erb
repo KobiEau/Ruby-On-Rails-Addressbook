@@ -1,3 +1,21 @@
-<h1>Edit Contact</h1>
-<%= render "form", contact: @contact%>
-<%= link_to "Cancel",contacts_path%>
+<div class="max-w-lg mx-auto">
+
+  <div class="mb-[var(--spacing-6)] py-4">
+    <%= link_to "← Back to Contacts", contacts_path,
+          class: "text-sm text-[var(--color-text-body)]
+                  hover:text-[var(--color-accent)]
+                  transition-colors duration-200" %>
+  </div>
+
+  <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+              rounded-lg shadow p-[var(--spacing-6)]">
+
+    <h1 class="text-2xl font-black text-[var(--color-text-heading)]">
+      Edit Contact
+    </h1>
+    <p class="text-sm text-[var(--color-text-body)]">Fill in the details below</p>
+
+    <%= render "form", contact: @contact %>
+  </div>
+
+</div>
