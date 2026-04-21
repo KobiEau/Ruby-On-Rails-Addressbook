@@ -2,21 +2,17 @@ class AccountsController < ApplicationController
   before_action :require_authentication
   before_action :set_user, only: %i[show edit update edit_password update_password destroy]
   def show
-    
   end
 
   def edit
-    
   end
 
   def update
-    
-
-      if @user.update(user_params)
-        redirect_to account_path, notice: "Account updated"
-      else
-        render :edit,status: :unprocessable_entity
-      end
+    if @user.update(user_params)
+      redirect_to account_path, notice: "Account updated"
+    else
+      render :edit,status: :unprocessable_entity
+    end
   end
 
   def edit_password
@@ -24,8 +20,6 @@ class AccountsController < ApplicationController
   end
 
   def update_password
-    
-
     unless @user.authenticate(params[:current_password])
       flash.now[:alert] = "Current password is incorrect"
       return render :edit_password, status: :unprocessable_entity
@@ -37,11 +31,9 @@ class AccountsController < ApplicationController
       flash.now[:alert] = "Incorrect credentials"
       render :edit_password, status: :unprocessable_entity
     end
-
   end
 
   def destroy
-    
     unless @user.authenticate(params[:current_password])
       flash[:alert] = "Incorrect Password"
       return redirect_to edit_account_path
