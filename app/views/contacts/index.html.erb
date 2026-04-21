@@ -1,39 +1,67 @@
-<header class="mb-8">
- <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Contacts</h1>
-  <p class="text-slate-500">Welcome back, <%= Current.user.fullname %></p>
+<%# Page Header %>
+<header class="mb-10 py-7">
+  <span class = "text-sm font-semibold uppercase tracking-widest mb-1">Welcome back,</span>
+  <span class="text-sm font-semibold text-accent uppercase tracking-widest mb-1">
+     <%= Current.user.fullname %>
+  </span>
+  <h1 class="text-4xl font-black tracking-tight">
+    Your Contacts
+  </h1>
 </header>
 
-<%# <div class="flex items-center justify-between mb-6">
-  <div class="flex-1 mr-4">
-    <button class="bg-amber-500 text-slate-900 px-4 py-2 rounded-lg font-bold hover:bg-amber-600 transition">
-      Search
-    </button>
-  </div>
-  <%= link_to "Create Contact", new_contact_path, class: "bg-amber-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-slate-800 transition" %>
-<%# </div> %> 
-
-<!-- Search form -->
-<div class="flex items-center justify-between mb-6">
-  <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1 mr-4" do |form| %>
+<%# Search + New Contact toolbar %>
+<div class="flex items-center gap-3 mb-8">
+  <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1" do |form| %>
     <div class="flex gap-2">
-      <%= form.text_field :search, placeholder: "Search by name", class: "w-full px-3 py-2 border border-slate-300 rounded" %>
-      <%= form.submit "Search", class: "bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 cursor-pointer" %>
+      <%= form.text_field :search,
+            placeholder: "Search by name…",
+            value: params[:search],
+            class: "flex-1 px-4 py-2 text-sm
+                    bg-[var(--color-surface-input)]
+                    border border-[var(--color-border-subtle)]
+                    rounded-[var(--radius-md)]
+                    focus:outline-none focus:ring-2 focus:ring-accent
+                    transition" %>
+
+      <%= form.submit "Search",
+            class: "px-4 py-2 text-sm font-semibold
+                    bg-surface-muted hover:bg-[var(--color-border-subtle)]
+                    text-text-base
+                    rounded-[var(--radius-md)]
+                    cursor-pointer transition" %>
     </div>
   <% end %>
 
-  <%= link_to "Create Contact", new_contact_path, class: "bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 whitespace-nowrap" %>
+  <%= link_to new_contact_path,
+        class: "px-4 py-2 text-sm font-bold
+                bg-accent hover:bg-accent-hover
+                text-text-on-accent
+                rounded-[var(--radius-md)]
+                shadow-[var(--shadow-btn)]
+                whitespace-nowrap transition-all duration-200" do %>
+    + New Contact
+  <% end %>
 </div>
 
-<!-- Contacts list -->
+<%# Contacts grid %>
 <% if @contacts.any? %>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
     <% @contacts.each do |contact| %>
-     <%= render "contact_card", contact: contact%>
+      <%= render "contact_card", contact: contact %>
     <% end %>
-    
   </div>
+
 <% elsif params[:search].present? %>
-  <p class="text-slate-600">No contacts match "<%= params[:search] %>". <%= link_to "Clear search", contacts_path, class: "text-cyan-500" %></p>
+  <div class="text-center py-20 text-text-muted">
+    <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
+    <%= link_to "Clear search", contacts_path,
+          class: "text-sm text-accent hover:underline" %>
+  </div>
+
 <% else %>
-  <p class="text-slate-600">No contacts yet. <%= link_to "Create one", new_contact_path, class: "text-cyan-500" %></p>
+  <div class="text-center py-20 text-text-muted">
+    <p class="text-lg mb-2">No contacts yet.</p>
+    <%= link_to "Create your first one →", new_contact_path,
+          class: "text-sm text-accent hover:underline" %>
+  </div>
 <% end %>
