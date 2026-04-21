@@ -1,6 +1,55 @@
-<h1> My Account </h1>
-<p><strong>Name:</strong><%=@user.fullname%></p>
-<p><strong>Email:</strong><%= @user.email_address%></p>
+<div class= "max-w-lg mx-auto">
+  <%# Back Button %>
+  <div class="mb-[var(--spacing-8)] ">
+    <%= link_to "← Back to Contacts", contacts_path,
+          class: "text-sm text-[var(--color-text-body)]
+                  hover:text-[var(--color-accent)]
+                  transition-colors duration-200" %>
+  </div>
 
-<%= link_to "Edit Account",edit_account_path%>
-<%= link_to "Change Password",  edit_password_account_path%>
+  <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+            rounded-lg shadow p-[var(--spacing-6)] mb-[var(--spacing-6)]">
+    
+    <div class="flex items-center gap-[var(--spacing-4)]">
+    <%# Avatar  %>
+    <div class=" <%= contact_initials_color(@user)%>
+    w-16 h-16 rounded-full shrink-0
+                flex items-center justify-center
+                text-white font-bold text-2xl">
+      <%= contact_initials(@user)%>
+    </div>
+
+    <div>
+      <h1> My Account </h1>
+      <p><strong>Name: </strong><%=@user.fullname%></p>
+      <p><strong>Email: </strong><%= @user.email_address%></p>
+    </div>
+
+  </div>
+
+  <div class= "bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+              rounded-lg shadow p-[var(--spacing-6)]">
+  
+    <h2 class="text-xs font-bold uppercase tracking-widest
+                text-[var(--color-text-body)]
+                border-b border-[var(--color-divider)]
+                pb-[var(--spacing-3)] mb-[var(--spacing-4)]">Account Settings</h2>
+
+    <%# Two link_to buttons side by side — which tokens handle secondary and danger buttons? %>
+    <div class="flex items-center gap-[var(--spacing-3)]">
+      <%= link_to "Edit Account", edit_account_path,
+              class: "px-4 py-2 text-sm font-semibold
+                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                      text-white rounded-lg transition-colors duration-200" %>
+
+        <%= link_to "Change Password", edit_password_account_path,
+              class: "px-4 py-2 text-sm font-semibold
+                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                      text-white rounded-lg transition-colors duration-200" %>
+
+    </div>
+
+  </div>
+
+
+</div>
