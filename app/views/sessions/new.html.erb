@@ -1,11 +1,63 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<%# if flash[:alert] %>
+  <%# <div class="bg-[var(--color-flash-alert-bg)] border border-[var(--color-flash-alert-border)]
+              text-[var(--color-flash-alert-text)] px-4 py-3 rounded-lg mb-[var(--spacing-4)] text-sm">
+    <%= flash[:alert] %>
+  <%# </div>  %>
+<%# end %>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+<%# if flash[:notice] %>
+  <%# <div class="bg-[var(--color-flash-notice-bg)] border border-[var(--color-flash-notice-border)]
+              text-[var(--color-flash-notice-text)] px-4 py-3 rounded-lg mb-[var(--spacing-4)] text-sm"> %>
+    <%#= flash[:notice] %>
+  <%# </div> %>
+<%# end %>
 
-<%= link_to "Forgot password?", new_password_path %>
+<div class="max-w-md mx-auto mt-[var(--spacing-8)]">
+  <div class="bg-[var(--color-surface-card)] border 
+    border-[var(--color-border-subtle)] 
+    rounded-lg shadow p-[var(--spacing-6)]">
+  <h1  class="text-2xl text-center font-black 
+  text-[var(--color-text-heading)] mb-[var(--spacing-6)]"> Sign In </h1>
+  
+  <%= form_with url: session_path do |form| %>
+    <div class="mb-[var(--spacing-4)]">
+      <%= form.label :email_address, class: "block text-sm font-semibold 
+          text-[var(--color-label)] mb-[var(--spacing-2)]"%>
+      <%= form.email_field :email_address, required: true, autofocus: true, 
+      autocomplete: "username", placeholder: "johndoe@outlook.com", 
+      value: params[:email_address], class:" w-full px-4 py-2 text-sm 
+          bg-[var(--color-input-bg)] text-[var(--color-text-heading)] 
+          border border-[var(--color-input-border)] rounded-lg 
+          focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)] transition" %>
+    </div>
+
+    <div class="mb-[var(--spacing-4)]">
+      <%= form.label :password,
+            class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+      <%= render "shared/password_field",
+            form: form,
+            field_name: :password,
+            placeholder: "Enter your password" %>
+    </div>
+
+    <%= form.submit "Sign in",class:"px-5 py-2 text-sm font-bold
+                bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
+                text-[var(--color-text-on-accent)]
+                rounded-lg cursor-pointer w-full
+                transition-colors duration-200" %>
+
+    </div>
+
+    <p class="text-sm text-center text-[var(--color-text-body)] mt-[var(--spacing-4)]">
+      Don't have an account?
+        <%= link_to "Sign Up", new_user_path,
+              class: "text-[var(--color-accent)] hover:underline font-semibold" %>
+      </p>
+  <% end %>
+
+  <p  class="text-sm text-center text-[var(--color-text-body)] mt-[var(--spacing-4)]">
+  <%= link_to "Forgot password?", new_password_path, class: "text-[var(--color-accent)] hover:underline font-semibold" %>
+  </p>
+
+  </div>
+</div>
