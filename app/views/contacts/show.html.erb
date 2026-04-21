@@ -1,7 +1,72 @@
-<h1><%= @contact.firstname%> <%= @contact.lastname%></h1>
-<p><strong>Phone Number:</strong>
-<%= @contact.phone_number%></p>
+<%# <h1><%= @contact.firstname%> <%#= @contact.lastname%>
+<%# <p><strong>Phone Number:</strong> %>
+<%#= @contact.phone_number%>
 
-<%=link_to "Edit", edit_contact_path(@contact)%>
-<%=button_to "Delete", @contact, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
-<%=link_to "Back", contacts_path%>
+<%#=link_to "Edit", edit_contact_path(@contact)%>
+<%#=button_to "Delete", @contact, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+<%#=link_to "Back", contacts_path%>
+
+<%# Back link — top left, subtle %>
+<div class="mb-[var(--spacing-6)]">
+  <%= link_to "← Back to Contacts", contacts_path,
+        class: "text-sm text-[var(--color-text-body)]
+                hover:text-[var(--color-accent)]
+                transition-colors duration-200" %>
+</div>
+
+<%# Header — avatar + name %>
+<div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+            rounded-lg shadow p-[var(--spacing-6)] mb-[var(--spacing-6)]">
+
+  <div class="flex items-center gap-[var(--spacing-4)]">
+    <div class="<%= contact_initials_color(@contact) %>
+                w-16 h-16 rounded-full shrink-0
+                flex items-center justify-center
+                text-white font-bold text-2xl">
+      <%= contact_initials(@contact) %>
+    </div>
+
+    <div>
+      <h1 class="text-2xl font-black text-[var(--color-text-heading)]">
+        <%= @contact.firstname %> <%= @contact.lastname %>
+      </h1>
+      <p class="text-sm text-[var(--color-text-body)] m-0">Contact Details</p>
+    </div>
+  </div>
+</div>
+
+<%# Details section %>
+<div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+            rounded-lg shadow p-[var(--spacing-6)] mb-[var(--spacing-6)]">
+
+  <h2 class="text-xs font-bold uppercase tracking-widest
+             text-[var(--color-text-body)]
+             border-b border-[var(--color-divider)]
+             pb-[var(--spacing-3)] mb-[var(--spacing-4)]">
+    Details
+  </h2>
+
+  <div class="flex flex-col gap-[var(--spacing-3)]">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-wider
+                text-[var(--color-text-body)] m-0">Phone</p>
+      <p class="text-base font-medium text-[var(--color-text-heading)] m-0">
+        <%= @contact.phone_number %>
+      </p>
+    </div>
+  </div>
+</div>
+
+<%# Actions %>
+<div class="flex items-center gap-[var(--spacing-3)]">
+  <%= link_to "Edit Contact", edit_contact_path(@contact),
+        class: "px-4 py-2 text-sm font-semibold
+                bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                text-white rounded-lg transition-colors duration-200" %>
+
+  <%= button_to "Delete", @contact, method: :delete,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "px-4 py-2 text-sm font-semibold
+                bg-[var(--color-btn-danger)] hover:bg-[var(--color-btn-danger-hover)]
+                text-white rounded-lg transition-colors duration-200" %>
+</div>
