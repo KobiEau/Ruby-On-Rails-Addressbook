@@ -41,27 +41,140 @@
                 whitespace-nowrap transition-all duration-200" do %>
     + New Contact
   <% end %>
+  <%# Toggle buttons %>
+  <div class="flex items-center gap-[var(--spacing-2)] mb-[var(--spacing-6)]">
+    <button id="btn-cards" onclick="switchView('cards')" 
+    class="px-4 py-2 bg-accent text-sm font-semibold rounded-lg transition-colors duration-200"> 
+      Cards</button>
+    <button id="btn-cards" onclick="switchView('table')"
+    class="px-4 py-2 bg-btn-secondary text-sm font-semibold rounded-lg transition-colors duration-200">
+      Table</button>
+  </div>
 </div>
 
-<%# Contacts grid %>
-<% if @contacts.any? %>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    <% @contacts.each do |contact| %>
-      <%= render "contact_card", contact: contact %>
-    <% end %>
-  </div>
 
-<% elsif params[:search].present? %>
-  <div class="text-center py-20 text-text-muted">
-    <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
-    <%= link_to "Clear search", contacts_path,
-          class: "text-sm text-accent hover:underline" %>
-  </div>
+<div id="card-view">
+  <%# Contacts grid %>
+  <% if @contacts.any? %>
+    <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-5">
+      <% @contacts.each do |contact| %>
+        <%= render "contact_card", contact: contact %>
+      <% end %>
+    </div>
 
-<% else %>
-  <div class="text-center py-20 text-text-muted">
-    <p class="text-lg mb-2">No contacts yet.</p>
-    <%= link_to "Create your first one →", new_contact_path,
-          class: "text-sm text-accent hover:underline" %>
-  </div>
-<% end %>
+  <% elsif params[:search].present? %>
+    <div class="text-center py-20 text-text-muted">
+      <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
+      <%= link_to "Clear search", contacts_path,
+            class: "text-sm text-accent hover:underline" %>
+    </div>
+
+  <% else %>
+    <div class="text-center py-20 text-text-muted">
+      <p class="text-lg mb-2">No contacts yet.</p>
+      <%= link_to "Create your first one →", new_contact_path,
+            class: "text-sm text-accent hover:underline" %>
+    </div>
+  <% end %>
+
+</div>
+
+<%# Table view %>
+<div id="table-view" style="display:none">
+   <% if @contacts.any? %>
+    <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+                rounded-lg shadow overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-[var(--color-border-subtle)]">
+            <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                       text-[var(--color-text-body)]">Contact</th>
+            <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                       text-[var(--color-text-body)]">Phone</th>
+            <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
+                       text-[var(--color-text-body)]">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @contacts.each do |contact| %>
+            <tr class="border-b border-[var(--color-border-subtle)] last:border-0
+                       hover:bg-[var(--color-border-subtle)] transition-colors duration-150">
+
+              <%# Avatar + Name %>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-[var(--spacing-3)]">
+                  <div class="<%= contact_initials_color(contact) %>
+                              w-9 h-9 rounded-full shrink-0
+                              flex items-center justify-center
+                              text-white font-bold text-sm">
+                    <%= contact_initials(contact) %>
+                  </div>
+                  <span class="font-semibold text-[var(--color-text-heading)]">
+                    <%= contact.firstname %> <%= contact.lastname %>
+                  </span>
+                </div>
+              </td>
+
+              <%# Phone %>
+              <td class="px-6 py-4 text-[var(--color-text-body)]">
+                <%= contact.phone_number %>
+              </td>
+
+              <%# Action %>
+              <td class="px-6 py-4 text-right">
+                <%= link_to "View More", contact_path(contact),
+                      class: "px-3 py-1 text-xs font-semibold
+                              bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]
+                              text-white rounded-lg transition-colors duration-200" %>
+              </td>
+
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% elsif params[:search].present? %>
+    <div class="text-center py-20 text-[var(--color-text-muted)]">
+      <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
+      <%= link_to "Clear search", contacts_path,
+            class: "text-sm text-[var(--color-accent)] hover:underline" %>
+    </div>
+  <% else %>
+    <div class="text-center py-20 text-[var(--color-text-muted)]">
+      <p class="text-lg mb-2">No contacts yet.</p>
+      <%= link_to "Create your first one →", new_contact_path,
+            class: "text-sm text-[var(--color-accent)] hover:underline" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function switchView(view){
+    document.getElementById("card-view").style.display = view === "cards" ? "block" : "none";
+    document.getElementById("table-view").style.display = view === "table" ? "block" : "none";
+  }
+
+  //localStorage
+  localStorage.setItem("contactView",view);
+
+  //update btn styles
+  const btnCards = document.getElementById("btn-cards");
+  const btnTable = document.getElementById("btn-table");
+
+  const active = "bg-[var(--color-accent)] text-[var(--color-text-on accent)]";
+  const inactive = "bg-[var(--color-btn-secondary)] txt-white";
+
+  if (view === "cards"){
+    btnCards.className = btnCards.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+active;
+    btnTable.className = btnTable.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+inactive;
+  }
+  else{
+    btnTable.className = btnTable.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+active;
+    btnCards.className = btnCards.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+inactive;
+  }
+
+  document.addEventListener("DOMContentLoaded",function() {
+    const saved = localStorage.getItem("contactView") || "cards";
+    switchView(saved);
+  });
+</script>
