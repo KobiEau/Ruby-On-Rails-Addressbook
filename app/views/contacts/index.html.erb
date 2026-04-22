@@ -41,15 +41,14 @@
                 whitespace-nowrap transition-all duration-200" do %>
     + New Contact
   <% end %>
+  
   <%# Toggle buttons %>
-  <div class="flex items-center gap-[var(--spacing-2)] mb-[var(--spacing-6)]">
-    <button id="btn-cards" onclick="switchView('cards')" 
-    class="px-4 py-2 bg-accent text-sm font-semibold rounded-lg transition-colors duration-200"> 
-      Cards</button>
-    <button id="btn-cards" onclick="switchView('table')"
-    class="px-4 py-2 bg-btn-secondary text-sm font-semibold rounded-lg transition-colors duration-200">
-      Table</button>
-  </div>
+    <button id="view-toggle" onclick="switchView()"
+          class="px-4 py-2 text-sm font-semibold
+                bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
+                text-white rounded-[var(--radius-md)] transition-colors duration-200 whitespace-nowrap">
+    <span id="toggle-label">⊞ Table View</span>
+  </button>
 </div>
 
 
@@ -149,32 +148,27 @@
 </div>
 
 <script>
-  function switchView(view){
-    document.getElementById("card-view").style.display = view === "cards" ? "block" : "none";
-    document.getElementById("table-view").style.display = view === "table" ? "block" : "none";
+  let currentView = localStorage.getItem("contactView") || "cards";
+
+  function switchView(){
+    //Toggle between cards and table
+    currentView = currentView === "cards" ? "table" : "cards";
+
+    document.getElementById("card-view").style.display = currentView === "cards" ? "block" : "none";
+    document.getElementById("table-view").style.display = currentView === "table" ? "block" : "none";
+
+    //update button label icon
+    document.getElementById("toggle-label").textContent = currentView === "cards" ? "⊞ Table View" : "⊟ Cards View";
+
+    //save preference
+    localStorage.setItem("contactView",currentView);
   }
 
-  //localStorage
-  localStorage.setItem("contactView",view);
-
-  //update btn styles
-  const btnCards = document.getElementById("btn-cards");
-  const btnTable = document.getElementById("btn-table");
-
-  const active = "bg-[var(--color-accent)] text-[var(--color-text-on accent)]";
-  const inactive = "bg-[var(--color-btn-secondary)] txt-white";
-
-  if (view === "cards"){
-    btnCards.className = btnCards.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+active;
-    btnTable.className = btnTable.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+inactive;
-  }
-  else{
-    btnTable.className = btnTable.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+active;
-    btnCards.className = btnCards.className.replace(/bg-\S+|text-\S+/g,"").trim()+" "+inactive;
-  }
-
-  document.addEventListener("DOMContentLoaded",function() {
-    const saved = localStorage.getItem("contactView") || "cards";
-    switchView(saved);
+  //On page load,restore user preference
+  document.addEventListener("DOMContentLoad",() => {
+    document.getElementById("card-view").style.display = currentView === "cards" ? "block" : "none";
+    document.getElementById("table-view").style.display = currentView === "table" ? "block" : "none";
+    document.getElementById("toggle-label").textContent =
+      currentView === "cards" ? "⊞ Table View" : "⊟ Cards View";
   });
 </script>
