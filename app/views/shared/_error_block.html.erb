@@ -1,0 +1,14 @@
+<%# Error messages %>
+  <% if record.errors.any? %>
+    <div class="bg-[var(--color-error-bg)] border border-[var(--color-error-border)]
+                text-[var(--color-error-text)] px-4 py-4 rounded-lg mb-[var(--spacing-6)]">
+      <h2 class="font-bold mb-[var(--spacing-2)]">
+        <%= pluralize(record.errors.count, "error") %> prevented this contact from being saved
+      </h2>
+      <ul class="list-disc ml-5">
+        <% record.errors.full_messages.each do |message| %>
+          <li class="text-sm"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
