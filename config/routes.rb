@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root "contacts#index"
+  get "pages/home"
+  root "pages#home"
   resource :session
   resources :passwords, param: :token
   resources :contacts
