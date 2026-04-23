@@ -1,5 +1,5 @@
 <%# Page Header %>
-<header class="mb-10 py-7">
+<header class="mb-10 py-7 sticky top-10 z-40">
   <span class = "text-sm font-semibold uppercase tracking-widest mb-1">Welcome back,</span>
   <span class="text-sm font-semibold text-accent uppercase tracking-widest mb-1">
      <%= Current.user.fullname %>
@@ -7,168 +7,222 @@
   <h1 class="text-4xl font-black tracking-tight">
     Your Contacts
   </h1>
+  <span class="">Total contacts: <%= Current.user.contacts.count%></span>
 </header>
 
-<%# Search + New Contact toolbar %>
-<div class="flex items-center gap-3 mb-8">
-  <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1" do |form| %>
-    <div class="flex gap-2">
-      <%= form.text_field :search,
-            placeholder: "Search by name…",
-            value: params[:search],
-            class: "flex-1 px-4 py-2 text-sm
+<div data-controller="view-toggle">
+
+  <div class="flex items-center gap-3 mb-8 sticky top-48 z-40">
+    <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1" do |form| %>
+      <div class="flex gap-2">
+        <%= form.text_field :search,
+              placeholder: "Search by name…",
+              value: params[:search],
+              class: "flex-1 px-4 py-2 text-sm
+                      bg-[var(--color-surface-input)]
+                      border border-[var(--color-border-subtle)]
+                      rounded-[var(--radius-md)]
+                      focus:outline-none focus:ring-2 focus:ring-accent
+                      transition" %>
+
+        <%= form.submit "Search",
+              class: "px-4 py-2 text-sm font-semibold
+                      bg-surface-muted hover:bg-[var(--color-border-subtle)]
+                      text-text-base
+                      rounded-[var(--radius-md)]
+                      cursor-pointer transition" %>
+      </div>
+    <% end %>
+
+    <%= link_to new_contact_path,
+          class: "px-4 py-2 text-sm font-bold
+                  bg-accent hover:bg-accent-hover
+                  text-text-on-accent
+                  rounded-[var(--radius-md)]
+                  shadow-[var(--shadow-btn)]
+                  whitespace-nowrap transition-all duration-200" do %>
+      + New Contact
+    <% end %>
+    
+    <%= form_with url: contacts_path, method: :get, local: true do |form| %>
+    <%= form.hidden_field :search, value: params[:search] %>
+    <%= form.select :per_page,
+          [5, 10, 25, 50],
+          { selected: params[:per_page] || 10 },
+          {
+            onchange: "this.form.submit()",
+            class: "px-3 py-2 text-sm
                     bg-[var(--color-surface-input)]
+                    text-black
                     border border-[var(--color-border-subtle)]
                     rounded-[var(--radius-md)]
-                    focus:outline-none focus:ring-2 focus:ring-accent
-                    transition" %>
+                    cursor-pointer"
+          } %>
+    <% end %>
 
-      <%= form.submit "Search",
-            class: "px-4 py-2 text-sm font-semibold
-                    bg-surface-muted hover:bg-[var(--color-border-subtle)]
-                    text-text-base
-                    rounded-[var(--radius-md)]
-                    cursor-pointer transition" %>
-    </div>
-  <% end %>
+    <%# Toggle buttons %>
+      <button data-action="click->view-toggle#switch"
+            class="px-4 py-2 text-sm font-semibold
+                  bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
+                  text-white rounded-[var(--radius-md)] transition-colors duration-200 whitespace-nowrap">
+      <span data-view-toggle-target="toggle-label">⊞ Table View</span>
+    </button>
+  </div>
 
-  <%= link_to new_contact_path,
-        class: "px-4 py-2 text-sm font-bold
-                bg-accent hover:bg-accent-hover
-                text-text-on-accent
-                rounded-[var(--radius-md)]
-                shadow-[var(--shadow-btn)]
-                whitespace-nowrap transition-all duration-200" do %>
-    + New Contact
-  <% end %>
-  
-  <%# Toggle buttons %>
-    <button id="view-toggle" onclick="switchView()"
-          class="px-4 py-2 text-sm font-semibold
-                bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
-                text-white rounded-[var(--radius-md)] transition-colors duration-200 whitespace-nowrap">
-    <span id="toggle-label">⊞ Table View</span>
-  </button>
-</div>
+  <div data-view-toggle-target="cardView">
+    <%# Contacts grid %>
+    <% if @contacts.any? %>
+      <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-5 overflow-y-auto max-h-[300px]">
+        <% @contacts.each do |contact| %>
+          <%= render "contact_card", contact: contact %>
+        <% end %>
+      </div>
 
+    <% elsif params[:search].present? %>
+      <div class="text-center py-20 text-text-muted">
+        <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
+        <%= link_to "Clear search", contacts_path,
+              class: "text-sm text-accent hover:underline" %>
+      </div>
 
-<div id="card-view">
-  <%# Contacts grid %>
-  <% if @contacts.any? %>
-    <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-5">
-      <% @contacts.each do |contact| %>
-        <%= render "contact_card", contact: contact %>
+    <% else %>
+      <div class="text-center py-20 text-text-muted">
+        <p class="text-lg mb-2">No contacts yet.</p>
+        <%= link_to "Create your first one →", new_contact_path,
+              class: "text-sm text-accent hover:underline" %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <%# Table view %>
+  <div data-view-toggle-target="tableView" style="display:none" class="sticky top-62" >
+    <% if @contacts.any? %>
+      <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+                  rounded-lg shadow overflow-hidden">
+        <div class="max-h-96 overflow-y-auto">
+
+        <table class="w-full text-sm">
+          <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
+            <tr class="border-b border-[var(--color-border-subtle)]">
+              <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                        text-[var(--color-text-body)]">Contact</th>
+              <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                        text-[var(--color-text-body)]">Phone</th>
+              <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
+                        text-[var(--color-text-body)]">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @contacts.each do |contact| %>
+              <tr class="border-b border-[var(--color-border-subtle)] last:border-0
+                        hover:bg-[var(--color-border-subtle)] transition-colors duration-150">
+
+                <%# Avatar + Name %>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-[var(--spacing-3)]">
+                    <div class="<%= contact_initials_color(contact) %>
+                                w-9 h-9 rounded-full shrink-0
+                                flex items-center justify-center
+                                text-white font-bold text-sm">
+                      <%= contact_initials(contact) %>
+                    </div>
+                    <span class="font-semibold text-[var(--color-text-heading)]">
+                      <%= contact.firstname %> <%= contact.lastname %>
+                    </span>
+                  </div>
+                </td>
+
+                <%# Phone %>
+                <td class="px-6 py-4 text-[var(--color-text-body)]">
+                  <%= contact.phone_number %>
+                </td>
+
+                <%# Action %>
+                <td class="px-6 py-4 text-right">
+                  <%= link_to "View More", contact_path(contact),
+                        class: "px-3 py-1 text-xs font-semibold
+                                bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]
+                                text-white rounded-lg transition-colors duration-200" %>
+                </td>
+
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        </div>
+      </div>
+    <% elsif params[:search].present? %>
+      <div class="text-center py-20 text-[var(--color-text-muted)]">
+        <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
+        <%= link_to "Clear search", contacts_path,
+              class: "text-sm text-[var(--color-accent)] hover:underline" %>
+      </div>
+    <% else %>
+      <div class="text-center py-20 text-[var(--color-text-muted)]">
+        <p class="text-lg mb-2">No contacts yet.</p>
+        <%= link_to "Create your first one →", new_contact_path,
+              class: "text-sm text-[var(--color-accent)] hover:underline" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Pagination footer %>
+<% if @contacts.total_pages > 1 %>
+  <div class="flex items-center justify-between mt-[var(--spacing-8)]
+              pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] sticky bottom-1">
+
+    <%# Contact count %>
+    <span class="text-sm text-[var(--color-text-muted)]">
+      <%= @contacts.total_count %> contacts total
+    </span>
+
+    <%# Prev / Next %>
+    <div class="flex items-center gap-[var(--spacing-2)]">
+      <% if @contacts.prev_page %>
+        <%= link_to "← Prev",
+              contacts_path(page: @contacts.prev_page,
+                            per_page: @per_page,
+                            search: params[:search]),
+              class: "px-4 py-2 text-sm font-semibold
+                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                      text-white rounded-[var(--radius-md)]
+                      transition-colors duration-200" %>
+      <% else %>
+        <span class="px-4 py-2 text-sm font-semibold
+                     bg-[var(--color-surface-muted)]
+                     text-[var(--color-text-muted)]
+                     rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
+          ← Prev
+        </span>
+      <% end %>
+
+      <%# Current page indicator %>
+      <span class="px-3 py-2 text-sm text-[var(--color-text-muted)]">
+        Page <%= @contacts.current_page %> of <%= @contacts.total_pages %>
+      </span>
+
+      <% if @contacts.next_page %>
+        <%= link_to "Next →",
+              contacts_path(page: @contacts.next_page,
+                            per_page: @per_page,
+                            search: params[:search]),
+              class: "px-4 py-2 text-sm font-semibold
+                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                      text-white rounded-[var(--radius-md)]
+                      transition-colors duration-200" %>
+      <% else %>
+        <span class="px-4 py-2 text-sm font-semibold
+                     bg-[var(--color-surface-muted)]
+                     text-[var(--color-text-muted)]
+                     rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
+          Next →
+        </span>
       <% end %>
     </div>
 
-  <% elsif params[:search].present? %>
-    <div class="text-center py-20 text-text-muted">
-      <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
-      <%= link_to "Clear search", contacts_path,
-            class: "text-sm text-accent hover:underline" %>
-    </div>
-
-  <% else %>
-    <div class="text-center py-20 text-text-muted">
-      <p class="text-lg mb-2">No contacts yet.</p>
-      <%= link_to "Create your first one →", new_contact_path,
-            class: "text-sm text-accent hover:underline" %>
-    </div>
-  <% end %>
-
+  </div>
+<% end %>
 </div>
-
-<%# Table view %>
-<div id="table-view" style="display:none">
-   <% if @contacts.any? %>
-    <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
-                rounded-lg shadow overflow-hidden">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-[var(--color-border-subtle)]">
-            <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
-                       text-[var(--color-text-body)]">Contact</th>
-            <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
-                       text-[var(--color-text-body)]">Phone</th>
-            <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
-                       text-[var(--color-text-body)]">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @contacts.each do |contact| %>
-            <tr class="border-b border-[var(--color-border-subtle)] last:border-0
-                       hover:bg-[var(--color-border-subtle)] transition-colors duration-150">
-
-              <%# Avatar + Name %>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-[var(--spacing-3)]">
-                  <div class="<%= contact_initials_color(contact) %>
-                              w-9 h-9 rounded-full shrink-0
-                              flex items-center justify-center
-                              text-white font-bold text-sm">
-                    <%= contact_initials(contact) %>
-                  </div>
-                  <span class="font-semibold text-[var(--color-text-heading)]">
-                    <%= contact.firstname %> <%= contact.lastname %>
-                  </span>
-                </div>
-              </td>
-
-              <%# Phone %>
-              <td class="px-6 py-4 text-[var(--color-text-body)]">
-                <%= contact.phone_number %>
-              </td>
-
-              <%# Action %>
-              <td class="px-6 py-4 text-right">
-                <%= link_to "View More", contact_path(contact),
-                      class: "px-3 py-1 text-xs font-semibold
-                              bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]
-                              text-white rounded-lg transition-colors duration-200" %>
-              </td>
-
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% elsif params[:search].present? %>
-    <div class="text-center py-20 text-[var(--color-text-muted)]">
-      <p class="text-lg mb-2">No results for "<%= params[:search] %>"</p>
-      <%= link_to "Clear search", contacts_path,
-            class: "text-sm text-[var(--color-accent)] hover:underline" %>
-    </div>
-  <% else %>
-    <div class="text-center py-20 text-[var(--color-text-muted)]">
-      <p class="text-lg mb-2">No contacts yet.</p>
-      <%= link_to "Create your first one →", new_contact_path,
-            class: "text-sm text-[var(--color-accent)] hover:underline" %>
-    </div>
-  <% end %>
-</div>
-
-<script>
-  let currentView = localStorage.getItem("contactView") || "cards";
-
-  function switchView(){
-    //Toggle between cards and table
-    currentView = currentView === "cards" ? "table" : "cards";
-
-    document.getElementById("card-view").style.display = currentView === "cards" ? "block" : "none";
-    document.getElementById("table-view").style.display = currentView === "table" ? "block" : "none";
-
-    //update button label icon
-    document.getElementById("toggle-label").textContent = currentView === "cards" ? "⊞ Table View" : "⊟ Cards View";
-
-    //save preference
-    localStorage.setItem("contactView",currentView);
-  }
-
-  //On page load,restore user preference
-  document.addEventListener("DOMContentLoad",() => {
-    document.getElementById("card-view").style.display = currentView === "cards" ? "block" : "none";
-    document.getElementById("table-view").style.display = currentView === "table" ? "block" : "none";
-    document.getElementById("toggle-label").textContent =
-      currentView === "cards" ? "⊞ Table View" : "⊟ Cards View";
-  });
-</script>
+<%# Search + New Contact toolbar %>
