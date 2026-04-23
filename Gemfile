@@ -68,3 +68,7 @@ end
 gem 'dotenv-rails', groups: [:development, :test]
 
 gem "tailwindcss-rails"
+
+gem 'letter_opener' , group: [:development, :test]
+
+gem 'kaminari'
