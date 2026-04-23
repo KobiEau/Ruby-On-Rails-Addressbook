@@ -1,11 +1,6 @@
 <div class="max-w-lg mx-auto">
 
-  <div class="mb-[var(--spacing-7)] ">
-    <%= link_to "← Back to Contacts", contacts_path,
-          class: "text-sm text-[var(--color-text-body)]
-                  hover:text-[var(--color-accent)]
-                  transition-colors duration-200" %>
-  </div>
+  <%= render "shared/back_link", text:"← Back to Contacts",path: contacts_path%>
 
   <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
               rounded-lg shadow p-[var(--spacing-6)]">
