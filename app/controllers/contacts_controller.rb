@@ -1,11 +1,15 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
   def index
-    @contacts = if params[:search].present?
-      Current.user.contacts.where("firstname ILIKE ? OR lastname ILIKE ?", "%#{params[:search]}%","%#{params[:search]}%")
-    else
-      Current.user.contacts
-    end
+  @contacts = if params[:search].present?
+  Current.user.contacts.where("firstname ILIKE ? OR lastname ILIKE ?",
+  "%#{params[:search]}%", "%#{params[:search]}%")
+  else
+    Current.user.contacts
+  end
+
+  @per_page = (params[:per_page] || 10).to_i
+  @contacts = @contacts.page(params[:page]).per(@per_page)
   end
   
   def show
