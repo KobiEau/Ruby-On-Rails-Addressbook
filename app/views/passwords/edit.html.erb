@@ -1,9 +1,45 @@
-<h1>Update your password</h1>
+<%# <h1>Update your password</h1> %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<%#= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
 
-<%= form_with url: password_path(params[:token]), method: :put do |form| %>
-  <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
-  <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
-  <%= form.submit "Save" %>
-<% end %>
+<%#= form_with url: password_path(params[:token]), method: :put do |form| %>
+  <%#= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
+  <%#= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
+  <%#= form.submit "Save" %>
+<%# end %>
+
+<div class="max-w-md mx-auto mt-[var(--spacing-8)]">
+  <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+              rounded-lg shadow p-[var(--spacing-6)]">
+
+    <h1 class="text-2xl font-black text-[var(--color-text-heading)] mb-[var(--spacing-6)]">
+      Set New Password
+    </h1>
+
+    <%= form_with url: password_path(params[:token]), method: :patch do |form| %>
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :password,
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= render "shared/password_field",
+              form: form,
+              field_name: :password,
+              placeholder: "Enter new password" %>
+      </div>
+
+      <div class="mb-[var(--spacing-6)]">
+        <%= form.label :password_confirmation,
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= render "shared/password_field",
+              form: form,
+              field_name: :password_confirmation,
+              placeholder: "Confirm new password" %>
+      </div>
+
+      <%= form.submit "Update Password", class: "px-5 py-2 text-sm font-bold
+                      bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      rounded-lg cursor-pointer w-full
+                      transition-colors duration-200" %>
+    <% end %>
+  </div>
+</div>
