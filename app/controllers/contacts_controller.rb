@@ -48,27 +48,21 @@ class ContactsController < ApplicationController
 
   # Exporting contacts
   def export
-    @contacts = Current.user.contacts
+    contacts = Current.user.contacts
 
-    respond_to do |format|
-      format.csv do
-        response.headers["Content-Diposition"] =
-          "attachement; filename=contacts_#{Date.today}.csv"
-        render plain: generate_csv(@contacts)
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << ["Firt Name", "Last Name", "Phone Number"]
+      contacts.each do |contact|
+        csv << [contact.firstname, contact.lastname,contact.phone_number]
       end
     end
+
+    send_data csv_data,
+              filename: "contacts-#{Date.today}.csv",
+              type:"text/csv"
   end
 
   private
-  def generate_csv(contacts)
-   
-    CSV.generate(headers: true) do |csv|
-      csv << ["firstname","lastname","phone_number"]
-      contacts.each do |contact|
-        csv << [contact.firstname,contact.lastname,contact.phone_number]
-      end
-    end
-  end
 
   def set_contact
     @contact =Current.user.contacts.find(params[:id])
