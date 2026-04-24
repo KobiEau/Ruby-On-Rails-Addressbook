@@ -15,7 +15,7 @@
     </div>
 
     <div>
-      <h1> My Account </h1>
+      <h1 class="text-xl font-bold uppercase tracking-widest"> My Account </h1>
       <p><strong>Name: </strong><%=@user.fullname%></p>
       <p><strong>Email: </strong><%= @user.email_address%></p>
     </div>
@@ -39,7 +39,7 @@
 
         <%= link_to "Change Password", edit_password_account_path,
               class: "px-4 py-2 text-sm font-semibold
-                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                      bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
                       text-white rounded-lg transition-colors duration-200" %>
 
     </div>
@@ -70,11 +70,28 @@
         </p>
       </div>
       <%= link_to "Export CSV", export_contacts_path(format: :csv),
+            data:{turbo_confirm: "Are you sure?"},
             class: "px-4 py-2 text-sm font-semibold
-                    bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                    bg-[var(--color-btn-tertiary-2)] hover:bg-[var(--color-btn-tertiary-2-hover)]
                     text-white rounded-lg transition-colors duration-200 whitespace-nowrap" %>
     </div>
 
     <hr class="border-[var(--color-divider)]">
+    
+     <%# Import %>
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-semibold text-[var(--color-text-heading)] m-0">
+          Import Contacts
+        </p>
+        <p class="text-xs text-[var(--color-text-body)] m-0">
+          Add contacts from a CSV file
+        </p>
+      </div>
+      <%= link_to "Import CSV", import_contacts_path,
+      class: "px-4 py-2 text-sm font-semibold
+              bg-[var(--color-btn-tertiary-3)] hover:bg-[var(--color-btn-tertiary-3-hover)]
+              text-white rounded-lg transition-colors duration-200 whitespace-nowrap" %>
+    </div>
 
 </div>
