@@ -1,0 +1,69 @@
+<div class="max-w-lg mx-auto px-4 py-8">
+
+  <%= render "shared/back_link", text: "← Back to My Account", path: account_path %>
+
+  <div class="bg-[var(--color-surface-card)] rounded-[var(--radius-lg)]
+              shadow-[var(--shadow-card)] p-8">
+
+    <h1 class="text-xl font-semibold text-[var(--color-text-heading)]
+               mb-[var(--spacing-2)]">
+      Import Contacts
+    </h1>
+    <p class="text-sm text-[var(--color-text-body)] mb-[var(--spacing-6)]">
+      Upload a CSV file to bulk-import contacts. Existing contacts won't be affected.
+    </p>
+
+    <%# Flash messages inside the card %>
+    <%= render "shared/flash" %>
+
+    <%# Expected format box %>
+    <div class="bg-[var(--color-surface)] rounded-[var(--radius-md)]
+                border border-[var(--color-border-subtle)]
+                p-4 mb-[var(--spacing-6)]">
+      <p class="text-xs font-semibold text-[var(--color-text-muted)]
+                uppercase tracking-wide mb-[var(--spacing-2)]">
+        Expected CSV format
+      </p>
+      <code class="text-xs text-[var(--color-text-muted)] block leading-relaxed">
+        First Name,Last Name,Phone Number<br>
+        Kwame,Mensah,0244123456<br>
+        Ama,Owusu,0201987654
+      </code>
+    </div>
+
+    <%# Upload form %>
+    <%= form_with url: import_create_contacts_path, multipart: true do |f| %>
+      <div class="mb-[var(--spacing-6)]">
+        <%= f.label :file, "Choose CSV file",
+              class: "block text-sm font-semibold
+                      text-[var(--color-label)]
+                      mb-[var(--spacing-2)]" %>
+        <%= f.file_field :file, accept: ".csv",
+              class: "block w-full text-sm text-[var(--color-text-muted)]
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-[var(--radius-md)]
+                      file:border-0
+                      file:bg-[var(--color-btn-secondary)]
+                      file:text-[var(--color-text-base)]
+                      file:cursor-pointer file:text-sm
+                      hover:file:bg-[var(--color-btn-secondary-hover)]" %>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit "Import Contacts",
+              class: "px-5 py-2 rounded-[var(--radius-md)]
+                      bg-[var(--color-accent)]
+                      text-[var(--color-text-on-accent)]
+                      font-semibold text-sm cursor-pointer
+                      shadow-[var(--shadow-btn)]
+                      hover:bg-[var(--color-accent-hover)]
+                      transition-colors duration-200" %>
+        <%= link_to "Cancel", contacts_path,
+              class: "text-sm text-[var(--color-text-body)]
+                      hover:text-[var(--color-accent)]
+                      transition-colors duration-200" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
