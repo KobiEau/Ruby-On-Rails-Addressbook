@@ -53,6 +53,19 @@
   --color-divider:          #e2e8f0;
   --color-view-toggle: #059669; /*Emerald*/
   --color-view-toggle-hover: #06b77f;
+
+  /* OTHER BUTTONS */
+  /* Anchor Color (Slate) */
+  --color-btn-tertiary: #0f172a;
+  --color-btn-tertiary-hover: #020617;
+
+  /* Action Color (Amber) */
+ --color-btn-tertiary-2: #f59e0b;
+  --color-btn-tertiary-2-hover: #b45309;
+
+  /* Secondary Color (Sky) */
+  --color-btn-tertiary-3: #0369a1;
+  --color-btn-tertiary-3-hover: #075985;
   
   /* Spacing */
   --spacing-1: 0.25rem;
