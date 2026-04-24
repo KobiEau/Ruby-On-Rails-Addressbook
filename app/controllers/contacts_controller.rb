@@ -62,6 +62,41 @@ class ContactsController < ApplicationController
               type:"text/csv"
   end
 
+  def import
+  end
+
+  def import_create
+    file = params[:file]
+
+    # no csv file uploaded?
+    unless file&.content_type=="text/csv"
+    redirect_to account_path, alert:"Please upload a valid CSV file". 
+    return
+    end
+    
+    imported = 0
+    failed=[]
+
+    CSV.foreach(file.path, headers: true) do |row|
+      contact = Current.user.contacts.build(
+        firstname: row["First Name"]&.strip,
+        lastname: row["Last Name"]&.strip,
+        phone_number: row["Phone Number"]&.strip
+      )
+
+      if contact.save
+        imported += 1
+      else
+        failed << $INPUT_LINE_NUMBER
+      end
+    end
+    
+    message = "#{imported} contact(s) imported successfully."
+    message += " #{failed.size} row(s) failed (lines: #{failed.join(', ')})." if failed.any?
+
+    redirect_to contacts_path, notice: message
+  end
+
   private
 
   def set_contact
