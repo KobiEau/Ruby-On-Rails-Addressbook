@@ -43,22 +43,6 @@
                   whitespace-nowrap transition-all duration-200" do %>
       + New Contact
     <% end %>
-    
-    <%= form_with url: contacts_path, method: :get, local: true do |form| %>
-    <%= form.hidden_field :search, value: params[:search] %>
-    <%= form.select :per_page,
-          [5, 10, 25, 50],
-          { selected: params[:per_page] || 10 },
-          {
-            onchange: "this.form.submit()",
-            class: "px-3 py-2 text-sm
-                    bg-[var(--color-surface-input)]
-                    text-black
-                    border border-[var(--color-border-subtle)]
-                    rounded-[var(--radius-md)]
-                    cursor-pointer"
-          } %>
-    <% end %>
 
     <%# Toggle buttons %>
       <button data-action="click->view-toggle#switch"
@@ -170,12 +154,26 @@
 
   <%# Pagination footer %>
 <% if @contacts.total_pages > 1 %>
-  <div class="flex items-center justify-between mt-[var(--spacing-8)]
-              pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] sticky bottom-1">
+  <div class="flex items-center justify-between mt-[var(--spacing-6)]
+              pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] sticky top-300">
 
     <%# Contact count %>
     <span class="text-sm text-[var(--color-text-muted)]">
-      <%= @contacts.total_count %> contacts total
+      <%= form_with url: contacts_path, method: :get, local: true do |form| %>
+    <%= form.hidden_field :search, value: params[:search] %>
+    <%= form.select :per_page,
+          [5, 10, 25, 50],
+          { selected: params[:per_page] || 10 },
+          {
+            onchange: "this.form.submit()",
+            class: "px-3 py-2 text-sm
+                    bg-[var(--color-surface-input)]
+                    text-black
+                    border border-[var(--color-border-subtle)]
+                    rounded-[var(--radius-md)]
+                    cursor-pointer"
+          } %>
+    <% end %>
     </span>
 
     <%# Prev / Next %>
