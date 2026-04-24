@@ -46,5 +46,35 @@
 
   </div>
 
+  <%# Import & Export card %>
+<div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+            rounded-lg shadow p-[var(--spacing-6)] mt-[var(--spacing-6)]">
+
+  <h2 class="text-xs font-bold uppercase tracking-widest
+             text-[var(--color-text-body)]
+             border-b border-[var(--color-divider)]
+             pb-[var(--spacing-3)] mb-[var(--spacing-4)]">
+    Contacts Data
+  </h2>
+
+  <div class="flex flex-col gap-[var(--spacing-4)]">
+
+    <%# Export %>
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-semibold text-[var(--color-text-heading)] m-0">
+          Export Contacts
+        </p>
+        <p class="text-xs text-[var(--color-text-body)] m-0">
+          Download all your contacts as a CSV file
+        </p>
+      </div>
+      <%= link_to "Export CSV", export_contacts_path(format: :csv),
+            class: "px-4 py-2 text-sm font-semibold
+                    bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                    text-white rounded-lg transition-colors duration-200 whitespace-nowrap" %>
+    </div>
+
+    <hr class="border-[var(--color-divider)]">
 
 </div>
