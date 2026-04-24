@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   resources :contacts do
     collection do
       get :export
-      post :import
+      get :import
+      post :import_create
     end
   end
   resources :users, only: %i[new create]
