@@ -72,3 +72,5 @@ gem "tailwindcss-rails"
 gem 'letter_opener' , group: [:development, :test]
 
 gem 'kaminari'
+
+gem 'csv'
