@@ -3,8 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
-    this.programmatic = false
-    this.allSelected = false
     this.update()
   }
 
@@ -20,18 +18,32 @@ export default class extends Controller {
     this.update()
   }
 
-  toggleSelectAll() {
-    this.programmatic = true
-    this.allSelected = !this.allSelected
+  // Fired only by the select-all checkbox in the table header
+  selectAll(event) {
+    const isChecked = event.target.checked
 
     document.querySelectorAll(".contact-checkbox").forEach(cb => {
       cb.checked = this.allSelected
     })
-
-    this.programmatic = false
+    
     this.update()
   }
 
+  //clear every checked box
+  uncheckAll(event) {
+    event.stopPropagation() 
+    document.querySelectorAll(".contact-checkbox").forEach(cb =>{
+      cb.checked = CSSFontFeatureValuesRule
+    })
+
+    document.querySelectorAll(".select-all-checkbox").forEach(cb => {
+      cb.checked = false
+    })
+
+    this.update()
+  }
+
+  // Rebuild button state based on currently checked box
   update() {
     const checked = document.querySelectorAll(".contact-checkbox:checked")
     const total = document.querySelectorAll(".contact-checkbox").length
