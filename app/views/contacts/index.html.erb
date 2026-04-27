@@ -131,7 +131,7 @@
                     rounded-lg shadow overflow-hidden mb-6">
           <div class="max-h-96 overflow-auto">
 
-            <table class="w-full text-sm">
+            <table class="w-full text-sm min-w-[320px]">
               <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
                 <tr class="border-b border-[var(--color-border-subtle)]">
                   <%# New: checkbox column header with select-all %>
@@ -139,8 +139,8 @@
                     
                   </th>
                   <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
-                            text-[var(--color-text-body)]">Contact</th>
-                  <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                            text-[var(--color-text-body)]">Name</th>
+                  <th class="hidden sm:table-cell text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
                             text-[var(--color-text-body)]">Phone</th>
                   <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
                             text-[var(--color-text-body)]">Action</th>
@@ -148,7 +148,9 @@
               </thead>
               <tbody>
                 <% @contacts.each do |contact| %>
-                  <tr class="border-b border-[var(--color-border-subtle)] last:border-0
+                  <tr data-action="click->contacts#show"
+                  data-contacts-path ="<%= contact_path(contact)%>"
+                  class="border-b border-[var(--color-border-subtle)] last:border-0 cursor-pointer
                             hover:bg-[var(--color-border-subtle)] transition-colors duration-150">
                     <%# New: per-row checkbox %>
                     <td class="px-4 py-4">
@@ -173,7 +175,7 @@
                     </td>
 
                     <%# Phone %>
-                    <td class="px-6 py-4 text-[var(--color-text-body)]">
+                    <td class="hidden sm:table-cell px-6 py-4 text-[var(--color-text-body)]">
                       <%= contact.phone_number %>
                     </td>
 
