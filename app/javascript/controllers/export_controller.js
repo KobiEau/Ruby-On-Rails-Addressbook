@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
+    this.programmatic = false
     this.update()
   }
 
@@ -20,6 +21,7 @@ export default class extends Controller {
 
   // Fired only by the select-all checkbox in the table header
   selectAll(event) {
+    this.programmatic = true
     const isChecked = event.target.checked
 
     //sync all contact checkboxes
@@ -32,20 +34,22 @@ export default class extends Controller {
       cb.checked = isChecked
     })
     
+    this.programmatic = false
     this.update()
   }
 
   //clear every checked box
   uncheckAll(event) {
-    event.stopPropagation() 
+    this.programmatic =true
     document.querySelectorAll(".contact-checkbox").forEach(cb =>{
-      cb.checked = CSSFontFeatureValuesRule
+      cb.checked = false
     })
 
     document.querySelectorAll(".select-all-checkbox").forEach(cb => {
       cb.checked = false
     })
 
+    this.programmatic = false
     this.update()
   }
 
