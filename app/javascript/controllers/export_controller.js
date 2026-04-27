@@ -7,20 +7,35 @@ export default class extends Controller {
   }
 
   // Fired by each individual contact-checkbox
-  toggle() {
+  toggle(event) {
+    const contactId = event.target.value;
+    const isChecked = event.target.checked;
+
+    // Mirror checked boxes in both views
+    document.querySelectorAll(`.contact-checkbox[value="${contactId}"]`).forEach(cb=>{
+      cb.checked = isChecked;
+    })
     this.update()
   }
 
   // Fired only by the select-all checkbox in the table header
   selectAll(event) {
     const isChecked = event.target.checked
+
+    //sync all contact checkboxes
     document.querySelectorAll(".contact-checkbox").forEach(cb => {
       cb.checked = isChecked
     })
+
+    // Sync both select-all checkboxes to match each other
+    document.querySelectorAll(".select-all-checkbox").forEach(cb => {
+      cb.checked = isChecked
+    })
+    
     this.update()
   }
 
-  // Rebuilds button state based on what's currently checked
+  // Rebuild button state based on currently checked box
   update() {
     const checked = document.querySelectorAll(".contact-checkbox:checked")
     const btn = document.getElementById("export-btn")
