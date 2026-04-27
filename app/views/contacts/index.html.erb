@@ -12,8 +12,8 @@
 
 <div data-controller="view-toggle export">
 
-  <div class="flex items-center gap-3 mb-8 sticky top-48 z-40">
-    <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1" do |form| %>
+  <div class="flex flex-wrap items-center gap-3 mb-8 sticky top-48 z-40">
+    <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1 min-w-[200px]" do |form| %>
       <div class="flex gap-2">
         <%= form.text_field :search,
               placeholder: "Search by name…",
@@ -43,7 +43,7 @@
     <% end %>
 
     <%= link_to new_contact_path,
-          class: "px-4 py-2 text-sm font-bold
+          class: "shrink-0 px-4 py-2 text-sm font-bold
                   bg-accent hover:bg-accent-hover
                   text-text-on-accent
                   rounded-[var(--radius-md)]
@@ -55,7 +55,7 @@
     <%# Export Selected button - disabled by default%>
     <%# <%= link_to "Export selected", export_selected_contacts_path, data: {disabled:true}%>
     <a id="export-btn",
-      class="px-4 py-2 rounded-[var(--radius-md)]
+      class="shrink-0 px-4 py-2 rounded-[var(--radius-md)]
               bg-[var(--color-accent)]
               text-[var(--color-text-on-accent)]
               font-semibold text-sm
@@ -67,7 +67,7 @@
     <button id="select-toggle-btn"
             type= "button"
             data-action="click->export#toggleSelectAll"
-            class="px-4 py-2 text-sm font-semibold
+            class="shrink-0 px-4 py-2 text-sm font-semibold
                text-[var(--color-text-muted)]
                hover:text-[var(--color-accent)]
                transition-colors duration-200">
@@ -78,7 +78,7 @@
     <% if params[:search].present?%>
       <%= link_to "Export \"#{params[:search]}\" results",
           export_selected_contacts_path(search:params[:search]),
-          class:"px-4 py-2 rounded-[var(--radius-full)]
+          class:"shrink-0 px-4 py-2 rounded-[var(--radius-full)]
                 bg-[var(--color-accent)]
                 text-[var(--color-text-on-accent)]
                 font-semibold text-sm
@@ -88,7 +88,7 @@
 
     <%# Toggle buttons %>
       <button data-action="click->view-toggle#switch"
-            class="px-4 py-2 text-sm font-semibold
+            class="shrink-0 px-4 py-2 text-sm font-semibold
                   bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
                   text-white rounded-[var(--radius-md)] transition-colors duration-200 whitespace-nowrap">
       <span data-view-toggle-target="toggle-label">⊞ Table View</span>
@@ -129,7 +129,7 @@
       <% if @contacts.any? %>
         <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
                     rounded-lg shadow overflow-hidden mb-6">
-          <div class="max-h-96 overflow-y-auto">
+          <div class="max-h-96 overflow-auto">
 
             <table class="w-full text-sm">
               <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
