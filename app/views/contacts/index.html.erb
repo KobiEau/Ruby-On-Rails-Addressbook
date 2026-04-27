@@ -64,14 +64,13 @@
               disabled:opacity-40 disabled:pointer-events-none"> Export Selected </a>
 
     <%# Uncheck all — hidden until a box is checked %>
-    <button id="select-toggle-btn"
-            type= "button"
-            data-action="click->export#toggleSelectAll"
-            class="shrink-0 px-4 py-2 text-sm font-semibold
-               text-[var(--color-text-muted)]
-               hover:text-[var(--color-accent)]
-               transition-colors duration-200">
-      Select all
+    <button id="uncheck-btn"
+            data-action="click->export#uncheckAll"
+            class="hidden px-4 py-2 text-sm font-semibold
+                  text-[var(--color-text-muted)]
+                  hover:text-[var(--color-danger)]
+                  transition-colors duration-200">
+      ✕ Uncheck all
     </button>
 
     <%# Export search results (only visible when search is active)%>
@@ -98,6 +97,16 @@
     <div data-view-toggle-target="cardView">
       <%# Contacts grid %>
       <% if @contacts.any? %>
+         <div class="flex items-center gap-2 mb-4 sticky top-59">
+          <input type="checkbox"
+                id="select-all-cards"
+                class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox" 
+                data-action="change->export#selectAll">
+          <label for="select-all-cards"
+                class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
+            Select all
+          </label>
+        </div>
 
         <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-5 overflow-y-auto max-h-[300px]">
           <% @contacts.each do |contact| %>
@@ -136,7 +145,16 @@
                 <tr class="border-b border-[var(--color-border-subtle)]">
                   <%# New: checkbox column header with select-all %>
                   <th class="px-4 py-3 w-10">
-                    
+                    <div class= "flex items-center gap-2">
+                      <label for="select-all-cards"
+                        class="text-xs font-bold uppercase tracking-widest
+                              text-[var(--color-text-body)] cursor-pointer select-none">
+                        Select all
+                      </label>
+                      <input type="checkbox" id="select-all-table"
+                            class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
+                            data-action="change->export#selectAll" />    
+                    </div>
                   </th>
                   <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
                             text-[var(--color-text-body)]">Name</th>
