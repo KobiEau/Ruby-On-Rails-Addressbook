@@ -80,6 +80,18 @@
     <div data-view-toggle-target="cardView">
       <%# Contacts grid %>
       <% if @contacts.any? %>
+      
+         <div class="flex items-center gap-2 mb-4">
+          <input type="checkbox"
+                id="select-all-cards"
+                class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
+                data-action="change->export#selectAll">
+          <label for="select-all-cards"
+                class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
+            Select all
+          </label>
+        </div>
+
         <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-5 overflow-y-auto max-h-[300px]">
           <% @contacts.each do |contact| %>
           <div data-action="change->export#toggle">
