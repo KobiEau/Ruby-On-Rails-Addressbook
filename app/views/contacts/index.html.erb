@@ -54,8 +54,7 @@
 
     <%# Export Selected button - disabled by default%>
     <%# <%= link_to "Export selected", export_selected_contacts_path, data: {disabled:true}%>
-    <a
-      id="export-btn",
+    <a id="export-btn",
       class="px-4 py-2 rounded-[var(--radius-md)]
               bg-[var(--color-accent)]
               text-[var(--color-text-on-accent)]
@@ -63,6 +62,16 @@
               hover:bg-[var(--color-accent-hover)]
               transition-colors duration-200
               disabled:opacity-40 disabled:pointer-events-none"> Export Selected </a>
+
+    <%# Uncheck all — hidden until a box is checked %>
+    <button id="uncheck-btn"
+            data-action="click->export#uncheckAll"
+            class="hidden px-4 py-2 text-sm font-semibold
+                  text-[var(--color-text-muted)]
+                  hover:text-[var(--color-danger)]
+                  transition-colors duration-200">
+      ✕ Uncheck all
+    </button>
 
     <%# Export search results (only visible when search is active)%>
     <% if params[:search].present?%>
@@ -136,6 +145,10 @@
               <tr data-action="change->export#toggle" class="border-b border-[var(--color-border-subtle)]">
                 <%# New: checkbox column header with select-all %>
                 <th class="px-4 py-3 w-10">
+                  <label for="select-all-cards"
+                    class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
+                    Select all
+                  </label>
                   <input type="checkbox" id="select-all-table"
                         id="select-all-table"
                         class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
