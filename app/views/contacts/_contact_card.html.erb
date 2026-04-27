@@ -1,5 +1,16 @@
 <div class="bg-[var(--color-surface-card)] rounded-lg border border-[var(--color-border-subtle)] shadow p-6">
 
+  <div class="relative">
+    <%# Checkbox - top-right corner %>
+    <label class="absolute top-3 right-3 z-10 cursor-pointer">
+      <input type="checkbox"
+            class="contact-checkbox w-4 h-4 accent-[var(--color-accent)]
+            cursor-pointer"
+            value="<%= contact.id%>"
+            data-action="change->export#toggle">
+    </label>
+  </div>
+
   <%# Avatar + Name %>
   <div class="flex items-center mb-4">
     <div class="<%= contact_initials_color(contact) %> text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg shrink-0">
