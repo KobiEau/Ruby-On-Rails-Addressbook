@@ -180,7 +180,7 @@
                     <%# Action %>
                     <td class="px-6 py-4 text-right">
                       <%= link_to "View More", contact_path(contact),
-                            class: "px-3 py-1 text-xs font-semibold
+                            class: "px-3 py-1 text-xs font-semibold whitespace-nowrap
                                     bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]
                                     text-white rounded-lg transition-colors duration-200" %>
                     </td>
@@ -211,7 +211,7 @@
 
     <%# Pagination footer %>
   <div class="flex items-center justify-between mt-[var(--spacing-6)]
-                pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] sticky top-340">
+                pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] sticky top-500">
     <% if @contacts.total_pages >= 1 %>
 
       <%# Contact count %>
