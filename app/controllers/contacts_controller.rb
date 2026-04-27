@@ -97,6 +97,34 @@ class ContactsController < ApplicationController
     redirect_to contacts_path, notice: message
   end
 
+  def export_selected
+    contacts = if params[:ids].present?
+            Current.user.contacts.where(id: params[:ids])
+    elsif params[:search].present?
+      Current.user.contacts.where(
+        "firstname ILIKE ? OR lastname ILIKE ?",
+        "%#{params[:search]}%", "%#{params[:search]}%"
+      )
+    else
+      Current.user.contacts.none
+    end 
+
+    if contacts.empty?
+      return redirect_to contacts_path, alert: "No contacts selected to export."
+    end
+
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << ["First Name", "Last Name", "Phone Number"]
+      contacts.each do |contact|
+        csv << [contact.firstname, contact.lastname, contact.phone_number]
+      end
+    end
+
+    send_data csv_data,
+              filename: "contacts-export-#{Date.today}.csv",
+              type:"text/csv"
+  end
+
   private
 
   def set_contact
