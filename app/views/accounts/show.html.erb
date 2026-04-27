@@ -70,7 +70,7 @@
         </p>
       </div>
       <%= link_to "Export CSV", export_contacts_path(format: :csv),
-            data:{turbo_confirm: "Are you sure?"},
+            onclick: "return confirm('Are you sure you want to export all contacts?')",
             class: "px-4 py-2 text-sm font-semibold
                     bg-[var(--color-btn-tertiary-2)] hover:bg-[var(--color-btn-tertiary-2-hover)]
                     text-white rounded-lg transition-colors duration-200 whitespace-nowrap" %>
