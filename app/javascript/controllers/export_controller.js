@@ -35,20 +35,45 @@ export default class extends Controller {
     this.update()
   }
 
+  //clear every checked box
+  uncheckAll(event) {
+    event.stopPropagation() 
+    document.querySelectorAll(".contact-checkbox").forEach(cb =>{
+      cb.checked = CSSFontFeatureValuesRule
+    })
+
+    document.querySelectorAll(".select-all-checkbox").forEach(cb => {
+      cb.checked = false
+    })
+
+    this.update()
+  }
+
   // Rebuild button state based on currently checked box
   update() {
     const checked = document.querySelectorAll(".contact-checkbox:checked")
     const btn = document.getElementById("export-btn")
-    if (!btn) return
+    const uncheckBtn = document.getElementById("uncheck-btn")
+    // if (!btn) return
 
     if (checked.length === 0) {
-      btn.removeAttribute("href")
-      btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
+      //Disable export button
+      if(btn){
+        btn.removeAttribute("href")
+        btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
+      }
+      //hide uncheck button
+      if (uncheckBtn) uncheckBtn.classList.add("hidden")
     } else {
-      const params = new URLSearchParams()
-      checked.forEach(cb => params.append("ids[]", cb.value))
-      btn.href = `/contacts/export_selected?${params.toString()}`
-      btn.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed")
+      //Enable export button with live href
+      if(btn){
+        const params = new URLSearchParams()
+        checked.forEach(cb => params.append("ids[]", cb.value))
+        btn.href = `/contacts/export_selected?${params.toString()}`
+        btn.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed")
+      }
+      //show uncheck button
+      if (uncheckBtn) uncheckBtn.classList.remove("hidden")
     }
   }
 }
