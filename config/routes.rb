@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :contacts do
     collection do
       get :export
+      get :export_selected
       get :import
       post :import_create
     end
