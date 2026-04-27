@@ -100,7 +100,7 @@
          <div class="flex items-center gap-2 mb-4 sticky top-59">
           <input type="checkbox"
                 id="select-all-cards"
-                class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox" 
+                class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
                 data-action="change->export#selectAll">
           <label for="select-all-cards"
                 class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
@@ -140,57 +140,54 @@
                     rounded-lg shadow overflow-hidden mb-6">
           <div class="max-h-96 overflow-auto">
 
-            <table class="w-full text-sm min-w-[320px]">
-              <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
-                <tr class="border-b border-[var(--color-border-subtle)]">
-                  <%# New: checkbox column header with select-all %>
-                  <th class="px-4 py-3 w-10">
-                    <div class= "flex items-center gap-2">
-                      <label for="select-all-cards"
-                        class="text-xs font-bold uppercase tracking-widest
-                              text-[var(--color-text-body)] cursor-pointer select-none">
-                        Select all
-                      </label>
-                      <input type="checkbox" id="select-all-table"
-                            class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
-                            data-action="change->export#selectAll" />    
-                    </div>
-                  </th>
-                  <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
-                            text-[var(--color-text-body)]">Name</th>
-                  <th class="hidden sm:table-cell text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
-                            text-[var(--color-text-body)]">Phone</th>
-                  <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
-                            text-[var(--color-text-body)]">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @contacts.each do |contact| %>
-                  <tr data-action="click->contacts#show"
-                  data-contacts-path ="<%= contact_path(contact)%>"
-                  class="border-b border-[var(--color-border-subtle)] last:border-0 cursor-pointer
-                            hover:bg-[var(--color-border-subtle)] transition-colors duration-150">
-                    <%# New: per-row checkbox %>
-                    <td class="px-4 py-4">
-                      <input type="checkbox"
-                              class="contact-checkbox w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
-                              value="<%= contact.id %>"
-                              data-action="change->export#toggle">
-                    </td>
-                    <%# Avatar + Name %>
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-[var(--spacing-3)]">
-                        <div class="<%= contact_initials_color(contact) %>
-                                    w-9 h-9 rounded-full shrink-0
-                                    flex items-center justify-center
-                                    text-white font-bold text-sm">
-                          <%= contact_initials(contact) %>
-                        </div>
-                        <span class="font-semibold text-[var(--color-text-heading)]">
-                          <%= contact.firstname %> <%= contact.lastname %>
-                        </span>
+          <table class="w-full text-sm">
+            <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
+              <tr data-action="change->export#toggle" class="border-b border-[var(--color-border-subtle)]">
+                <%# New: checkbox column header with select-all %>
+                <th class="px-4 py-3 w-10">
+                  <label for="select-all-cards"
+                    class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
+                    Select all
+                  </label>
+                  <input type="checkbox" id="select-all-table"
+                        id="select-all-table"
+                        class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
+                        data-action="change->export#selectAll">
+                        
+                </th>
+                <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                          text-[var(--color-text-body)]">Contact</th>
+                <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                          text-[var(--color-text-body)]">Phone</th>
+                <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
+                          text-[var(--color-text-body)]">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @contacts.each do |contact| %>
+                <tr class="border-b border-[var(--color-border-subtle)] last:border-0
+                          hover:bg-[var(--color-border-subtle)] transition-colors duration-150">
+                  <%# New: per-row checkbox %>
+                  <td class="px-4 py-4">
+                    <input type="checkbox"
+                            class="contact-checkbox w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
+                            value="<%= contact.id %>"
+                            data-action="change->export#toggle">
+                  </td>
+                  <%# Avatar + Name %>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-[var(--spacing-3)]">
+                      <div class="<%= contact_initials_color(contact) %>
+                                  w-9 h-9 rounded-full shrink-0
+                                  flex items-center justify-center
+                                  text-white font-bold text-sm">
+                        <%= contact_initials(contact) %>
                       </div>
-                    </td>
+                      <span class="font-semibold text-[var(--color-text-heading)]">
+                        <%= contact.firstname %> <%= contact.lastname %>
+                      </span>
+                    </div>
+                  </td>
 
                     <%# Phone %>
                     <td class="hidden sm:table-cell px-6 py-4 text-[var(--color-text-body)]">
