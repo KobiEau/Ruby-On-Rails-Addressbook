@@ -56,26 +56,37 @@ export default class extends Controller {
   // Rebuild button state based on currently checked box
   update() {
     const checked = document.querySelectorAll(".contact-checkbox:checked")
-    const btn = document.getElementById("export-btn")
+    const exportBtn = document.getElementById("export-btn")
     const uncheckBtn = document.getElementById("uncheck-btn")
-    // if (!btn) return
+    const deleteBtn= document.getElementById("delete-btn")
+    // if (!exportBtn) return
 
     if (checked.length === 0) {
       //Disable export button
-      if(btn){
-        btn.removeAttribute("href")
-        btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
+      if(exportBtn){
+        exportBtn.removeAttribute("href")
+        exportBtn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
       }
       //hide uncheck button
       if (uncheckBtn) uncheckBtn.classList.add("hidden")
+      if (deleteBtn) deleteBtn.classList.add("hidden")
     } else {
-      //Enable export button with live href
-      if(btn){
+      //Enable buttons with live href
+
         const params = new URLSearchParams()
         checked.forEach(cb => params.append("ids[]", cb.value))
-        btn.href = `/contacts/export_selected?${params.toString()}`
-        btn.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed")
-      }
+        const queryString= params.toString()
+
+        if(exportBtn){
+        exportBtn.href = `/contacts/export_selected?${params.toString()}`
+        exportBtn.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed")
+        }
+
+        if(deleteBtn){
+          //dirct bulk_destroy action in controller
+          deleteBtn.href = `/contacts/bulk_destroy?${queryString}`
+          deleteBtn.classList.remove("hidden")
+        }
       //show uncheck button
       if (uncheckBtn) uncheckBtn.classList.remove("hidden")
     }
