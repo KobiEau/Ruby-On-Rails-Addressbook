@@ -64,13 +64,14 @@
                 transition"%>
       </div>
     
-
-      <%= form.submit "Update Account",
-          class: "px-5 py-2 text-sm font-bold
-                  bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
-                  text-[var(--color-text-on-accent)]
-                  rounded-lg cursor-pointer
-                  transition-colors duration-200 "%>
+      <div class="flex flex-col items-center gap-[var(--spacing-3)]">
+        <%= form.submit "Update Account",
+            class: "px-5 py-2 text-sm font-bold
+                    bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)]
+                    text-[var(--color-text-on-accent)]
+                    rounded-lg cursor-pointer
+                    transition-colors duration-200 "%>
+      </div>
     <%end%>
 
   </div>
