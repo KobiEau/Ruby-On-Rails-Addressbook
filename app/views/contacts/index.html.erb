@@ -5,21 +5,21 @@
      <%= Current.user.fullname %>
   </span>
   <h1 class="text-4xl font-black tracking-tight">
-    Your Contacts
+    My Contacts
   </h1>
   <span class="">Total contacts: <%= Current.user.contacts.count%></span>
 </header>
 
 <div data-controller="view-toggle export">
 
-  <div class="flex flex-wrap items-center gap-3 mb-8 sticky top-48 z-40">
+  <div class="flex flex-wrap items-center gap-3 mb-8 sticky top-43 z-40">
     <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1 min-w-[200px]" do |form| %>
       <div class="flex gap-2">
         <%= form.text_field :search,
               placeholder: "Search by name…",
               value: params[:search],
               class: "flex-1 px-4 py-2 text-sm
-                      bg-[var(--color-surface-input)]
+                      bg-[var(--color-input-bg)]
                       border border-[var(--color-border-subtle)]
                       rounded-[var(--radius-md)]
                       focus:outline-none focus:ring-2 focus:ring-accent
@@ -100,7 +100,7 @@
          <div class="flex items-center gap-2 mb-4 sticky top-57">
           <input type="checkbox"
                 id="select-all-cards"
-                class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
+                class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
                 data-action="change->export#selectAll">
           <label for="select-all-cards"
                 class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
@@ -148,7 +148,6 @@
                   <label for="select-all-cards"
                     class="text-xs font-bold uppercase tracking-widest
                           text-[var(--color-text-body)] cursor-pointer select-none">
-                    Select all
                   </label>
                   <input type="checkbox" id="select-all-table"
                         class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
@@ -240,7 +239,7 @@
             {
               onchange: "this.form.submit()",
               class: "px-3 py-2 text-sm
-                      bg-[var(--color-surface-input)]
+                      bg-[var(--color-input-bg)]
                       text-black
                       border border-[var(--color-border-subtle)]
                       rounded-[var(--radius-md)]
