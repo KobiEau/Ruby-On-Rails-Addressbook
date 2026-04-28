@@ -85,6 +85,19 @@
                 transition-colors duration-200"%>
     <%end%>
 
+    <%#  next to export-btn %>
+    <a id="delete-btn"
+      class="hidden px-4 py-2 rounded-[var(--radius-md)]
+              bg-[var(--color-btn-danger)]
+              text-white
+              font-semibold text-sm
+              hover:bg-[var(--color-btn-danger-hover)]
+              transition-colors duration-200"
+      data-turbo-method="delete"
+      data-turbo-confirm="Are you sure you want to delete these contacts?">
+      Delete Selected
+    </a>
+
     <%# Toggle buttons %>
       <button data-action="click->view-toggle#switch"
             class="shrink-0 px-4 py-2 text-sm font-semibold
