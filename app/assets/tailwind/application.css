@@ -7,67 +7,74 @@
 }
 
 @theme {
-  /* ── Brand Palette ── */
-  --color-surface: #0f172a; /* deepest bg */
-  --color-surface-raised: #1e293b; /* navbar, cards */
-  --color-surface-muted: #334155; /* hover states, borders */
+  /* ── Surfaces ── */
+  --color-surface:        #0d1f1a;
+  --color-surface-raised: #132b23;
+  --color-surface-muted:  #1a3a2e;
+  --color-surface-card:   #ffffff;
+  --color-surface-input:  #0d1f1a;
 
-  --color-accent: #f59e3f; /* amber — primary CTA */
-  --color-accent-hover: #fbbf24;
-  --color-accent-subtle: #78350f; /* amber tinted bg */
+  /* ── Accent (Mint) ── */
+  --color-accent:         #34d399;
+  --color-accent-hover:   #10b981;
+  --color-accent-subtle:  #064e3b;
+  --color-text-on-accent: #0d1f1a;
 
-  --color-text-base: #f1f5f9; /* primary text on dark */
-  --color-text-muted: #94a3b8; /* secondary text */
-  --color-text-on-accent: #0f172a; /* dark text on amber */
+  /* ── Text ── */
+  --color-text-base:      #ecfdf5;
+  --color-text-muted:     #6ee7b7;
+  --color-text-heading:   #0d1f1a;
+  --color-text-body:      #4b5563;
 
-  --color-danger: #f87171;
-  --color-danger-hover: #ef4444;
-  --color-success: #34d399;
+  /* ── Borders ── */
+  --color-border:         #1a3a2e;
+  --color-border-subtle:  #d1fae5;
+  --color-divider:        #d1fae5;
 
-  --color-border: #1e293b;
+  /* ── Inputs ── */
+  --color-input-bg:       #ffffff;
+  --color-input-border:   #a7f3d0;
+  --color-input-focus:    var(--color-accent);
+  --color-label:          var(--color-text-heading);
 
-  /* ── Radius ── */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
-  --radius-full: 9999px;
+  /* ── Buttons — each function gets its own colour ── */
+  --color-btn-card:            #0891b2;  /* cyan — view */
+  --color-btn-card-hover:      #0e7490;
+  --color-btn-secondary:       #1a3a2e;  /* forest — edit */
+  --color-btn-secondary-hover: #132b23;
+  --color-btn-cancel:          #6b7280;  /* grey — cancel */
+  --color-btn-cancel-hover:    #4b5563;
+  --color-btn-danger:          #991b1b;  /* red — delete */
+  --color-btn-danger-hover:    #7f1d1d;
+  --color-view-toggle:         #0369a1;  /* sky — toggle */
+  --color-view-toggle-hover:   #075985;
+  --color-btn-tertiary:        #132b23;
+  --color-btn-tertiary-hover:  #0d1f1a;
+  --color-btn-tertiary-2:      #34d399;
+  --color-btn-tertiary-2-hover:#10b981;
+  --color-btn-tertiary-3:      #0891b2;
+  --color-btn-tertiary-3-hover:#0e7490;
+
+  /* ── Status ── */
+  --color-danger:         #f87171;
+  --color-danger-hover:   #ef4444;
+  --color-success:        #34d399;
+  --color-error-bg:       #fef2f2;
+  --color-error-border:   #fca5a5;
+  --color-error-text:     #991b1b;
 
   /* ── Shadows ── */
-  --shadow-navbar: 0 4px 24px 0 rgba(0, 0, 0, 0.45);
-  --shadow-card: 0 2px 16px 0 rgba(0, 0, 0, 0.3);
-  --shadow-btn: 0 2px 8px 0 rgba(245, 158, 11, 0.35);
+  --shadow-navbar: 0 4px 24px 0 rgba(0,0,0,0.5);
+  --shadow-card:   0 2px 16px 0 rgba(0,0,0,0.15);
+  --shadow-btn:    0 2px 8px 0 rgba(52,211,153,0.4);
 
-   /* Card */
-  --color-surface-card:  #ffffff;
-  --color-border-subtle: #e2e8f0;
-  --color-text-heading:  #0f172a;
-  --color-text-body:     #475569;
-  --color-btn-card: #0891b2;
-  --color-btn-card-hover: #0e7490;
+  /* ── Radius ── */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   1rem;
+  --radius-full: 9999px;
 
-  /* Buttons */
-  --color-btn-danger:       #991b1b;
-  --color-btn-danger-hover: #7f1d1d;
-  --color-btn-secondary:    #334155;
-  --color-btn-secondary-hover: #475569;
-  --color-divider:          #e2e8f0;
-  --color-view-toggle: #059669; /*Emerald*/
-  --color-view-toggle-hover: #06b77f;
-
-  /* OTHER BUTTONS */
-  /* Anchor Color (Slate) */
-  --color-btn-tertiary: #0f172a;
-  --color-btn-tertiary-hover: #020617;
-
-  /* Action Color (Amber) */
- --color-btn-tertiary-2: #f59e0b;
-  --color-btn-tertiary-2-hover: #b45309;
-
-  /* Secondary Color (Sky) */
-  --color-btn-tertiary-3: #0369a1;
-  --color-btn-tertiary-3-hover: #075985;
-  
-  /* Spacing */
+  /* ── Spacing ── */
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
   --spacing-3: 0.75rem;
@@ -75,20 +82,11 @@
   --spacing-6: 1.5rem;
   --spacing-8: 2rem;
 
-  /* Form */
-
-  --color-input-bg:      #ffffff;
-  --color-input-border:  #cbd5e1;
-  --color-input-focus:   var(--color-accent);
-  --color-label:         var(--color-text-heading);
-  --color-error-bg:      #fef2f2;
-  --color-error-border:  #fca5a5;
-  --color-error-text:    #991b1b;
-  --color-btn-cancel:       #64748b;
-  --color-btn-cancel-hover: #475569;
-
-  /* Resoponsive */
   --breakpoint-xs: 484px;
+
+
+  --color-text-white:     #ffffff;
+  --color-text-black:     #000000;
 }
 
 
