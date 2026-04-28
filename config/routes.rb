@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get :export_selected
       get :import
       post :import_create
+      delete :bulk_destroy
     end
   end
   resources :users, only: %i[new create]
