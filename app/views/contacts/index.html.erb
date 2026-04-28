@@ -77,8 +77,7 @@
     <button id="uncheck-btn"
             data-action="click->export#uncheckAll"
             class="hidden px-4 py-2 text-sm font-semibold
-                  text-[var(--color-text-muted)]
-                  hover:text-[var(--color-danger)]
+                  text-black hover:text-[var(--color-warning)]
                   transition-colors duration-200">
       ✕ Uncheck all
     </button>
@@ -170,8 +169,8 @@
                 </th>
                 <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
                           text-[var(--color-text-body)]">Contact</th>
-                <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
-                          text-[var(--color-text-body)]">Phone</th>
+                <%# <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
+                          text-[var(--color-text-body)]">Phone</th> %>
                 <th class="text-right px-6 py-3 text-xs font-bold uppercase tracking-widest
                           text-[var(--color-text-body)]">Action</th>
               </tr>
@@ -203,9 +202,9 @@
                   </td>
 
                     <%# Phone %>
-                    <td class="hidden sm:table-cell px-6 py-4 text-[var(--color-text-body)]">
-                      <%= contact.phone_number %>
-                    </td>
+                    <%# <td class="hidden sm:table-cell px-6 py-4 text-[var(--color-text-body)]">
+                      <%= contact.phone_number </td>%>
+                    
 
                     <%# Action %>
                     <td class="px-6 py-4 text-right">
@@ -241,74 +240,77 @@
   
 
     <%# Pagination footer %>
-  <div class="flex items-center justify-between mt-[var(--spacing-6)]
-                pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] sticky top-500">
-    <% if @contacts.total_pages >= 1 %>
+  <div >
+    <div class="flex flex-wrap items-center justify-between mt-[var(--spacing-6)]
+                      pt-[var(--spacing-4)] border-t border-[var(--color-border-subtle)] fixed bottom-0">
+          <% if @contacts.total_pages >= 1 %>
 
-      <%# Contact count %>
-      <span class="text-sm text-[var(--color-text-muted)]">
-        <%= form_with url: contacts_path, method: :get, local: true do |form| %>
-      <%= form.hidden_field :search, value: params[:search] %>
-      <%= form.select :per_page,
-            [5, 10, 25, 50],
-            { selected: params[:per_page] || 10 },
-            {
-              onchange: "this.form.submit()",
-              class: "px-3 py-2 text-sm
-                      bg-[var(--color-input-bg)]
-                      text-black
-                      border border-[var(--color-border-subtle)]
-                      rounded-[var(--radius-md)]
-                      cursor-pointer"
-            } %>
-      <% end %>
-      </span>
+            <%# Contact count %>
+            <span class="text-sm text-[var(--color-text-muted)]">
+              <%= form_with url: contacts_path, method: :get, local: true do |form| %>
+              <%= form.hidden_field :search, value: params[:search] %>
+              <%= form.select :per_page,
+                  [5, 10, 25, 50],
+                  { selected: params[:per_page] || 10 },
+                  {
+                    onchange: "this.form.submit()",
+                    class: "px-3 py-2 text-sm
+                            bg-[var(--color-input-bg)]
+                            text-black
+                            border border-[var(--color-border-subtle)]
+                            rounded-[var(--radius-md)]
+                            cursor-pointer"
+                  } %>
+                <% end %>
+            </span>
 
-      <%# Prev / Next %>
-      <div class="flex items-center gap-[var(--spacing-2)]">
-        <% if @contacts.prev_page %>
-          <%= link_to "← Prev",
-                contacts_path(page: @contacts.prev_page,
-                              per_page: @per_page,
-                              search: params[:search]),
-                class: "px-4 py-2 text-sm font-semibold
-                        bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
-                        text-white rounded-[var(--radius-md)]
-                        transition-colors duration-200" %>
-        <% else %>
-          <span class="px-4 py-2 text-sm font-semibold
-                      bg-[var(--color-surface-muted)]
-                      text-[var(--color-text-muted)]
-                      rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
-            ← Prev
-          </span>
-        <% end %>
+            <%# Prev / Next %>
+            <div class="flex items-center gap-[var(--spacing-2)]">
+              <% if @contacts.prev_page %>
+                <%= link_to "← Prev",
+                      contacts_path(page: @contacts.prev_page,
+                                    per_page: @per_page,
+                                    search: params[:search]),
+                      class: "px-4 py-2 text-sm font-semibold
+                              bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                              text-white rounded-[var(--radius-md)]
+                              transition-colors duration-200" %>
+              <% else %>
+                <span class="px-4 py-2 text-sm font-semibold
+                            bg-[var(--color-surface-muted)]
+                            text-[var(--color-text-muted)]
+                            rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
+                  ← Prev
+                </span>
+              <% end %>
 
-        <%# Current page indicator %>
-        <span class="px-3 py-2 text-sm text-[var(--color-text-muted)]">
-          Page <%= @contacts.current_page %> of <%= @contacts.total_pages %>
-        </span>
+              <%# Current page indicator %>
+              <span class="px-3 py-2 text-sm text-[var(--color-text-muted)]">
+                Page <%= @contacts.current_page %> of <%= @contacts.total_pages %>
+              </span>
 
-        <% if @contacts.next_page %>
-          <%= link_to "Next →",
-                contacts_path(page: @contacts.next_page,
-                              per_page: @per_page,
-                              search: params[:search]),
-                class: "px-4 py-2 text-sm font-semibold
-                        bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
-                        text-white rounded-[var(--radius-md)]
-                        transition-colors duration-200" %>
-        <% else %>
-          <span class="px-4 py-2 text-sm font-semibold
-                      bg-[var(--color-surface-muted)]
-                      text-[var(--color-text-muted)]
-                      rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
-            Next →
-          </span>
-        <% end %>
+              <% if @contacts.next_page %>
+                <%= link_to "Next →",
+                      contacts_path(page: @contacts.next_page,
+                                    per_page: @per_page,
+                                    search: params[:search]),
+                      class: "px-4 py-2 text-sm font-semibold
+                              bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
+                              text-white rounded-[var(--radius-md)]
+                              transition-colors duration-200" %>
+              <% else %>
+                <span class="px-4 py-2 text-sm font-semibold
+                            bg-[var(--color-surface-muted)]
+                            text-[var(--color-text-muted)]
+                            rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
+                  Next →
+                </span>
+              <% end %>
+            </div>
+
       </div>
-
+      <% end %>
     </div>
-  <% end %>
+  </div>
 </div>
 <%# Search + New Contact toolbar %>
