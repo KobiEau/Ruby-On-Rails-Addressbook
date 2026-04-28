@@ -1,5 +1,4 @@
 <nav class="bg-[var(--color-surface-raised)]
-            shadow-[var(--shadow-navbar)]
             sticky top-0 z-50 w-full">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
@@ -26,19 +25,19 @@
       <%# Links right %>
       <div class="flex items-center gap-6">
         <%= link_to "Contacts", contacts_path,
-              class: "text-sm text-[var(--color-text-muted)]
+              class: "text-sm text-[var(--color-text-white)]
                       hover:text-[var(--color-text-base)]
                       transition-colors duration-200" %>
 
         <%= link_to "Account", account_path,
-              class: "text-sm text-[var(--color-text-muted)]
+              class: "text-sm text-[var(--color-text-white)]
                       hover:text-[var(--color-text-base)]
                       transition-colors duration-200" %>
 
         <%= button_to "Log Out", session_path(Current.session),
               data: {turbo_confirm: "Are you sure?"},
               method: :delete,
-              class: "text-sm text-[var(--color-text-muted)]
+              class: "text-sm text-[var(--color-text-white)]
                       hover:text-[var(--color-danger)]
                       bg-transparent border-0 cursor-pointer
                       transition-colors duration-200" %>
@@ -71,7 +70,7 @@
 
         <%= link_to contacts_path,
               class: "flex-1 text-center text-xs font-semibold
-                      text-[var(--color-text-muted)]
+                      text-[var(--color-text-white)]
                       hover:text-[var(--color-text-base)]
                       py-1 transition-colors duration-200" do %>
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +85,7 @@
 
         <%= link_to account_path,
               class: "flex-1 text-center text-xs font-semibold
-                      text-[var(--color-text-muted)]
+                      text-[var(--color-text-white)]
                       hover:text-[var(--color-text-base)]
                       py-1 transition-colors duration-200" do %>
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +103,7 @@
               data: {turbo_confirm: "Are you sure?"},
               form_class: "flex-1",
               class: "w-full text-center text-xs font-semibold
-                      text-[var(--color-text-muted)]
+                      text-[var(--color-text-white)]
                       hover:text-[var(--color-danger)]
                       bg-transparent border-0 cursor-pointer
                       py-1 transition-colors duration-200" do %>
