@@ -97,7 +97,7 @@
     <div data-view-toggle-target="cardView">
       <%# Contacts grid %>
       <% if @contacts.any? %>
-         <div class="flex items-center gap-2 mb-4 sticky top-59">
+         <div class="flex items-center gap-2 mb-4 sticky top-57">
           <input type="checkbox"
                 id="select-all-cards"
                 class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
@@ -137,23 +137,22 @@
     <div data-view-toggle-target="tableView" style="display:none" class="sticky top-62" >
       <% if @contacts.any? %>
         <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
-                    rounded-lg shadow overflow-hidden mb-6">
-          <div class="max-h-96 overflow-auto">
+                    rounded-lg shadow overflow-hidden">
+          <div class="max-h-96 overflow-y-auto">
 
           <table class="w-full text-sm">
             <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
-              <tr data-action="change->export#toggle" class="border-b border-[var(--color-border-subtle)]">
+              <tr class="border-b border-[var(--color-border-subtle)]">
                 <%# New: checkbox column header with select-all %>
                 <th class="px-4 py-3 w-10">
                   <label for="select-all-cards"
-                    class="text-sm text-[var(--color-text-muted)] cursor-pointer select-none">
+                    class="text-xs font-bold uppercase tracking-widest
+                          text-[var(--color-text-body)] cursor-pointer select-none">
                     Select all
                   </label>
                   <input type="checkbox" id="select-all-table"
-                        id="select-all-table"
-                        class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer"
-                        data-action="change->export#selectAll">
-                        
+                        class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
+                        data-action="change->export#selectAll">    
                 </th>
                 <th class="text-left px-6 py-3 text-xs font-bold uppercase tracking-widest
                           text-[var(--color-text-body)]">Contact</th>
@@ -202,10 +201,10 @@
                                     text-white rounded-lg transition-colors duration-200" %>
                     </td>
 
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
 
           </div>
         </div>
@@ -294,7 +293,7 @@
         <% end %>
       </div>
 
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
 <%# Search + New Contact toolbar %>
