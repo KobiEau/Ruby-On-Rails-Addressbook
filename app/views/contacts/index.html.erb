@@ -52,14 +52,24 @@
       + New Contact
     <% end %>
 
+    <%# Toggle buttons %>
+      <button data-action="click->view-toggle#switch"
+            class="shrink-0 px-4 py-2 text-sm font-semibold
+                  bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
+                  text-white rounded-[var(--radius-md)] transition-colors duration-200 whitespace-nowrap">
+      <span data-view-toggle-target="toggle-label">⊞ Change View</span>
+    </button>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-3 mb-4 sticky top-54 z-40">
     <%# Export Selected button - disabled by default%>
     <%# <%= link_to "Export selected", export_selected_contacts_path, data: {disabled:true}%>
     <a id="export-btn",
       class="shrink-0 px-4 py-2 rounded-[var(--radius-md)]
-              bg-[var(--color-accent)]
+              outline outline-[var(--color-accent)]
               text-[var(--color-text-on-accent)]
               font-semibold text-sm
-              hover:bg-[var(--color-accent-hover)]
+              hover:text-[var(--color-text-muted)]
               transition-colors duration-200
               disabled:opacity-40 disabled:pointer-events-none"> Export Selected </a>
 
@@ -88,29 +98,21 @@
     <%#  next to export-btn %>
     <a id="delete-btn"
       class="hidden px-4 py-2 rounded-[var(--radius-md)]
-              bg-[var(--color-btn-danger)]
-              text-white
+              outline outline-[var(--color-btn-danger)]
+              text-black
               font-semibold text-sm
-              hover:bg-[var(--color-btn-danger-hover)]
+              hover:bg-[var(--color-btn-danger-hover)] 
               transition-colors duration-200"
       data-turbo-method="delete"
       data-turbo-confirm="Are you sure you want to delete these contacts?">
       Delete Selected
     </a>
-
-    <%# Toggle buttons %>
-      <button data-action="click->view-toggle#switch"
-            class="shrink-0 px-4 py-2 text-sm font-semibold
-                  bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
-                  text-white rounded-[var(--radius-md)] transition-colors duration-200 whitespace-nowrap">
-      <span data-view-toggle-target="toggle-label">⊞ Change View</span>
-    </button>
   </div>
 
     <div data-view-toggle-target="cardView">
       <%# Contacts grid %>
       <% if @contacts.any? %>
-         <div class="flex items-center gap-2 mb-4 sticky top-57">
+         <div class="flex items-center gap-2 mb-4 sticky top-65">
           <input type="checkbox"
                 id="select-all-cards"
                 class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
@@ -209,7 +211,8 @@
                     <td class="px-6 py-4 text-right">
                       <%= link_to "View More", contact_path(contact),
                             class: "px-3 py-1 text-xs font-semibold whitespace-nowrap
-                                    bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]
+                                    /*bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]*/
+                                    bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
                                     text-white rounded-lg transition-colors duration-200" %>
                     </td>
 
