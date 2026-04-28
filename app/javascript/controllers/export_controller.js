@@ -3,82 +3,81 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
+    this.programmatic = false
     this.update()
   }
 
+  // Fired by each individual contact-checkbox
   toggle(event) {
-    if (this.programmatic) return
+    const contactId = event.target.value;
+    const isChecked = event.target.checked;
 
-    const contactId = event.target.value
-    const isChecked = event.target.checked
-
-    document.querySelectorAll(`.contact-checkbox[value="${contactId}"]`).forEach(cb => {
-      cb.checked = isChecked
+    // Mirror checked boxes in both views
+    document.querySelectorAll(`.contact-checkbox[value="${contactId}"]`).forEach(cb=>{
+      cb.checked = isChecked;
     })
     this.update()
   }
 
   // Fired only by the select-all checkbox in the table header
   selectAll(event) {
+    this.programmatic = true
     const isChecked = event.target.checked
 
+    //sync all contact checkboxes
     document.querySelectorAll(".contact-checkbox").forEach(cb => {
-      cb.checked = this.allSelected
+      cb.checked = isChecked
+    })
+
+    // Sync both select-all checkboxes to match each other
+    document.querySelectorAll(".select-all-checkbox").forEach(cb => {
+      cb.checked = isChecked
     })
     
+    this.programmatic = false
     this.update()
   }
 
   //clear every checked box
   uncheckAll(event) {
-    event.stopPropagation() 
+    this.programmatic =true
     document.querySelectorAll(".contact-checkbox").forEach(cb =>{
-      cb.checked = CSSFontFeatureValuesRule
+      cb.checked = false
     })
 
     document.querySelectorAll(".select-all-checkbox").forEach(cb => {
       cb.checked = false
     })
 
+    this.programmatic = false
     this.update()
   }
 
   // Rebuild button state based on currently checked box
   update() {
     const checked = document.querySelectorAll(".contact-checkbox:checked")
-    const total = document.querySelectorAll(".contact-checkbox").length
-    const exportBtn = document.getElementById("export-btn")
-    const toggleBtn = document.getElementById("select-toggle-btn")
+    const btn = document.getElementById("export-btn")
+    const uncheckBtn = document.getElementById("uncheck-btn")
+    // if (!btn) return
 
-    // Keep allSelected in sync with reality
-    this.allSelected = checked.length === total && total > 0
-
-    // Update toggle button label and colour
-    if (toggleBtn) {
-      if (this.allSelected) {
-        toggleBtn.textContent = "✕ Uncheck All"
-        toggleBtn.classList.remove("hover:text-[var(--color-accent)]")
-        toggleBtn.classList.add("hover:text-[var(--color-danger)]")
-      } else {
-        toggleBtn.textContent = "Select All"
-        toggleBtn.classList.remove("hover:text-[var(--color-danger)]")
-        toggleBtn.classList.add("hover:text-[var(--color-accent)]")
-      }
-    }
-
-    // Update export button
     if (checked.length === 0) {
-      if (exportBtn) {
-        exportBtn.removeAttribute("href")
-        exportBtn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
+      //Disable export button
+      if(btn){
+        btn.removeAttribute("href")
+        btn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
       }
+      //hide uncheck button
+      if (uncheckBtn) uncheckBtn.classList.add("hidden")
     } else {
-      if (exportBtn) {
+      //Enable export button with live href
+      if(btn){
         const params = new URLSearchParams()
         checked.forEach(cb => params.append("ids[]", cb.value))
-        exportBtn.href = `/contacts/export_selected?${params.toString()}`
-        exportBtn.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed")
+        btn.href = `/contacts/export_selected?${params.toString()}`
+        btn.classList.remove("opacity-40", "pointer-events-none", "cursor-not-allowed")
       }
+      //show uncheck button
+      if (uncheckBtn) uncheckBtn.classList.remove("hidden")
     }
   }
 }
