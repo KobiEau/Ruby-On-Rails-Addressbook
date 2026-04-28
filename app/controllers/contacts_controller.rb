@@ -126,11 +126,11 @@ class ContactsController < ApplicationController
   end
 
   def bulk_destroy
-    ids=params[:ids]
+    ids=params[:ids]&.uniq
     if ids.present?
       puts "ids=#{ids}"
       Current.user.contacts.where(id: ids).destroy_all
-      redirect_to contacts_path, notice: "#{ids.count} Contacts deleted"
+      redirect_to contacts_path, notice: "#{ids.count} Contact(s) deleted"
     else
       redirect_to contacts_path, alert: "No Contacts deleted"
     end
