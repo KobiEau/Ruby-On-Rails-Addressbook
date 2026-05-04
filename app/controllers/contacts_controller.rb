@@ -142,6 +142,6 @@ class ContactsController < ApplicationController
   end
 
   def contact_params
-    params.expect(contact:[:firstname, :lastname, :phone_number])
+    params.expect(contact:[:firstname, :lastname, :phone_number, :category])
   end
 end
