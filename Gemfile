@@ -74,3 +74,5 @@ gem 'letter_opener' , group: [:development, :test]
 gem 'kaminari'
 
 gem 'csv'
+
+gem 'devise'
