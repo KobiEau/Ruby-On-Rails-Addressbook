@@ -1,7 +1,7 @@
 class Contact < ApplicationRecord
   belongs_to :user
 
-  CATEGORIES = %w[Uncategorised Family Friends Work Colleagues].freeze
+  CATEGORIES = %w[uncategorised Family Friends Work Colleagues].freeze
 
   validates :firstname,:lastname, presence: true ,length: {minimum: 1}
   validates :phone_number, 
