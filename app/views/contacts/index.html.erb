@@ -61,6 +61,57 @@
     </button>
   </div>
 
+  <%# Sort + Filter %>
+  <div class="flex items-center gap-[var(--spacing-3)] mb-[var(--spacing-6)] flex-wrap">
+    <%# Sort %>
+    <%= form_with url: contacts_path, method: :get, local:true do |form|%>
+      <%= form.hidden_field :search, value: params[:search]%>
+      <%= form.hidden_field :category, value: params[:category]%>
+      <%= form.hidden_field :per_page, value: @per_page %>
+      <%= form.hidden_field :page, value: 1 %>
+
+      <%= form.select :sort,
+          [
+            ["Name A→Z",    "name_asc"],
+            ["Name Z→A",    "name_desc"],
+            ["Newest first","newest"],
+            ["Oldest first","oldest"]
+          ],
+          {selected: params[:sort]|| "name_asc" },
+          {
+            onchange: "this.form.submit()",
+            class: "px-3 py-2 text-sm
+                    bg-[var(--color-input-bg)]
+                    text-[var(--color-text-heading)]
+                    border border-[var(--color-border-subtle)]
+                    rounded-[var(--radius-md)]
+                    cursor-pointer
+                    focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)]"
+          }%>
+    <% end %>
+
+    <%# Category Filter %>
+    <div class= "flex items-center gap-[var(--spacing-2)] flex-wrap">
+      <%= link_to "All",
+          contacts_path(search: params[:search], sort: params[:sort], per_page: @per_page),
+          class: "px-3 py-1 text-sm font-semibold rounded-[var(--radius-full)]
+                  transition-colors duration-200
+                  #{params[:category].blank? ?
+                  'bg-[var(--color-accent)] text-[var(-color-text-on-accent)]':
+                  'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]'}"%>
+
+      <%Contact::CATEGORIES.each do |cat|%>
+        <%= link_to cat,
+            contacts_path(category: cat, search: params[:search],sort: params[:sort], per_page:@per_page),
+            class: "px-3 py-1 text-sm font-semibold rounded-[var(--radius-full)]
+                    transition-colors duration-200
+                    #{params[:category] == cat ?
+                      'bg-[var(--color-accent)] text-[var(--color-text-on-accent)]' :
+                      'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]'}"%>
+      <%end%>
+    </div>
+  </div>
+
   <div class="flex flex-wrap items-center gap-3 mb-4 sticky top-54 z-40">
     <%# Export Selected button - disabled by default%>
     <%# <%= link_to "Export selected", export_selected_contacts_path, data: {disabled:true}%>
@@ -279,7 +330,9 @@
                 <%= link_to "← Prev",
                       contacts_path(page: @contacts.prev_page,
                                     per_page: @per_page,
-                                    search: params[:search]),
+                                    search: params[:search],
+                                    sort: params[:sort],
+                                    category: params[:category]),
                       class: "px-4 py-2 text-sm font-semibold
                               bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
                               text-white rounded-[var(--radius-md)]
@@ -302,7 +355,9 @@
                 <%= link_to "Next →",
                       contacts_path(page: @contacts.next_page,
                                     per_page: @per_page,
-                                    search: params[:search]),
+                                    search: params[:search],
+                                    sort: params[:sort],
+                                    category: params[:category]),
                       class: "px-4 py-2 text-sm font-semibold
                               bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
                               text-white rounded-[var(--radius-md)]
