@@ -1,15 +1,29 @@
  require "csv"
 class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
+  
   def index
-  @contacts = if params[:search].present?
-  Current.user.contacts.where("firstname ILIKE ? OR lastname ILIKE ?",
-  "%#{params[:search]}%", "%#{params[:search]}%")
-  else
-    Current.user.contacts
+  @per_page = (params[:per_page] || 10).to_i
+  @contacts = Current.user.contacts
+
+  #filtering by category
+  @contacts = @contacts.where(category: params[:category]) if params[:category].present?
+
+  #search
+  @contacts = @contacts.where(
+    "firstname ILIKE ? OR lastname ILIKE ?",
+    "%#{params[:search]}%", "%#{params[:search]}%"
+  ) if params[:search].present?
+
+  #sorting
+  @contacts = case params[:sort]
+   when "name_asc" then @contacts.order(firstname: :asc,lastname: :asc)
+   when "name_desc" then @contacts.order(firstname: :desc,lastname: :desc)
+   when "newest" then @contacts.order(created_at: :desc)
+   when "oldest" then @contacts.order(created_at: :asc)
+   else               @contacts.order(firstname: :asc, lastname: :asc)
   end
 
-  @per_page = (params[:per_page] || 10).to_i
   @contacts = @contacts.page(params[:page]).per(@per_page)
   end
   
