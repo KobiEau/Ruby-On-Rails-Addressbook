@@ -14,6 +14,14 @@ class ApplicationController < ActionController::Base
   #Make admin? available in views as well as controllers
 
   private
+  def configure_permitted_parameters
+    #on signup
+    devise_parameter_sanitizer.permit(:sign_up, keys:[:firstname, :lastname])
+
+    #on edit
+    devise_parameter_sanitizer.permit(:account_update, keys:[:firstname, :lastname])
+
+  end
 
   def admin?
     user_signed_in? && current_user.admin?
