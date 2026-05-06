@@ -2,12 +2,12 @@
 <header class="mb-10 py-7 sticky top-10 z-40">
   <span class = "text-sm font-semibold uppercase tracking-widest mb-1">Welcome back,</span>
   <span class="text-sm font-semibold text-accent uppercase tracking-widest mb-1">
-     <%= Current.user.fullname %>
+     <%= current_user.fullname %>
   </span>
   <h1 class="text-4xl font-black tracking-tight">
     My Contacts
   </h1>
-  <span class="">Total contacts: <%= Current.user.contacts.count%></span>
+  <span class="">Total contacts: <%= current_user.contacts.count%></span>
 </header>
 
 <div data-controller="view-toggle export">
