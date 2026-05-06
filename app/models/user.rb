@@ -3,14 +3,30 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  has_secure_password
-  has_many :sessions, dependent: :destroy
+ 
+  # :database_authenticatable — handles login with email/password
+  # :registerable — allows users to sign up
+  # :recoverable — handles forgot password flow
+  # :rememberable — handles "remember me" checkbox
+  # :validatable — adds email format and password length validations automatically
+
   has_many :contacts, dependent: :destroy
+  belongs_to :role, foreign_key: :role_code, primary_key: :code
+
   validates :firstname, presence: true
-  validates :email_address, presence: true, uniqueness: {case_sensitive:false}
+  validates :lastname,presence: true
+  validates :email, presence: true, uniqueness: {case_sensitive:false}
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   def fullname
     "#{firstname} #{lastname}".strip
+  end
+
+  def admin?
+    role_code == "adm"
+  end
+
+  def regular_user?
+    role_code == "adm"
   end
 end
