@@ -1,9 +1,21 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users,
+    controllers:{
+      #tell devise to use this custom controller
+      registration: "users/registrations"
+    }
+  
   get "pages/home"
   root "pages#home"
-  resource :session
-  resources :passwords, param: :token
+ 
+  namespace :admin do
+    root "dashboard#index"
+    resources :users
+  end
+  # namespace creates routes prefixed with /admin/
+  # admin_root_path → /admin/
+  # admin_users_path → /admin/users
+
   resources :contacts do
     collection do
       get :export
@@ -13,11 +25,7 @@ Rails.application.routes.draw do
       delete :bulk_destroy
     end
   end
-  resources :users, only: %i[new create]
-  resource :account, only: %i[show edit update destroy] do
-    get :edit_password
-    patch :update_password
-  end
+ 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
