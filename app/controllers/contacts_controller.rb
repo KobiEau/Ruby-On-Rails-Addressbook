@@ -4,7 +4,7 @@ class ContactsController < ApplicationController
   
   def index
   @per_page = (params[:per_page] || 10).to_i
-  @contacts = Current.user.contacts
+  @contacts = current_user.contacts
 
   #filtering by category
   @contacts = @contacts.where(category: params[:category]) if params[:category].present?
@@ -28,7 +28,7 @@ class ContactsController < ApplicationController
   end
   
   def show
-    @user = Current.user
+    @user = current_user
   end
   
   def new
@@ -36,7 +36,7 @@ class ContactsController < ApplicationController
   end
 
   def create
-    @contact = Current.user.contacts.build(contact_params)
+    @contact = current_user.contacts.build(contact_params)
     if @contact.save
       redirect_to contacts_path, notice: "Contact created successfully"
     else
@@ -62,7 +62,7 @@ class ContactsController < ApplicationController
 
   # Exporting contacts
   def export
-    contacts = Current.user.contacts
+    contacts = current_user.contacts
 
     csv_data = CSV.generate(headers: true) do |csv|
       csv << ["Firt Name", "Last Name", "Phone Number"]
@@ -92,7 +92,7 @@ class ContactsController < ApplicationController
     failed=[]
 
     CSV.foreach(file.path, headers: true) do |row|
-      contact = Current.user.contacts.build(
+      contact = current_user.contacts.build(
         firstname: row["First Name"]&.strip,
         lastname: row["Last Name"]&.strip,
         phone_number: row["Phone Number"]&.strip
@@ -113,14 +113,14 @@ class ContactsController < ApplicationController
 
   def export_selected
     contacts = if params[:ids].present?
-            Current.user.contacts.where(id: params[:ids])
+            current_user.contacts.where(id: params[:ids])
     elsif params[:search].present?
-      Current.user.contacts.where(
+      current_user.contacts.where(
         "firstname ILIKE ? OR lastname ILIKE ?",
         "%#{params[:search]}%", "%#{params[:search]}%"
       )
     else
-      Current.user.contacts.none
+      current_user.contacts.none
     end 
 
     if contacts.empty?
@@ -143,7 +143,7 @@ class ContactsController < ApplicationController
     ids=params[:ids]&.uniq
     if ids.present?
       puts "ids=#{ids}"
-      Current.user.contacts.where(id: ids).destroy_all
+      current_user.contacts.where(id: ids).destroy_all
       redirect_to contacts_path, notice: "#{ids.count} Contact(s) deleted"
     else
       redirect_to contacts_path, alert: "No Contacts deleted"
@@ -152,7 +152,7 @@ class ContactsController < ApplicationController
   private
 
   def set_contact
-    @contact =Current.user.contacts.find(params[:id])
+    @contact =current_user.contacts.find(params[:id])
   end
 
   def contact_params
