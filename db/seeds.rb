@@ -7,3 +7,9 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+Role.find_or_create_by(code:"usr") {|r| r.name ="User"}
+Role.find_or_create_by(code:"adm") {|r| r.name ="Administrator"}
+
+puts "Roles seeded:"
+Role.all.each {|r| puts "#{r.code}- #{r.name}"}
