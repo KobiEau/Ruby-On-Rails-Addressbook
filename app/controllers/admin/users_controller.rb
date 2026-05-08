@@ -30,6 +30,6 @@ class Admin::UsersController < Admin::BaseController
   private
 
   def user_params
-    params.require(:user).permit(:email,:role_code)
+    params.expect(user: [:email, :role_code])
   end
 end
