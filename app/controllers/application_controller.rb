@@ -36,4 +36,12 @@ class ApplicationController < ActionController::Base
       redirect_to root_path
     end
   end
+
+  def after_sign_in_path_for(user)
+    user.admin? ? admin_root_path : contacts_path
+  end
+
+  def after_sign_up_path_for(user)
+    user.admin? ? admin_root_path : contacts_path
+  end
 end
