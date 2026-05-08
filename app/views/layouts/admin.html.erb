@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin — Addressbook</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-white text-[var(--color-text-base)] min-h-screen">
+    <div class="flex min-h-screen">
+
+      <%# Sidebar %>
+      <%= render "admin/shared/sidebar" %>
+
+      <%# Main area %>
+      <div class="flex-1 flex flex-col min-h-screen">
+
+        <%# Topbar %>
+        <%= render "admin/shared/topbar" %>
+
+        <%# Page content %>
+        <main class="flex-1 p-6">
+          <%= render "shared/flash" %>
+          <%= yield %>
+        </main>
+
+      </div>
+    </div>
+  </body>
+</html>
