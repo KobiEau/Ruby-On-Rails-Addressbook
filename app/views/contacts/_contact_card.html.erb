@@ -13,7 +13,7 @@
 
   <%# Avatar + Name %>
   <div class="flex items-center mb-4">
-    <div class="<%= contact_initials_color(contact) %> text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg shrink-0">
+    <div class="<%= contact_initials_color(contact) %> text-[var(--color-text-white)] rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg shrink-0">
       <%= contact_initials(contact) %>
     </div>
 
@@ -33,7 +33,7 @@
           class: "block w-full text-center text-sm font-semibold px-3 py-2
                   /*bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]*/
                   bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
-                  text-white rounded-[var(--radius-md)]
+                  text-[var(--color-text-white)] rounded-[var(--radius-md)]
                   transition-colors duration-200" %>
   </div>
 
