@@ -1,0 +1,18 @@
+<% content_for :page_title, "New User" %>
+
+<div class="max-w-lg mx-auto">
+
+<%= render "shared/back_link", text:"← Back to Users",path: admin_users_path%>
+  <div class="border border-[var(--color-border-subtle)]
+              rounded-[var(--radius-lg)]
+              shadow-[var(--shadow-card)]
+              p-6">
+    
+     <h1 class="text-2xl font-black text-[var(--color-text-heading)]">
+      New User
+    </h1>
+    <p class="text-sm text-[var(--color-text-body)]">Fill in the details below</p>
+    
+      <%= render "form", user: @user%>
+  </div>
+</div>
