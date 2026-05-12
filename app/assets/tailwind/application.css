@@ -7,6 +7,11 @@
 }
 
 @theme {
+  /* Backgrounds */
+  --bg-slate-50:          #f8fafc;
+  --bg-slate-100:         #f1f5f9;
+  --bg-white:             #ffffff;
+  --bg-gray-50:           #f9fafb;
   /* ── Surfaces ── */
   --color-surface:        #0d1f1a;
   --color-surface-raised: #132b23;
@@ -17,23 +22,23 @@
   /* ── Accent (Mint) ── */
   --color-accent:         #34d399;
   --color-accent-hover:   #10b981;
-  --color-accent-subtle:  #064e3b;
+  --color-accent-subtle:  #d1fae5;
   --color-text-on-accent: #0d1f1a;
 
   /* ── Text ── */
   --color-text-base:      #ecfdf5;
-  --color-text-muted:     #6ee7b7;
+  --color-text-muted:     #9ca3af;
   --color-text-heading:   #0d1f1a;
   --color-text-body:      #4b5563;
 
   /* ── Borders ── */
   --color-border:         #1a3a2e;
-  --color-border-subtle:  #d1fae5;
-  --color-divider:        #d1fae5;
+  --color-border-subtle:  #e5e7eb;
+  --color-divider:        #f3f4f6;
 
   /* ── Inputs ── */
   --color-input-bg:       #ffffff;
-  --color-input-border:   #a7f3d0;
+  --color-input-border:   #d1d5db;
   --color-input-focus:    var(--color-accent);
   --color-label:          var(--color-text-heading);
 
