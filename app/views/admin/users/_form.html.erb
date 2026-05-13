@@ -1,205 +1,184 @@
+<%= form_with model: [:admin, user], class: "space-y-4" do |f| %>
 
-<div class="space-y-6 max-w-2xl">
+  <%= render "shared/error_block", record: user %>
 
-  <!-- Form Card -->
-  <div class="">
-   
-    <%= form_with model: [:admin, @user], local: true,
-          class: "space-y-5" do |form| %>
-      
+  <div class="w-full
+              bg-[var(--color-surface-card)]
+              border border-[var(--color-border-subtle)]
+              rounded-[var(--radius-lg)]
+              shadow-[var(--shadow-card)]
+              p-5">
 
-      <%# Error messages %>
-      <%= render "shared/error_block", record: @user%>
+    <!-- Header -->
+    <%# <div class="mb-4">
+      <h2 class="text-lg font-semibold text-[var(--color-text-heading)]">
+        User Information
+      </h2>
+
+      <p class="text-sm text-[var(--color-text-muted)] mt-1">
+        Create and manage user account details.
+      </p>
+    </div> %>
+
+    <!-- Responsive Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
 
       <!-- First Name -->
-      <div class="space-y-1.5">
+      <div>
+        <%= f.label :firstname,
+              class: "block mb-1.5
+                      text-sm font-medium
+                      text-[var(--color-text-heading)]" %>
 
-        <%= form.label :firstname,
-              class: "block text-sm font-medium text-[var(--color-text-heading)]" %>
-
-        <%= form.text_field :firstname,
-              class: "w-full px-3 py-2 text-sm
-                      bg-[var(--color-surface-card)]
-                      border border-[var(--color-border-subtle)]
+        <%= f.text_field :firstname,
+              class: "w-full
                       rounded-[var(--radius-md)]
-                      text-[var(--color-text-heading)]
-                      placeholder:text-[var(--color-text-muted)]
+                      border border-[var(--color-border-subtle)]
+                      bg-[var(--color-surface-base)]
+                      px-3 py-2
+                      text-sm
+                      text-[var(--color-text-body)]
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-[var(--color-accent-subtle)]
-                      focus:border-[var(--color-accent)]" %>
-
+                      focus:ring-[var(--color-accent)]
+                      focus:border-transparent" %>
       </div>
 
       <!-- Last Name -->
-      <div class="space-y-1.5">
+      <div>
+        <%= f.label :lastname,
+              class: "block mb-1.5
+                      text-sm font-medium
+                      text-[var(--color-text-heading)]" %>
 
-        <%= form.label :lastname,
-              class: "block text-sm font-medium text-[var(--color-text-heading)]" %>
-
-        <%= form.text_field :lastname,
-              class: "w-full px-3 py-2 text-sm
-                      bg-[var(--color-surface-card)]
-                      border border-[var(--color-border-subtle)]
+        <%= f.text_field :lastname,
+              class: "w-full
                       rounded-[var(--radius-md)]
-                      text-[var(--color-text-heading)]
-                      placeholder:text-[var(--color-text-muted)]
+                      border border-[var(--color-border-subtle)]
+                      bg-[var(--color-surface-base)]
+                      px-3 py-2
+                      text-sm
+                      text-[var(--color-text-body)]
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-[var(--color-accent-subtle)]
-                      focus:border-[var(--color-accent)]" %>
+                      focus:ring-[var(--color-accent)]
+                      focus:border-transparent" %>
+      </div>
 
+      <!-- Role -->
+      <div>
+        <%= f.label :role_code,
+              class: "block mb-1.5
+                      text-sm font-medium
+                      text-[var(--color-text-heading)]" %>
+
+        <%= f.select :role_code,
+              [["User", "usr"], ["Admin", "adm"]],
+              {},
+              class: "w-full
+                      rounded-[var(--radius-md)]
+                      border border-[var(--color-border-subtle)]
+                      bg-[var(--color-surface-base)]
+                      px-3 py-2
+                      text-sm
+                      text-[var(--color-text-body)]
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-[var(--color-accent)]
+                      focus:border-transparent" %>
       </div>
 
       <!-- Email -->
-      <div class="space-y-1.5">
+      <div>
+        <%= f.label :email,
+              class: "block mb-1.5
+                      text-sm font-medium
+                      text-[var(--color-text-heading)]" %>
 
-        <%= form.label :email,
-              class: "block text-sm font-medium text-[var(--color-text-heading)]" %>
-
-        <%= form.email_field :email,
-              class: "w-full px-3 py-2 text-sm
-                      bg-[var(--color-surface-card)]
-                      border border-[var(--color-border-subtle)]
+        <%= f.email_field :email,
+              class: "w-full
                       rounded-[var(--radius-md)]
-                      text-[var(--color-text-heading)]
-                      placeholder:text-[var(--color-text-muted)]
+                      border border-[var(--color-border-subtle)]
+                      bg-[var(--color-surface-base)]
+                      px-3 py-2
+                      text-sm
+                      text-[var(--color-text-body)]
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-[var(--color-accent-subtle)]
-                      focus:border-[var(--color-accent)]" %>
-
+                      focus:ring-[var(--color-accent)]
+                      focus:border-transparent" %>
       </div>
 
       <!-- Password -->
-      <div class="space-y-1.5">
+      <div>
+        <%= f.label :password,
+              class: "block mb-1.5
+                      text-sm font-medium
+                      text-[var(--color-text-heading)]" %>
 
-        <%= form.label :password,
-              class: "block text-sm font-medium text-[var(--color-text-heading)]" %>
-
-        <%= form.password_field :password,
-              class: "w-full px-3 py-2 text-sm
-                      bg-[var(--color-surface-card)]
-                      border border-[var(--color-border-subtle)]
+        <%= f.password_field :password,
+              class: "w-full
                       rounded-[var(--radius-md)]
-                      text-[var(--color-text-heading)]
+                      border border-[var(--color-border-subtle)]
+                      bg-[var(--color-surface-base)]
+                      px-3 py-2
+                      text-sm
+                      text-[var(--color-text-body)]
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-[var(--color-accent-subtle)]
-                      focus:border-[var(--color-accent)]" %>
-
+                      focus:ring-[var(--color-accent)]
+                      focus:border-transparent" %>
       </div>
 
       <!-- Password Confirmation -->
-      <div class="space-y-1.5">
+      <div>
+        <%= f.label :password_confirmation,
+              class: "block mb-1.5
+                      text-sm font-medium
+                      text-[var(--color-text-heading)]" %>
 
-        <%= form.label :password_confirmation,
-              class: "block text-sm font-medium text-[var(--color-text-heading)]" %>
-
-        <%= form.password_field :password_confirmation,
-              class: "w-full px-3 py-2 text-sm
-                      bg-[var(--color-surface-card)]
-                      border border-[var(--color-border-subtle)]
+        <%= f.password_field :password_confirmation,
+              class: "w-full
                       rounded-[var(--radius-md)]
-                      text-[var(--color-text-heading)]
+                      border border-[var(--color-border-subtle)]
+                      bg-[var(--color-surface-base)]
+                      px-3 py-2
+                      text-sm
+                      text-[var(--color-text-body)]
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-[var(--color-accent-subtle)]
-                      focus:border-[var(--color-accent)]" %>
-
+                      focus:ring-[var(--color-accent)]
+                      focus:border-transparent" %>
       </div>
 
-      <!-- Account Type -->
-      <div class="space-y-3">
+    </div>
 
-        <div>
-          <h2 class="text-sm font-medium text-[var(--color-text-heading)]">
-            Account Type
-          </h2>
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-3 mt-6">
 
-          <p class="text-xs text-[var(--color-text-muted)] mt-1">
-            Choose the permissions this account should have.
-          </p>
-        </div>
+      <%= link_to "Cancel",
+            admin_users_path,
+            class: "inline-flex items-center justify-center
+                    px-4 py-2
+                    rounded-[var(--radius-md)]
+                    border border-[var(--color-border-subtle)]
+                    bg-[var(--color-surface-base)]
+                    text-sm font-medium
+                    text-[var(--color-text-muted)]
+                    hover:bg-[var(--color-surface-muted)]
+                    transition-colors duration-200" %>
 
-        <div class="space-y-3">
+      <%= f.submit class: "inline-flex items-center justify-center
+                          px-4 py-2
+                          rounded-[var(--radius-md)]
+                          bg-[var(--color-accent)]
+                          text-white
+                          text-sm font-medium
+                          hover:bg-[var(--color-accent-hover)]
+                          transition-colors duration-200" %>
 
-          <!-- Regular User -->
-          <label class="flex items-start gap-3
-                        border border-[var(--color-border-subtle)]
-                        rounded-[var(--radius-md)]
-                        p-4
-                        cursor-pointer
-                        hover:border-[var(--color-accent)] transition-colors">
-
-            <%= form.radio_button :role_code, "usr",
-                  checked: true,
-                  class: "mt-1 text-[var(--color-accent)]
-                          focus:ring-[var(--color-accent)]" %>
-
-            <div>
-              <p class="text-sm font-medium text-[var(--color-text-heading)]">
-                Regular User
-              </p>
-
-              <p class="text-xs text-[var(--color-text-muted)] mt-1">
-                Can manage personal contacts only.
-              </p>
-            </div>
-
-          </label>
-
-          <!-- Admin -->
-          <label class="flex items-start gap-3
-                        border border-[var(--color-border-subtle)]
-                        rounded-[var(--radius-md)]
-                        p-4
-                        cursor-pointer
-                        hover:border-[var(--color-accent)] transition-colors">
-
-            <%= form.radio_button :role_code, "adm",
-                  class: "mt-1 text-[var(--color-accent)]
-                          focus:ring-[var(--color-accent)]" %>
-
-            <div>
-              <p class="text-sm font-medium text-[var(--color-text-heading)]">
-                Administrator
-              </p>
-
-              <p class="text-xs text-[var(--color-text-muted)] mt-1">
-                Full access to users, contacts, and admin tools.
-              </p>
-            </div>
-
-          </label>
-
-        </div>
-
-      </div>
-
-      <!-- Actions -->
-      <div class="flex items-center gap-3 pt-2">
-
-        <%= form.submit "Create User",
-              class: "px-4 py-2 text-sm font-semibold
-                      bg-[var(--color-accent)]
-                      hover:bg-[var(--color-accent-hover)]
-                      text-[var(--color-text-on-accent)]
-                      rounded-[var(--radius-md)]
-                      shadow-[var(--shadow-btn)]
-                      transition-colors duration-200
-                      cursor-pointer" %>
-
-        <%= link_to "Cancel", admin_users_path,
-              class: "text-sm text-[var(--color-text-muted)]
-                      hover:text-[var(--color-text-heading)]
-                      transition-colors duration-200" %>
-
-      </div>
-
-    <% end %>
+    </div>
 
   </div>
 
-</div>
-```
+<% end %>
