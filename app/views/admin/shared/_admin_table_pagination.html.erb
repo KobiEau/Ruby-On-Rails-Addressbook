@@ -1,0 +1,74 @@
+<%# Locals:
+    collection — Kaminari paginated object (@contacts, @users etc)
+    path       — lambda: ->(p) { admin_contacts_path(p) }
+    per_page   — current @per_page value
+%>
+
+<div class="flex flex-col gap-4 mt-4
+            lg:flex-row lg:items-center lg:justify-between">
+
+  <%# Left — results info %>
+  <p class="text-xs text-[var(--color-text-muted)]">
+    Showing
+    <span class="font-medium text-[var(--color-text-heading)]"><%= collection.count %></span>
+    of
+    <span class="font-medium text-[var(--color-text-heading)]"><%= collection.total_count %></span>
+    records
+  </p>
+
+  <%# Right — per-page + prev/next %>
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+
+    <%# Per-page selector %>
+    <%= form_with url: path.call({}), method: :get, local: true,
+          class: "flex items-center gap-2" do |form| %>
+      <%= form.hidden_field :search, value: params[:search] %>
+      <%= form.hidden_field :page, value: 1 %>
+      <label class="text-xs text-[var(--color-text-muted)]">Show</label>
+      <%= form.select :per_page, [5, 10, 25, 50],
+            { selected: per_page },
+            onchange: "this.form.submit()",
+            class: "px-2 py-1 text-xs
+                    bg-[var(--color-input-bg)]
+                    text-[var(--color-text-heading)]
+                    border border-[var(--color-border-subtle)]
+                    rounded-[var(--radius-md)]
+                    focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]" %>
+      <label class="text-xs text-[var(--color-text-muted)]">per page</label>
+    <% end %>
+
+    <%# Prev / Next %>
+    <% if collection.total_pages >= 1 %>
+      <div class="flex items-center gap-2">
+
+        <%= link_to "← Prev",
+              path.call(page: collection.prev_page, search: params[:search], per_page: per_page),
+              class: "px-3 py-1.5 text-xs font-medium
+                      border border-[var(--color-border-subtle)]
+                      rounded-[var(--radius-md)]
+                      text-[var(--color-text-muted)]
+                      hover:text-[var(--color-text-heading)]
+                      transition-colors duration-200
+                      #{'opacity-40 pointer-events-none' unless collection.prev_page}" %>
+
+        <span class="text-xs text-[var(--color-text-muted)] whitespace-nowrap">
+          Page
+          <span class="font-medium text-[var(--color-text-heading)]"><%= collection.current_page %></span>
+          of
+          <span class="font-medium text-[var(--color-text-heading)]"><%= collection.total_pages %></span>
+        </span>
+
+        <%= link_to "Next →",
+              path.call(page: collection.next_page, search: params[:search], per_page: per_page),
+              class: "px-3 py-1.5 text-xs font-medium
+                      border border-[var(--color-border-subtle)]
+                      rounded-[var(--radius-md)]
+                      text-[var(--color-text-muted)]
+                      hover:text-[var(--color-text-heading)]
+                      transition-colors duration-200
+                      #{'opacity-40 pointer-events-none' unless collection.next_page}" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
