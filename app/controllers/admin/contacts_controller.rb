@@ -2,26 +2,49 @@ class Admin::ContactsController <Admin::BaseController
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
 
   def index
+    @per_page = (params[:per_page] ||cookies[:admin_contacts_per_page]||5).to_i
+    cookies[:admin_contacts_per_page] = @per_page
+
     #includes(:user)-loads the owner of each contact in same query
     @contacts = Contact.includes(:user)
     @contacts=@contacts.where(
-      "firstname ILIKE? OR lastname ILIKE?",
-      "%#{params[:search]}%","%#{params[:search]}%"
-    )if params[:search].present?
+      "contacts.firstname ILIKE :q OR contacts.lastname ILIKE :q
+      OR contacts.phone_number ILIKE :q OR users.email ILIKE :q",
+      q: "%#{params[:search]}%"
+    ).references(:user) if params[:search].present?
+ 
+    @contacts=@contacts.page(params[:page]).per(@per_page)
+  end
 
-    @contacts=@contacts.order(firstname: :asc)
+  def new
+    @contact = Contact.new
+    @users = User.order(:firstname)
+  end
+
+  def create
+    @contact = Contact.new(contact_params)
+
+    if @contact.save
+      redirect_to admin_contacts_path, notice: "Contact created!"
+    else
+      @users = User.order(:firstname)
+      render :new, status: :unprocessale_entity
+      render 
+    end
   end
 
   def show
   end
 
   def edit
+    @users = User.order(:firstname)
   end
 
   def update
     if @contact.update(contact_params)
-      redirect_to admin_contact_path(@contact), notice: "Contact updated."
+      redirect_to admin_contacts_path, notice: "Contact updated."
     else
+      @users= User.order(:firstname)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -38,6 +61,6 @@ class Admin::ContactsController <Admin::BaseController
   end
 
   def contact_params
-    param.expect(contact: [:firstname, :lastname, :phone_number, :category])
+    param.expect(contact: [:firstname, :lastname, :phone_number, :category, :user_id])
   end
 end
