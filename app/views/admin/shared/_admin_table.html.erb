@@ -1,0 +1,34 @@
+
+<%# Usage:
+    render "shared/table" do |t|
+      t.with_headers { ... th elements ... }
+      ... tr elements ...
+    end
+    show_checkboxes - boolean, default false
+%>
+
+<%# Accepts: headers (html_safe string), body (block via yield) %>
+<div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
+            rounded-[var(--radius-lg)] shadow-[var(--shadow-card)]">
+  <div class="overflow-x-auto overflow-y-auto max-h-[480px]">
+    <table class="w-full min-w-[600px]">
+      <thead class="bg-gray-50 border-b border-[var(--color-border-subtle)]
+                    sticky top-0 z-10">
+        <tr class="text-left">
+          <% if local_assigns[:show_checkboxes] %>
+            <th class="w-10 px-4 py-3">
+              <input type="checkbox"
+                    class="select-all-checkbox w-4 h-4 cursor-pointer
+                           accent-[var(--color-accent)]"
+                    data-action="change->export#selectAll">
+            </th>
+          <%end%>
+          <%= headers %>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[var(--color-divider)]">
+        <%= yield %>
+      </tbody>
+    </table>
+  </div>
+</div>
