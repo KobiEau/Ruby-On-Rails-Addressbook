@@ -18,7 +18,6 @@ class Admin::ContactsController <Admin::BaseController
 
   def new
     @contact = Contact.new
-    @users = User.order(:firstname)
   end
 
   def create
@@ -29,7 +28,6 @@ class Admin::ContactsController <Admin::BaseController
     else
       @users = User.order(:firstname)
       render :new, status: :unprocessale_entity
-      render 
     end
   end
 
@@ -37,7 +35,6 @@ class Admin::ContactsController <Admin::BaseController
   end
 
   def edit
-    @users = User.order(:firstname)
   end
 
   def update
