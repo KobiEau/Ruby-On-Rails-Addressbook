@@ -56,108 +56,110 @@
 
   <%# Table %>
   <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
-              rounded-[var(--radius-lg)] shadow-[var(--shadow-card)] overflow-hidden">
-    <table class="w-full">
-      <thead class="bg-gray-50 border-b border-[var(--color-border-subtle)]">
-        <tr class="text-left">
-          <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Contact</th>
-          <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Phone</th>
-          <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Category</th>
-          <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Owner</th>
-          <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Added</th>
-          <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] text-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-[var(--color-divider)]">
+              rounded-[var(--radius-lg)] shadow-[var(--shadow-card)]">
+    <div class="overflow-y-auto max-h-[400px]">
+      <table class="w-full">
+        <thead class="bg-gray-50 border-b border-[var(--color-border-subtle)]">
+          <tr class="text-left">
+            <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Contact</th>
+            <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Phone</th>
+            <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Category</th>
+            <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Owner</th>
+            <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Added</th>
+            <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)] text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--color-divider)]">
 
-        <% @contacts.each do |contact| %>
-          <tr class="hover:bg-gray-50 transition-colors duration-150">
+          <% @contacts.each do |contact| %>
+            <tr class="hover:bg-gray-50 transition-colors duration-150">
 
-            <%# Avatar + Name %>
-            <td class="px-4 py-3">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-[var(--color-accent-subtle)]
-                            flex items-center justify-center
-                            text-xs font-semibold text-[var(--color-accent)] shrink-0">
-                  <%= contact.firstname.first.upcase %>
-                </div>
-                <p class="text-xs font-semibold text-[var(--color-text-heading)]">
-                  <%= contact.firstname %> <%= contact.lastname %>
-                </p>
-              </div>
-            </td>
-
-            <%# Phone %>
-            <td class="px-4 py-3 text-xs text-[var(--color-text-body)]">
-              <%= contact.phone_number %>
-            </td>
-
-            <%# Category %>
-            <td class="px-4 py-3">
-              <% if contact.category.present? %>
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full
-                             text-xs font-medium bg-gray-100 text-gray-600">
-                  <%= contact.category %>
-                </span>
-              <% else %>
-                <span class="text-xs text-[var(--color-text-muted)]">—</span>
-              <% end %>
-            </td>
-
-            <%# Owner — links to admin user show (build next) %>
-            <td class="px-4 py-3">
-              <% if contact.user %>
-                <div>
-                  <p class="text-xs font-medium text-[var(--color-text-heading)]">
-                    <%= contact.user.firstname %> <%= contact.user.lastname %>
-                  </p>
-                  <p class="text-xs text-[var(--color-text-muted)]">
-                    <%= contact.user.email %>
+              <%# Avatar + Name %>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-[var(--color-accent-subtle)]
+                              flex items-center justify-center
+                              text-xs font-semibold text-[var(--color-accent)] shrink-0">
+                    <%= contact.firstname.first.upcase %>
+                  </div>
+                  <p class="text-xs font-semibold text-[var(--color-text-heading)]">
+                    <%= contact.firstname %> <%= contact.lastname %>
                   </p>
                 </div>
-              <% else %>
-                <span class="text-xs text-[var(--color-text-muted)]">—</span>
-              <% end %>
-            </td>
+              </td>
 
-            <%# Added %>
-            <td class="px-4 py-3 text-xs text-[var(--color-text-muted)]">
-              <%= contact.created_at.strftime("%b %d, %Y") %>
-            </td>
+              <%# Phone %>
+              <td class="px-4 py-3 text-xs text-[var(--color-text-body)]">
+                <%= contact.phone_number %>
+              </td>
 
-            <%# Actions %>
-            <td class="px-4 py-3">
-              <div class="flex items-center justify-end gap-3">
-                <%= link_to "Edit", edit_admin_contact_path(contact),
-                      class: "text-xs font-medium
-                              text-[var(--color-text-muted)]
-                              hover:text-[var(--color-text-heading)]
-                              transition-colors duration-200" %>
-                <%= link_to "Delete", admin_contact_path(contact),
-                      data: {
-                        turbo_method: :delete,
-                        turbo_confirm: "Delete #{contact.firstname} #{contact.lastname}? This cannot be undone."
-                      },
-                      class: "text-xs font-medium
-                              text-[var(--color-danger)]
-                              hover:text-[var(--color-danger-hover)]
-                              transition-colors duration-200" %>
-              </div>
-            </td>
+              <%# Category %>
+              <td class="px-4 py-3">
+                <% if contact.category.present? %>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full
+                              text-xs font-medium bg-gray-100 text-gray-600">
+                    <%= contact.category %>
+                  </span>
+                <% else %>
+                  <span class="text-xs text-[var(--color-text-muted)]">—</span>
+                <% end %>
+              </td>
 
-          </tr>
-        <% end %>
+              <%# Owner — links to admin user show (build next) %>
+              <td class="px-4 py-3">
+                <% if contact.user %>
+                  <div>
+                    <p class="text-xs font-medium text-[var(--color-text-heading)]">
+                      <%= contact.user.firstname %> <%= contact.user.lastname %>
+                    </p>
+                    <p class="text-xs text-[var(--color-text-muted)]">
+                      <%= contact.user.email %>
+                    </p>
+                  </div>
+                <% else %>
+                  <span class="text-xs text-[var(--color-text-muted)]">—</span>
+                <% end %>
+              </td>
 
-        <% if @contacts.empty? %>
-          <tr>
-            <td colspan="6" class="px-4 py-8 text-center text-xs text-[var(--color-text-muted)]">
-              No contacts found.
-            </td>
-          </tr>
-        <% end %>
+              <%# Added %>
+              <td class="px-4 py-3 text-xs text-[var(--color-text-muted)]">
+                <%= contact.created_at.strftime("%b %d, %Y") %>
+              </td>
 
-      </tbody>
-    </table>
+              <%# Actions %>
+              <td class="px-4 py-3">
+                <div class="flex items-center justify-end gap-3">
+                  <%= link_to "Edit", edit_admin_contact_path(contact),
+                        class: "text-xs font-medium
+                                text-[var(--color-text-muted)]
+                                hover:text-[var(--color-text-heading)]
+                                transition-colors duration-200" %>
+                  <%= link_to "Delete", admin_contact_path(contact),
+                        data: {
+                          turbo_method: :delete,
+                          turbo_confirm: "Delete #{contact.firstname} #{contact.lastname}? This cannot be undone."
+                        },
+                        class: "text-xs font-medium
+                                text-[var(--color-danger)]
+                                hover:text-[var(--color-danger-hover)]
+                                transition-colors duration-200" %>
+                </div>
+              </td>
+
+            </tr>
+          <% end %>
+
+          <% if @contacts.empty? %>
+            <tr>
+              <td colspan="6" class="px-4 py-8 text-center text-xs text-[var(--color-text-muted)]">
+                No contacts found.
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <%# Footer — per-page + pagination %>
