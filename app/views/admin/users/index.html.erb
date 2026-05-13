@@ -205,8 +205,35 @@
       Showing <%= @users.count %> of <%= @users.total_count %> users
     </p>
     <% if @users.total_pages >= 1 %>
+
+      <%= form_with url:admin_users_path, method: :get, local:true do |form|%>
+        <%= form.hidden_field :search, value: params[:search]%>
+        <%= form.hidden_field :page, value:1 %>
+        <label class="text-xs text-[var(--color-text-muted)]"> Show</label>
+        <%= form.number_field :per_page,
+            value: @per_page,
+            min: 1,
+            max: 50,
+            #onchange: "this.form.submit()",
+            class:"w-16 px-2 py-1 text-xs text-center
+                  bg-[var(--color-input-bg)]
+                  text-[var(--color-text-heading)]
+                  border border-[var(--color-border-subtle)]
+                  rounded-[var(--radius-md)]
+                  focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)]"%>
+        <label class="text-sm text-[var(--color-text-muted)]">per page</label>
+
+        <%= form.submit "Go",
+             class:"px-3 py-1.5 text-xs font-medium
+                    bg-surface-muted text-[var(--color-text-white)]]
+                    rounded-[var(--radius-md)]
+                    cursor-pointer
+                    hover:bg-[var(--color-accent-hover)]
+                    transition-colors duration-200"%>
+
+      <%end%>
       <div class="flex items-center gap-2">
-        <%= link_to "← Prev", admin_users_path(page: @users.prev_page, search: params[:search], role_filter: params[:role_filter]),
+        <%= link_to "← Prev", admin_users_path(page: @users.prev_page, search: params[:search], role_filter: params[:role_filter],per_page: @per_page),
               class: "px-3 py-1.5 text-xs font-medium
                       border border-[var(--color-border-subtle)]
                       rounded-[var(--radius-md)]
@@ -216,7 +243,7 @@
         <span class="text-xs text-[var(--color-text-muted)]">
           <%= @users.current_page %> / <%= @users.total_pages %>
         </span>
-        <%= link_to "Next →", admin_users_path(page: @users.next_page, search: params[:search], role_filter: params[:role_filter]),
+        <%= link_to "Next →", admin_users_path(page: @users.next_page, search: params[:search], role_filter: params[:role_filter],per_page: @per_page),
               class: "px-3 py-1.5 text-xs font-medium
                       border border-[var(--color-border-subtle)]
                       rounded-[var(--radius-md)]
