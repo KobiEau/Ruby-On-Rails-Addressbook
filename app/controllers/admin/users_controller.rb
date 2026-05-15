@@ -1,4 +1,6 @@
 class Admin::UsersController < Admin::BaseController
+
+  include BulkActions
   def index
     # includes(:role) — loads role data in same query,prevents N+1 query
     @users = User.includes(:role).order(created_at: :desc)
@@ -49,6 +51,17 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     @user.destroy
     redirect_to admin_users_path, notice: "User deleted"
+  end
+
+  def bulk_destroy
+    super(User.all,admin_users_path)
+  end
+
+  def export_selected
+    bulk_export(User.all,"users",
+    ["First Name", "Last Name", "Email", "Role", "Joined"],
+    ->(u) {[u.firstname, u.lastname, u.email, u.role_code,
+    u.created_at.strftime("%b %d, %Y")]})
   end
 
   private
