@@ -1,7 +1,7 @@
  require "csv"
 class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
-  
+
   def index
   @per_page = (params[:per_page] || 10).to_i
   @contacts = current_user.contacts
@@ -140,7 +140,7 @@ class ContactsController < ApplicationController
   end
 
   def bulk_destroy
-    ids=params[:ids]&.uniq
+    ids=params[:ids].uniq
     if ids.present?
       puts "ids=#{ids}"
       current_user.contacts.where(id: ids).destroy_all
