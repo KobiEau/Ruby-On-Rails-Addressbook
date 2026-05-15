@@ -1,6 +1,6 @@
 class Admin::ContactsController <Admin::BaseController
   before_action :set_contact, only: [:show, :edit, :update, :destroy]
-
+  include BulkActions
   def index
     @per_page = (params[:per_page] ||cookies[:admin_contacts_per_page]||5).to_i
     cookies[:admin_contacts_per_page] = @per_page
@@ -49,6 +49,16 @@ class Admin::ContactsController <Admin::BaseController
   def destroy
     @contact.destroy
     redirect_to admin_contacts_path, notice: "Contact deleted."
+  end
+
+  def bulk_destroy
+    super(Contact.all,admin_contacts_path)
+  end
+
+  def export_selected
+    bulk_export(Contact.all,"contacts",
+    ["First Name", "Last Name", "Phone","Owner"],
+    ->(c) {[c.firstname,c.lastname,c.phone_number,c.user&.email]})
   end
 
   private
