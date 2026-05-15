@@ -10,8 +10,18 @@ Rails.application.routes.draw do
  
   namespace :admin do
     root "dashboard#index"
-    resources :users
-    resources :contacts
+    resources :users do
+      collection do
+        delete :bulk_destroy
+        get :export_selected
+      end
+    end
+    resources :contacts do
+      collection do
+        delete :bulk_destroy
+        get :export_selected
+      end
+    end
   end
   # namespace creates routes prefixed with /admin/
   # admin_root_path → /admin/
