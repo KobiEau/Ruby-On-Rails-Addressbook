@@ -1,5 +1,7 @@
 <% content_for :page_title, "Users" %>
-<div class= "space-y-4">
+<div class= "space-y-4" data-controller="export"
+ data-export-delete-url="<%= bulk_destroy_admin_users_path %>"
+     data-export-export-url="<%= export_selected_admin_users_path %>">
   
   <%# Header %>
     <div class="flex items-center justify-between">
@@ -74,6 +76,57 @@
           
     </div>
 
+     <%# Selection Toolbar — hidden until checkboxes are ticked %>
+  <div class="flex items-center gap-3 h-8">
+    <button id="uncheck-btn"
+            type="button"
+            data-action="click->export#uncheckAll"
+            class="hidden text-xs font-medium
+                   text-[var(--color-text-muted)]
+                   hover:text-[var(--color-warning)]
+                   transition-colors duration-200">
+      ✕ Uncheck all
+    </button>
+    <a id="export-btn"
+       class="hidden px-3 py-1.5 text-xs font-medium
+              border border-[var(--color-border-subtle)]
+              rounded-[var(--radius-md)]
+              text-[var(--color-text-muted)]
+              opacity-40 pointer-events-none cursor-not-allowed
+              hover:bg-[var(--color-accent)]
+              hover:text-white
+              transition-colors duration-200">
+      Export Selected 
+    </a>
+     <%# <a id="export-btn",
+      class="shrink-0 px-4 py-2 rounded-[var(--radius-md)]
+              outline outline-[var(--color-accent)]
+              text-[var(--color-text-on-accent)]
+              font-semibold text-sm
+              hover:text-[var(--color-text-muted)]
+              transition-colors duration-200
+              disabled:opacity-40 disabled:pointer-events-none"> Export Selected New
+     </a> %>
+    <a id="delete-btn"
+        type="button"
+        data-action="click->export#deleteSelected"
+        class="hidden px-3 py-1.5 text-xs font-medium
+                rounded-[var(--radius-md)]
+                text-[var(--color-danger)]
+                border border-[var(--color-danger)]
+                hover:bg-[var(--color-danger)]
+                hover:text-white
+                transition-colors duration-200">
+      Delete Selected
+    </a>
+  </div>
+
+  <%# Put this anywhere in the page, outside other forms %>
+  <%= form_with url: bulk_destroy_admin_users_path, method: :delete,
+        id: "bulk-delete-form", class: "hidden" do |form| %>
+    <div id="bulk-delete-ids"></div>
+  <% end %>
+
   <% table_headers = capture do %>
 
     <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
@@ -108,14 +161,21 @@
 
   <% end %>
 
-  <%= render "admin/shared/admin_table",
-        headers: table_headers do %>
+  <%= render "admin/shared/admin_table", headers: table_headers, show_checkboxes:true do %>
 
     <% @users.each do |user| %>
 
       <tr class="hover:bg-gray-50 transition-colors duration-150">
 
         <%# td cells here %>
+        <%# Checkbox %>
+        <td class="w-10 px-4 py-3">
+          <input type="checkbox"
+                class="contact-checkbox w-4 h-4 cursor-pointer
+                accent-[var(--color-accent)]"
+                value="<%= user.id%>"
+                data-action="change->export#toggle">
+        </td>
         <%# Avatar + Name %>
         <td class="px-4 py-3">
           <div class="flex items-center gap-3">
