@@ -111,7 +111,7 @@ export default class extends Controller {
       //Disable export button
       if(exportBtn){
         exportBtn.removeAttribute("href")
-        //exportBtn.classList.add("opacity-40", "pointer-events-none", "cursor-not-allowed")
+        exportBtn.classList.add("hidden")
       }
       //hide uncheck button
       if (uncheckBtn) uncheckBtn.classList.add("hidden")
