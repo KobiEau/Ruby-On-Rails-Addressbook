@@ -18,6 +18,7 @@ class Admin::ContactsController <Admin::BaseController
 
   def new
     @contact = Contact.new
+    @users = User.order(:firstname)
   end
 
   def create
@@ -27,7 +28,7 @@ class Admin::ContactsController <Admin::BaseController
       redirect_to admin_contacts_path, notice: "Contact created!"
     else
       @users = User.order(:firstname)
-      render :new, status: :unprocessale_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -35,6 +36,7 @@ class Admin::ContactsController <Admin::BaseController
   end
 
   def edit
+    @users=User.order(:firstname)
   end
 
   def update
@@ -68,6 +70,6 @@ class Admin::ContactsController <Admin::BaseController
   end
 
   def contact_params
-    param.expect(contact: [:firstname, :lastname, :phone_number, :category, :user_id])
+    params.expect(contact: [:firstname, :lastname, :phone_number, :category, :user_id])
   end
 end
