@@ -76,17 +76,8 @@
           
     </div>
 
-     <%# Selection Toolbar — hidden until checkboxes are ticked %>
+  <%# Selection Toolbar — hidden until checkboxes are ticked %>
   <div class="flex items-center gap-3 h-8">
-    <button id="uncheck-btn"
-            type="button"
-            data-action="click->export#uncheckAll"
-            class="hidden text-xs font-medium
-                   text-[var(--color-text-muted)]
-                   hover:text-[var(--color-warning)]
-                   transition-colors duration-200">
-      ✕ Uncheck all
-    </button>
     <a id="export-btn"
        class="hidden px-3 py-1.5 text-xs font-medium
               border border-[var(--color-border-subtle)]
@@ -98,6 +89,18 @@
               transition-colors duration-200">
       Export Selected 
     </a>
+    <button id="uncheck-btn"
+            type="button"
+            data-action="click->export#uncheckAll"
+            class="hidden text-xs py-1.5 px-3 font-medium
+                  border border-[var(--color-warning)]
+                  rounded-[var(--radius-md)]
+                   text-[var(--color-text-muted)]
+                   hover:bg-[var(--color-warning)]
+                  hover:text-white
+                   transition-colors duration-200">
+      ✕ Uncheck all
+    </button>
      <%# <a id="export-btn",
       class="shrink-0 px-4 py-2 rounded-[var(--radius-md)]
               outline outline-[var(--color-accent)]
