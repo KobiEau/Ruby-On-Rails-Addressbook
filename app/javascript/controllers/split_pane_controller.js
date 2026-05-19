@@ -1,13 +1,17 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller{
-  static targets =["detail"]
+  static targets =["pane","backdrop"]
 
   open(){
-    this.detailTarget.classList.remove("hidden")
+    this.paneTarget.classList.remove("translate-x-full")
+    this.paneTarget.classList.add("translate-x-0")
+    this.backdropTarget.classList.remove("hidden")
   }
   close(){
-    this.detailTarget.classList.add("hidden")
+    this.paneTarget.classList.remove("translate-x-0")
+    this.paneTarget.classList.add("translate-x-full")
+    this.backdropTarget.classList.add("hidden")
   }
 
 }
