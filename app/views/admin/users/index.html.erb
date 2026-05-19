@@ -1,300 +1,307 @@
 <% content_for :page_title, "Users" %>
-<%# Main two-column layout wrapper%>
-<div class="flex gap-4" data-controller="split-pane">
-  <%# Left - table panel %>
-  <div class="min-w-0 flex-1" id="list-panel">
-    <div class= "space-y-4" data-controller="export" data-export-delete-url="<%= bulk_destroy_admin_users_path %>" data-export-export-url="<%= export_selected_admin_users_path %>">
-      
-      <%# Header %>
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-xl font-bold text-[var(--color-text-heading)]">
-              Users
-            </h1>
-            <p class="text-xs text-[var(--color-text-muted)] mt-0.5">
-              <%= @users.total_count %> registered users
-              <%# total_count — Kaminari method, gives total across ALL pages %>
-              <%# not just the current page %>
-            </p>
-          </div>
+
+<div class="relative" 
+     data-controller="split-pane export" 
+     data-export-export-url="<%= export_selected_admin_users_path%>"
+     data-export-delete-url="<%= bulk_destroy_admin_users_path%>">
+  
+  <%# Left - table, full width %>
+  <div class= "space-y-4">
+    
+    <%# Header %>
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-bold text-[var(--color-text-heading)]">
+            Users
+          </h1>
+          <p class="text-xs text-[var(--color-text-muted)] mt-0.5">
+            <%= @users.total_count %> registered users
+            <%# total_count — Kaminari method, gives total across ALL pages %>
+            <%# not just the current page %>
+          </p>
         </div>
-
-        <%# Toolbar %>
-        <div class="flex items-center justify-between gap-3">
-
-          <%# Search + Filter %>
-          <%= form_with url: admin_users_path, method: :get, local: true,
-                class: "flex items-center gap-3" do |form| %>
-
-            <%= form.text_field :search,
-                  value: params[:search],
-                  placeholder: "Search users...",
-                  class: "w-64 px-3 py-1.5 text-xs
-                          bg-[var(--color-surface-card)]
-                          border border-[var(--color-border-subtle)]
-                          rounded-[var(--radius-md)]
-                          text-[var(--color-text-heading)]
-                          placeholder:text-[var(--color-text-muted)]
-                          focus:outline-none
-                          focus:ring-1 focus:ring-[var(--color-accent)]
-                          focus:border-[var(--color-accent)]" %>
-            <%# form_with + method: :get means submitting this form
-                adds ?search=... to the URL — controller reads params[:search] %>
-
-            <%= form.select :role_filter,
-                  [["All Roles", ""], ["Admins", "adm"], ["Users", "usr"]],
-                  { selected: params[:role_filter] },
-                  class: "px-3 py-1.5 text-xs
-                          bg-[var(--color-surface-card)]
-                          border border-[var(--color-border-subtle)]
-                          rounded-[var(--radius-md)]
-                          text-[var(--color-text-heading)]
-                          focus:outline-none
-                          focus:ring-1 focus:ring-[var(--color-accent)]" %>
-
-            <%= form.submit "Search",
-                  class: "px-3 py-1.5 text-xs font-medium
-                          bg-surface-muted text-[var(--color-text-white)]]
-                          rounded-[var(--radius-md)]
-                          cursor-pointer
-                          hover:bg-[var(--color-accent-hover)]
-                          transition-colors duration-200" %>
-
-            <% if params[:search].present? || params[:role_filter].present? %>
-              <%= link_to "✕ Clear", admin_users_path,
-                    class: "text-xs text-[var(--color-text-muted)]
-                            hover:text-[var(--color-danger)]
-                            transition-colors duration-200" %>
-            <% end %>
-
-          <% end %>
-
-          <%# New User Btn %>
-          <%= link_to "+ New User",new_admin_user_path,
-              class:"px-3 py-1.5 text-sm font-bold 
-                    bg-[var(--color-accent)] hover:[var(--bg-accent-hover)]
-                    text-text-on-accent rounded-[var(--radius-md)]
-                    shadow-[var(--shadow-btn)] transition duration-200" %> 
-              
-        </div>
-
-      <%# Selection Toolbar — hidden until checkboxes are ticked %>
-      <div class="flex items-center gap-3 h-8">
-        <a id="export-btn"
-          class="hidden px-3 py-1.5 text-xs font-medium
-                  border border-[var(--color-border-subtle)]
-                  rounded-[var(--radius-md)]
-                  text-[var(--color-text-muted)]
-                  opacity-40 pointer-events-none cursor-not-allowed
-                  hover:bg-[var(--color-accent)]
-                  hover:text-white
-                  transition-colors duration-200">
-          Export Selected 
-        </a>
-        <button id="uncheck-btn"
-                type="button"
-                data-action="click->export#uncheckAll"
-                class="hidden text-xs py-1.5 px-3 font-medium
-                      border border-[var(--color-warning)]
-                      rounded-[var(--radius-md)]
-                      text-[var(--color-text-muted)]
-                      hover:bg-[var(--color-warning)]
-                      hover:text-white
-                      transition-colors duration-200">
-          ✕ Uncheck all
-        </button>
-        <%# <a id="export-btn",
-          class="shrink-0 px-4 py-2 rounded-[var(--radius-md)]
-                  outline outline-[var(--color-accent)]
-                  text-[var(--color-text-on-accent)]
-                  font-semibold text-sm
-                  hover:text-[var(--color-text-muted)]
-                  transition-colors duration-200
-                  disabled:opacity-40 disabled:pointer-events-none"> Export Selected New
-        </a> %>
-        <a id="delete-btn"
-            type="button"
-            data-action="click->export#deleteSelected"
-            class="hidden px-3 py-1.5 text-xs font-medium
-                    rounded-[var(--radius-md)]
-                    text-[var(--color-danger)]
-                    border border-[var(--color-danger)]
-                    hover:bg-[var(--color-danger)]
-                    hover:text-white
-                    transition-colors duration-200">
-          Delete Selected
-        </a>
       </div>
 
-      <%# Put this anywhere in the page, outside other forms %>
-      <%= form_with url: bulk_destroy_admin_users_path, method: :delete,
-            id: "bulk-delete-form", class: "hidden" do |form| %>
-        <div id="bulk-delete-ids"></div>
-      <% end %>
+      <%# Toolbar %>
+      <div class="flex items-center justify-between gap-3">
 
-      <% table_headers = capture do %>
+        <%# Search + Filter %>
+        <%= form_with url: admin_users_path, method: :get, local: true,
+              class: "flex items-center gap-3" do |form| %>
 
-        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
-                  text-[var(--color-text-muted)]">
-          Name
-        </th>
+          <%= form.text_field :search,
+                value: params[:search],
+                placeholder: "Search users...",
+                class: "w-64 px-3 py-1.5 text-xs
+                        bg-[var(--color-surface-card)]
+                        border border-[var(--color-border-subtle)]
+                        rounded-[var(--radius-md)]
+                        text-[var(--color-text-heading)]
+                        placeholder:text-[var(--color-text-muted)]
+                        focus:outline-none
+                        focus:ring-1 focus:ring-[var(--color-accent)]
+                        focus:border-[var(--color-accent)]" %>
+          <%# form_with + method: :get means submitting this form
+              adds ?search=... to the URL — controller reads params[:search] %>
 
-        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
-                  text-[var(--color-text-muted)]">
-          Email
-        </th>
+          <%= form.select :role_filter,
+                [["All Roles", ""], ["Admins", "adm"], ["Users", "usr"]],
+                { selected: params[:role_filter] },
+                class: "px-3 py-1.5 text-xs
+                        bg-[var(--color-surface-card)]
+                        border border-[var(--color-border-subtle)]
+                        rounded-[var(--radius-md)]
+                        text-[var(--color-text-heading)]
+                        focus:outline-none
+                        focus:ring-1 focus:ring-[var(--color-accent)]" %>
 
-        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
-                  text-[var(--color-text-muted)]">
-          Role
-        </th>
+          <%= form.submit "Search",
+                class: "px-3 py-1.5 text-xs font-medium
+                        bg-surface-muted text-[var(--color-text-white)]]
+                        rounded-[var(--radius-md)]
+                        cursor-pointer
+                        hover:bg-[var(--color-accent-hover)]
+                        transition-colors duration-200" %>
 
-        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
-                  text-[var(--color-text-muted)]">
-          Contacts
-        </th>
-
-        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
-                  text-[var(--color-text-muted)]">
-          Joined
-        </th>
-
-        <th class="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wide
-                  text-[var(--color-text-muted)]">
-          Actions
-        </th>
-
-      <% end %>
-
-      <%= render "admin/shared/admin_table", headers: table_headers, show_checkboxes:true do %>
-
-        <% @users.each do |user| %>
-
-          <tr class="hover:bg-gray-50 transition-colors duration-150">
-
-            <%# td cells here %>
-            <%# Checkbox %>
-            <td class="w-10 px-4 py-3">
-              <input type="checkbox"
-                    class="contact-checkbox w-4 h-4 cursor-pointer
-                    accent-[var(--color-accent)]"
-                    value="<%= user.id%>"
-                    data-action="change->export#toggle">
-            </td>
-            <%# Avatar + Name %>
-            <td class="px-4 py-3">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full
-                            bg-[var(--color-accent-subtle)]
-                            flex items-center justify-center
-                            text-xs font-semibold
-                            text-[var(--color-accent)] shrink-0">
-                  <%= user.firstname.first.upcase %>
-                </div>
-                <div>
-                  <p class="text-xs font-semibold text-[var(--color-text-heading)]">
-                    <%= user.fullname %>
-                  </p>
-                </div>
-              </div>
-            </td>
-
-            <%# Email %>
-            <td class="px-4 py-3 text-xs text-[var(--color-text-body)]">
-              <%= user.email %>
-            </td>
-
-            <%# Role Badge %>
-            <td class="px-4 py-3">
-              <% if user.admin? %>
-                <span class="inline-flex items-center px-2 py-0.5
-                            rounded-full text-xs font-medium
-                            bg-[var(--color-accent-subtle)]
-                            text-[var(--color-accent)]">
-                  Admin
-                </span>
-              <% else %>
-                <span class="inline-flex items-center px-2 py-0.5
-                            rounded-full text-xs font-medium
-                            bg-gray-100 text-gray-600">
-                  User
-                </span>
-              <% end %>
-            </td>
-
-            <%# Contacts Count %>
-            <td class="px-4 py-3 text-xs text-[var(--color-text-body)]">
-              <%= user.contacts.count %>
-              <%# Safe — contacts preloaded via includes(:contacts) in controller %>
-            </td>
-
-            <%# Joined %>
-            <td class="px-4 py-3 text-xs text-[var(--color-text-muted)]">
-              <%= user.created_at.strftime("%b %d, %Y") %>
-              <%# strftime formats the timestamp — "%b %d, %Y" → "May 05, 2026" %>
-            </td>
-
-            <%# Actions %>
-            <td class="px-4 py-3">
-              <div class="flex items-center justify-end gap-3">
-                <%= link_to "View", admin_user_path(user),
-                      data:{
-                        turbo_frame:"user-detail",
-                        action: "click->split-pane#open"
-                      },
-                      class: "text-xs font-medium
-                              text-[var(--color-accent)]
-                              hover:text-[var(--color-accent-hover)]
-                              transition-colors duration-200" %>
-                <%= link_to "Edit", edit_admin_user_path(user),
-                      class: "text-xs font-medium
-                              text-[var(--color-text-muted)]
-                              hover:text-[var(--color-text-heading)]
-                              transition-colors duration-200" %>
-                <%= link_to "Delete", admin_user_path(user),
-                      data: {
-                        turbo_method: :delete,
-                        turbo_confirm: "Delete #{user.fullname}? This also deletes all their contacts."
-                      },
-                      class: "text-xs font-medium
-                              text-[var(--color-danger)]
-                              hover:text-[var(--color-danger-hover)]
-                              transition-colors duration-200" %>
-              </div>
-            </td>
-          </tr>
+          <% if params[:search].present? || params[:role_filter].present? %>
+            <%= link_to "✕ Clear", admin_users_path,
+                  class: "text-xs text-[var(--color-text-muted)]
+                          hover:text-[var(--color-danger)]
+                          transition-colors duration-200" %>
+          <% end %>
 
         <% end %>
 
-        <% if @users.empty? %>
-          <tr>
-            <td colspan="6"
-                class="px-4 py-8 text-center text-xs text-[var(--color-text-muted)]">
-              No users found.
-            </td>
-          </tr>
-        <% end %>
+        <%# New User Btn %>
+        <%= link_to "+ New User",new_admin_user_path,
+            class:"px-3 py-1.5 text-sm font-bold 
+                  bg-[var(--color-accent)] hover:[var(--bg-accent-hover)]
+                  text-text-on-accent rounded-[var(--radius-md)]
+                  shadow-[var(--shadow-btn)] transition duration-200" %> 
+            
+      </div>
 
-      <% end %>
-
-      <%= render "admin/shared/admin_table_pagination",
-            collection: @users,
-            per_page: @per_page,
-            path: ->(params_hash) {
-              admin_users_path(
-                params_hash.merge(
-                  search: params[:search],
-                  role_filter: params[:role_filter]
-                )
-              )
-            } %>
+    <%# Selection Toolbar — hidden until checkboxes are ticked %>
+    <div class="flex items-center gap-3 h-8">
+      <a id="export-btn"
+        class="hidden px-3 py-1.5 text-xs font-medium
+                border border-[var(--color-border-subtle)]
+                rounded-[var(--radius-md)]
+                text-[var(--color-text-muted)]
+                opacity-40 pointer-events-none cursor-not-allowed
+                hover:bg-[var(--color-accent)]
+                hover:text-white
+                transition-colors duration-200">
+        Export Selected 
+      </a>
+      <button id="uncheck-btn"
+              type="button"
+              data-action="click->export#uncheckAll"
+              class="hidden text-xs py-1.5 px-3 font-medium
+                    border border-[var(--color-warning)]
+                    rounded-[var(--radius-md)]
+                    text-[var(--color-text-muted)]
+                    hover:bg-[var(--color-warning)]
+                    hover:text-white
+                    transition-colors duration-200">
+        ✕ Uncheck all
+      </button>
+      <%# <a id="export-btn",
+        class="shrink-0 px-4 py-2 rounded-[var(--radius-md)]
+                outline outline-[var(--color-accent)]
+                text-[var(--color-text-on-accent)]
+                font-semibold text-sm
+                hover:text-[var(--color-text-muted)]
+                transition-colors duration-200
+                disabled:opacity-40 disabled:pointer-events-none"> Export Selected New
+      </a> %>
+      <a id="delete-btn"
+          type="button"
+          data-action="click->export#deleteSelected"
+          class="hidden px-3 py-1.5 text-xs font-medium
+                  rounded-[var(--radius-md)]
+                  text-[var(--color-danger)]
+                  border border-[var(--color-danger)]
+                  hover:bg-[var(--color-danger)]
+                  hover:text-white
+                  transition-colors duration-200">
+        Delete Selected
+      </a>
     </div>
-  </div>  
 
-  <%# Right - detail panel%>
-  <div class="w-96 shrink-0 hidden z-10" id="detail-panel" data-split-pane-target="detail">
+    
+    <% table_headers = capture do %>
+
+      <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
+                text-[var(--color-text-muted)]">
+        Name
+      </th>
+
+      <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
+                text-[var(--color-text-muted)]">
+        Email
+      </th>
+
+      <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
+                text-[var(--color-text-muted)]">
+        Role
+      </th>
+
+      <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
+                text-[var(--color-text-muted)]">
+        Contacts
+      </th>
+
+      <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wide
+                text-[var(--color-text-muted)]">
+        Joined
+      </th>
+
+      <th class="text-right px-4 py-3 text-xs font-semibold uppercase tracking-wide
+                text-[var(--color-text-muted)]">
+        Actions
+      </th>
+
+    <% end %>
+
+    <%= render "admin/shared/admin_table", headers: table_headers, show_checkboxes:true do %>
+
+      <% @users.each do |user| %>
+
+        <tr class="hover:bg-gray-50 transition-colors duration-150">
+
+          <%# td cells here %>
+          <%# Checkbox %>
+          <td class="w-10 px-4 py-3">
+            <input type="checkbox"
+                  class="contact-checkbox w-4 h-4 cursor-pointer
+                  accent-[var(--color-accent)]"
+                  value="<%= user.id%>"
+                  data-action="change->export#toggle">
+          </td>
+          <%# Avatar + Name %>
+          <td class="px-4 py-3">
+             <div class="flex items-center gap-3">
+              <%= render "shared/contact_avatar_small", record:user %>
+            </div>
+          </td>
+
+          <%# Email %>
+          <td class="px-4 py-3 text-xs text-[var(--color-text-body)]">
+            <%= user.email %>
+          </td>
+
+          <%# Role Badge %>
+          <td class="px-4 py-3">
+            <% if user.admin? %>
+              <span class="inline-flex items-center px-2 py-0.5
+                          rounded-full text-xs font-medium
+                          bg-[var(--color-accent-subtle)]
+                          text-[var(--color-accent)]">
+                Admin
+              </span>
+            <% else %>
+              <span class="inline-flex items-center px-2 py-0.5
+                          rounded-full text-xs font-medium
+                          bg-gray-100 text-gray-600">
+                User
+              </span>
+            <% end %>
+          </td>
+
+          <%# Contacts Count %>
+          <td class="px-4 py-3 text-xs text-[var(--color-text-body)]">
+            <%= user.contacts.count %>
+            <%# Safe — contacts preloaded via includes(:contacts) in controller %>
+          </td>
+
+          <%# Joined %>
+          <td class="px-4 py-3 text-xs text-[var(--color-text-muted)]">
+            <%= user.created_at.strftime("%b %d, %Y") %>
+            <%# strftime formats the timestamp — "%b %d, %Y" → "May 05, 2026" %>
+          </td>
+
+          <%# Actions %>
+          <td class="px-4 py-3">
+            <div class="flex items-center justify-end gap-3">
+              <%= link_to "View", admin_user_path(user),
+                    data:{
+                      turbo_frame:"user-detail",
+                      action: "click->split-pane#open"
+                    },
+                    class: "text-xs font-medium
+                            text-[var(--color-accent)]
+                            hover:text-[var(--color-accent-hover)]
+                            transition-colors duration-200" %>
+              <%= link_to "Edit", edit_admin_user_path(user),
+                    class: "text-xs font-medium
+                            text-[var(--color-text-muted)]
+                            hover:text-[var(--color-text-heading)]
+                            transition-colors duration-200" %>
+              <%= link_to "Delete", admin_user_path(user),
+                    data: {
+                      turbo_method: :delete,
+                      turbo_confirm: "Delete #{user.fullname}? This also deletes all their contacts."
+                    },
+                    class: "text-xs font-medium
+                            text-[var(--color-danger)]
+                            hover:text-[var(--color-danger-hover)]
+                            transition-colors duration-200" %>
+            </div>
+          </td>
+        </tr>
+
+      <% end %>
+
+      <% if @users.empty? %>
+        <tr>
+          <td colspan="6"
+              class="px-4 py-8 text-center text-xs text-[var(--color-text-muted)]">
+            No users found.
+          </td>
+        </tr>
+      <% end %>
+
+    <% end %>
+
+    <%= render "admin/shared/admin_table_pagination",
+          collection: @users,
+          per_page: @per_page,
+          path: ->(params_hash) {
+            admin_users_path(
+              params_hash.merge(
+                search: params[:search],
+                role_filter: params[:role_filter]
+              )
+            )
+          } %>
+  </div>
+  
+  <%# Backdrop %>
+  <div class="hidden fixed inset-0 bg-black/40 z-40"
+       data-split-pane-target="backdrop"
+       data-action="click->split-pane#close">
+  </div>
+
+  <%# slide-in detail panel%>
+  <div class="fixed top-0 right-0 h-full w-full sm:w-96 z-50
+              bg-[var(--color-surface-card)]
+              shadow-[var(--shadow-card)]
+              border-l border-[var(--color-border-subtle)]
+              transform translate-x-full
+              transition-transform duration-300 ease-in-out
+              overflow-y-auto" 
+        data-split-pane-target="pane">
+
       <turbo-frame id="user-detail">
         <%# Turbo fill this when View link is clicked %>
       </turbo-frame>
   </div>
+
+  <%# Put this anywhere in the page, outside other forms %>
+    <%= form_with url: bulk_destroy_admin_users_path, method: :delete,
+          id: "bulk-delete-form", class: "hidden" do |form| %>
+      <div id="bulk-delete-ids"></div>
+    <% end %>
+
 </div>
