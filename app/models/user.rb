@@ -2,13 +2,15 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :lockable, :trackable
  
   # :database_authenticatable — handles login with email/password
   # :registerable — allows users to sign up
   # :recoverable — handles forgot password flow
   # :rememberable — handles "remember me" checkbox
   # :validatable — adds email format and password length validations automatically
+  # :lockable - ability to block and unblock users
+  # :trackble - tracking user activity
 
   has_many :contacts, dependent: :destroy
   belongs_to :role, foreign_key: :role_code, primary_key: :code
@@ -28,5 +30,13 @@ class User < ApplicationRecord
 
   def regular_user?
     role_code == "adm"
+  end
+
+  def active?
+    locked_at.nil?
+  end
+
+  def recent_contacts_count
+    contacts.where("created_at > ?", 5.day.ago).count
   end
 end
