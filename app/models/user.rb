@@ -39,4 +39,13 @@ class User < ApplicationRecord
   def recent_contacts_count
     contacts.where("created_at > ?", 5.day.ago).count
   end
+
+  def lock_account!
+    update!(locked_at: Time.current)
+  end
+
+  def unlock_account!
+    update!(locked_at: nil, failed_attempts: 0)
+  end
+
 end
