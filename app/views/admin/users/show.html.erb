@@ -7,7 +7,7 @@
       </h2>
       <button data-action="click->split-pane#close"
           type="button"
-          class="text-xs text-[var(--color-text-muted)]
+          class="text-sm text-[var(--color-text-muted)]
                 hover:text-[var(--color-danger)]
                 transition-colors duration-200" >
        X Close
@@ -134,30 +134,50 @@
 </div>
     <%# Divider %>
     <hr class="border-[var(--color-divider)]">
-    <% if @user.active? %>
-      <%= link_to "Lock Account", lock_admin_user_path(@user),
-          data:{
-            turbo_method: :patch,
-            turbo_confirm: "Lock #{@user.fullname}? They won't be able to sign-in"
-          },
-          class:"px-3 py-1.5 text-xs font-medium
-                text-[var(--color-danger)]
-                border border-[var(--color-danger)]
-                hover:bg-[var(--color-danger)] hover:text-white
-                rounded-[var(--radius-md)]
-                transition-colors duration-200" %>
-    <% else %>
-      <%= link_to "Unlock Account", unlock_admin_user_path(@user),
-          data:{
-            turbo_method: :patch},
-          class:"px-3 py-1.5 text-xs font-medium
-                text-[var(--color-success)]
-                border border-[var(--color-success)]
-                hover:bg-[var(--color-success)] hover:text-white
-                rounded-[var(--radius-md)]
-                transition-colors duration-200" %>
-    <% end %>
+    <%= form_with model: [:admin, @user], method: :patch,
+        data:{turbo_frame: "_top"} do |form|%>
+        <%= form.select :role_code,
+            [["User","usr"],["Admin","adm"]],
+            {selected: @user.role_code},
+            onchange:"if(confirm('Change role for #{@user.fullname}?')){
+                      this.form.submit()
+                    }else {
+                      this.value = '#{@user.role_code}'
+                    }",
+            class:"px-2 py-1 text-xs bg-[var(--color-input-bg)]
+                  text-[var(--color-text-heading)]
+                  border border-[var(--color-border-subtle)]
+                  rounded-[var(--radius-md)] focus:outline-none
+                  focus:ring-1 focus:ring-[var(--color-accent)]"%>
+    <% end%>
 
+    <%# Divider %>
+    <hr class="border-[var(--color-divider)]">
+    <div>
+      <% if @user.active? %>
+        <%= link_to "Lock Account", lock_admin_user_path(@user),
+            data:{
+              turbo_method: :patch,
+              turbo_confirm: "Lock #{@user.fullname}? They won't be able to sign-in"
+            },
+            class:"px-3 py-1.5 text-xs font-medium
+                  text-[var(--color-danger)]
+                  border border-[var(--color-danger)]
+                  hover:bg-[var(--color-danger)] hover:text-white
+                  rounded-[var(--radius-md)]
+                  transition-colors duration-200" %>
+      <% else %>
+        <%= link_to "Unlock Account", unlock_admin_user_path(@user),
+            data:{
+              turbo_method: :patch},
+            class:"px-3 py-1.5 text-xs font-medium
+                  text-[var(--color-success)]
+                  border border-[var(--color-success)]
+                  hover:bg-[var(--color-success)] hover:text-white
+                  rounded-[var(--radius-md)]
+                  transition-colors duration-200" %>
+      <% end %>
+    </div>
     <%# Divider %>
     <hr class="border-[var(--color-divider)]">
 
