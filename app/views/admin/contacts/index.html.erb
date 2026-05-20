@@ -130,21 +130,14 @@ data-export-export-url="<%= export_selected_admin_contacts_path%>">
           <input type="checkbox"
                 class="contact-checkbox w-4 h-4 cursor-pointer
                 accent-[var(--color-accent)]"
-                value="<%= contact.id%>"
+                value="<%= contact.id %>"
                 data-action="change->export#toggle">
         </td>
         <%# Avatar + Name %>
-        <td class="px-4 py-3">
+        <td class="px-4">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-[var(--color-accent-subtle)]
-                        flex items-center justify-center
-                        text-xs font-semibold text-[var(--color-accent)] shrink-0">
-              <%= contact.firstname.first.upcase %>
+              <%= render "shared/contact_avatar_small", record: contact %>
             </div>
-            <p class="text-xs font-semibold text-[var(--color-text-heading)]">
-              <%= contact.firstname %> <%= contact.lastname %>
-            </p>
-          </div>
         </td>
 
         <%# Phone %>
