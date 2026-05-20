@@ -134,6 +134,32 @@
 </div>
     <%# Divider %>
     <hr class="border-[var(--color-divider)]">
+    <% if @user.active? %>
+      <%= link_to "Lock Account", lock_admin_user_path(@user),
+          data:{
+            turbo_method: :patch,
+            turbo_confirm: "Lock #{@user.fullname}? They won't be able to sign-in"
+          },
+          class:"px-3 py-1.5 text-xs font-medium
+                text-[var(--color-danger)]
+                border border-[var(--color-danger)]
+                hover:bg-[var(--color-danger)] hover:text-white
+                rounded-[var(--radius-md)]
+                transition-colors duration-200" %>
+    <% else %>
+      <%= link_to "Unlock Account", unlock_admin_user_path(@user),
+          data:{
+            turbo_method: :patch},
+          class:"px-3 py-1.5 text-xs font-medium
+                text-[var(--color-success)]
+                border border-[var(--color-success)]
+                hover:bg-[var(--color-success)] hover:text-white
+                rounded-[var(--radius-md)]
+                transition-colors duration-200" %>
+    <% end %>
+
+    <%# Divider %>
+    <hr class="border-[var(--color-divider)]">
 
     <%# Actions %>
       <div class="flex items-center gap-3 pt-2">
