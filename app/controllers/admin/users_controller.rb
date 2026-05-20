@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::BaseController
-
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :lock, :unlock]
   include BulkActions
   def index
     # includes(:role) — loads role data in same query,prevents N+1 query
@@ -17,11 +17,9 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
-    @user = User.find(params[:id])
   end
 
   def edit
-    @user = User.find(params[:id])
   end
 
   def create
@@ -39,7 +37,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-    @user = User.find(params[:id])
+  
     if @user.update(user_params)
       redirect_to admin_users_path, notice:"User updated."
     else
@@ -48,7 +46,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def destroy
-    @user = User.find(params[:id])
+   
     @user.destroy
     redirect_to admin_users_path, notice: "User deleted"
   end
@@ -64,8 +62,21 @@ class Admin::UsersController < Admin::BaseController
     u.created_at.strftime("%b %d, %Y")]})
   end
 
-  private
+  # lock and unlock accounts
+  def lock
+    @user.lock_account!
+    redirect_to admin_users_path, notice: "#{@user.fullname} has been locked."
+  end
 
+  def unlock
+    @user.unlock_account!
+    redirect_to admin_users_path, notice: "#{@user.fullname} has been unlocked."
+  end
+
+  private
+  def set_user
+    @user=User.find(params[:id])
+  end
   def user_params
     params.expect(user: [:email, :role_code])
   end
