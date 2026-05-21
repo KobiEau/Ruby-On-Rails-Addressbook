@@ -46,7 +46,17 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def destroy
-   
+    #prevent admin deletion
+    if @user == current_user
+      redirect_to admin_users_path, alert: "You cannot delete your own account"
+      return
+    end
+    
+    #prevent last admin deletion
+    if @user.admin? && User.where(role_code:"adm").count == 1
+      redirect_to admin_users_path, alert:"Can't delete this admin."
+    end
+
     @user.destroy
     redirect_to admin_users_path, notice: "User deleted"
   end
