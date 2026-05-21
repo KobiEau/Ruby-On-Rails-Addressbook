@@ -1,7 +1,7 @@
 <turbo-frame id="user-detail">
   <div class="p-6 space-y-4">
     <%# Header & Close button %>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between sticky top-0 z-10 bg-[var(--color-surface-card)]">
       <h2 class="text-sm font-bold text-[var(--color-text-heading)]">
         User Details
       </h2>
@@ -11,12 +11,11 @@
                 hover:text-[var(--color-danger)]
                 transition-colors duration-200" >
        X Close
-      </button>
-                
+      </button>    
     </div>
 
     <%# Avatar + Name %>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 sticky top-10 z-10 bg-[var(--color-surface-card)]">
       <%= render "shared/contact_avatar", record:@user %>
     </div>
 
@@ -105,19 +104,15 @@
   </h3>
 
   <%# The scrollable box container %>
-  <div class="space-y-2 max-h-60 overflow-y-auto pr-1 border border-[var(--color-border-subtle)] rounded-[var(--radius-lg)] p-2 bg-[var(--color-surface-muted)]/10">
+  <div class="space-y-1.5 max-h-48 overflow-y-auto ">
     <% if @user.contacts.any? %>
       <% @user.contacts.each do |contact| %>
-        <div class="flex items-center justify-between p-2 rounded-[var(--radius-md)] bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)] shadow-sm">
+        <div class="flex items-center justify-between p-2 rounded-[var(--radius-md)] 
+                    bg-[var(--color-surface-card)] 
+                    border border-[var(--color-border-subtle)] shadow-sm">
           <div class="flex items-center gap-2 overflow-hidden">
-            <%# Initials circle %>
-            <div class="w-7 h-7 rounded-full bg-[var(--color-accent-subtle)] flex items-center justify-center text-[10px] font-bold text-[var(--color-accent)] shrink-0">
-              <%= contact.firstname.first.upcase rescue '?' %>
-            </div>
-            <div class="overflow-hidden">
-              <p class="text-xs font-medium text-[var(--color-text-heading)] truncate">
-                <%= contact.firstname %> <%= contact.lastname %>
-              </p>
+             <div class="flex items-center gap-3">
+              <%= render "shared/contact_avatar_small", record: contact %>
             </div>
           </div>
           
@@ -133,51 +128,55 @@
   </div>
 </div>
     <%# Divider %>
+      <% unless @user == current_user%>
     <hr class="border-[var(--color-divider)]">
-    <%= form_with model: [:admin, @user], method: :patch,
-        data:{turbo_frame: "_top"} do |form|%>
-        <%= form.select :role_code,
-            [["User","usr"],["Admin","adm"]],
-            {selected: @user.role_code},
-            onchange:"if(confirm('Change role for #{@user.fullname}?')){
-                      this.form.submit()
-                    }else {
-                      this.value = '#{@user.role_code}'
-                    }",
-            class:"px-2 py-1 text-xs bg-[var(--color-input-bg)]
-                  text-[var(--color-text-heading)]
-                  border border-[var(--color-border-subtle)]
-                  rounded-[var(--radius-md)] focus:outline-none
-                  focus:ring-1 focus:ring-[var(--color-accent)]"%>
-    <% end%>
+        <%= form_with model: [:admin, @user], method: :patch,
+            data:{turbo_frame: "_top"} do |form|%>
+            <%= form.select :role_code,
+                [["User","usr"],["Admin","adm"]],
+                {selected: @user.role_code},
+                onchange:"if(confirm('Change role for #{@user.fullname}?')){
+                          this.form.submit()
+                        }else {
+                          this.value = '#{@user.role_code}'
+                        }",
+                class:"px-2 py-1 text-xs bg-[var(--color-input-bg)]
+                      text-[var(--color-text-heading)]
+                      border border-[var(--color-border-subtle)]
+                      rounded-[var(--radius-md)] focus:outline-none
+                      focus:ring-1 focus:ring-[var(--color-accent)]"%>
+          <% end %>
+      <% end%>
 
-    <%# Divider %>
-    <hr class="border-[var(--color-divider)]">
-    <div>
-      <% if @user.active? %>
-        <%= link_to "Lock Account", lock_admin_user_path(@user),
-            data:{
-              turbo_method: :patch,
-              turbo_confirm: "Lock #{@user.fullname}? They won't be able to sign-in"
-            },
-            class:"px-3 py-1.5 text-xs font-medium
-                  text-[var(--color-danger)]
-                  border border-[var(--color-danger)]
-                  hover:bg-[var(--color-danger)] hover:text-white
-                  rounded-[var(--radius-md)]
-                  transition-colors duration-200" %>
-      <% else %>
-        <%= link_to "Unlock Account", unlock_admin_user_path(@user),
-            data:{
-              turbo_method: :patch},
-            class:"px-3 py-1.5 text-xs font-medium
-                  text-[var(--color-success)]
-                  border border-[var(--color-success)]
-                  hover:bg-[var(--color-success)] hover:text-white
-                  rounded-[var(--radius-md)]
-                  transition-colors duration-200" %>
+      <% unless @user == current_user %>
+        <%# Divider %>
+        <hr class="border-[var(--color-divider)]">
+        <div>
+            <% if @user.active? %>
+              <%= link_to "Lock Account", lock_admin_user_path(@user),
+                  data:{
+                    turbo_method: :patch,
+                    turbo_confirm: "Lock #{@user.fullname}? They won't be able to sign-in"
+                  },
+                  class:"px-3 py-1.5 text-xs font-medium
+                        text-[var(--color-danger)]
+                        border border-[var(--color-danger)]
+                        hover:bg-[var(--color-danger)] hover:text-white
+                        rounded-[var(--radius-md)]
+                        transition-colors duration-200" %>
+            <% else %>
+              <%= link_to "Unlock Account", unlock_admin_user_path(@user),
+                  data:{
+                    turbo_method: :patch},
+                  class:"px-3 py-1.5 text-xs font-medium
+                        text-[var(--color-success)]
+                        border border-[var(--color-success)]
+                        hover:bg-[var(--color-success)] hover:text-white
+                        rounded-[var(--radius-md)]
+                        transition-colors duration-200" %>
+            <% end %>
+        </div>
       <% end %>
-    </div>
     <%# Divider %>
     <hr class="border-[var(--color-divider)]">
 
@@ -190,17 +189,19 @@
                     hover:bg-[var(--color-btn-secondary-hover)]
                     text-white rounded-[var(--radius-md)]
                     transition-colors duration-200" %>
-        <%= link_to "Delete", admin_user_path(@user),
-              data:{
-                turbo_method: :delete,
-                turbo_confirm: "Delete #{@user.fullname}? This also deletes all their contacts."
-              },
-              class:"px-3 py-1.5 text-xs font-medium 
-                    text-[var(--color-danger)]
-                    border border-[var(--color-danger)]
-                    hover:bg-[var(--color-danger)] hover:text-white
-                    rounded-[var(--radius-md)] transition-colors duration-200"
-              %>
+        <% unless @user == current_user%>
+          <%= link_to "Delete", admin_user_path(@user),
+                data:{
+                  turbo_method: :delete,
+                  turbo_confirm: "Delete #{@user.fullname}? This also deletes all their contacts."
+                },
+                class:"px-3 py-1.5 text-xs font-medium 
+                      text-[var(--color-danger)]
+                      border border-[var(--color-danger)]
+                      hover:bg-[var(--color-danger)] hover:text-white
+                      rounded-[var(--radius-md)] transition-colors duration-200"
+                %>
+        <% end %>
       </div>
 
   </div>
