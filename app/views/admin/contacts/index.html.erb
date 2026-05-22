@@ -186,11 +186,13 @@ data-export-export-url="<%= export_selected_admin_contacts_path%>">
                           text-[var(--color-text-muted)]
                           hover:text-[var(--color-text-heading)]
                           transition-colors duration-200" %>
-            <%= link_to "Delete", admin_contact_path(contact),
-                  data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Delete #{contact.firstname} #{contact.lastname}? This cannot be undone."
-                  },
+            <%= link_to "Delete", "#",
+                   data: {
+                        action: "click->modal#open",
+                        modal_message: "Delete #{contact.fullname}?",
+                        modal_url: admin_contact_path(contact),
+                        modal_method: :delete,
+                      },
                   class: "text-xs font-medium
                           text-[var(--color-danger)]
                           hover:text-[var(--color-danger-hover)]
