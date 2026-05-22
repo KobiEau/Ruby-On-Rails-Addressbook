@@ -97,7 +97,7 @@
           class: "px-3 py-1 text-sm font-semibold rounded-[var(--radius-full)]
                   transition-colors duration-200
                   #{params[:category].blank? ?
-                  'bg-[var(--color-accent)] text-[var(-color-text-on-accent)]':
+                  'bg-[var(--color-accent)] text-[var(--color-text-on-accent)]':
                   'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]'}"%>
 
       <%Contact::CATEGORIES.each do |cat|%>
