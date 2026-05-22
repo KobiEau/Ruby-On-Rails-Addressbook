@@ -181,8 +181,8 @@
           </td>
           <%# Avatar + Name %>
           <td class="px-4 py-3">
-             <div class="flex items-center gap-3">
-              <%= render "shared/contact_avatar_small", record:user %>
+            <div class="flex items-center gap-3">
+              <%= render "shared/contact_avatar_small", record: user %>
             </div>
           </td>
 
@@ -238,15 +238,20 @@
                             text-[var(--color-text-muted)]
                             hover:text-[var(--color-text-heading)]
                             transition-colors duration-200" %>
-              <%= link_to "Delete", admin_user_path(user),
-                    data: {
-                      turbo_method: :delete,
-                      turbo_confirm: "Delete #{user.fullname}? This also deletes all their contacts."
-                    },
-                    class: "text-xs font-medium
-                            text-[var(--color-danger)]
-                            hover:text-[var(--color-danger-hover)]
-                            transition-colors duration-200" %>
+              <% unless user == current_user%>
+                <%= link_to "Delete", "#",
+                     data: {
+                        action: "click->modal#open",
+                        modal_message: "Delete #{user.fullname}? This also deletes all their contacts.",
+                        modal_url: admin_user_path(user),
+                        modal_method: :delete,
+                      },
+                      class: "text-xs font-medium
+                              text-[var(--color-danger)]
+                              hover:text-[var(--color-danger-hover)]
+                              transition-colors duration-200" 
+                %>
+              <% end %>
             </div>
           </td>
         </tr>
