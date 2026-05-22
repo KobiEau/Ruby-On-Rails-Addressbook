@@ -65,7 +65,7 @@ class ContactsController < ApplicationController
     contacts = current_user.contacts
 
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << ["Firt Name", "Last Name", "Phone Number"]
+      csv << ["First Name", "Last Name", "Phone Number"]
       contacts.each do |contact|
         csv << [contact.firstname, contact.lastname,contact.phone_number]
       end
@@ -84,7 +84,7 @@ class ContactsController < ApplicationController
 
     # no csv file uploaded?
     unless file&.content_type=="text/csv"
-    redirect_to account_path, alert:"Please upload a valid CSV file". 
+    redirect_to import_contacts_path, alert:"Please upload a valid CSV file" 
     return
     end
     
