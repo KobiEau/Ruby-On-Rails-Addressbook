@@ -9,6 +9,53 @@
     <%= javascript_importmap_tags %>
   </head>
 
+  <div data-controller="modal">
+    <%# Backdrop + modal container %>
+    <div data-modal-target = "container" 
+        class= "hidden fixed inset-0 z-50 flex items-center justify-center">
+      <%# Backdrop %>
+      <div class= "absolute inset-0 bg-black/50"
+          data-action="click->modal#close">
+      </div>
+
+      <%# Modal card %>
+      <div class= "relative z-10 w-full max-w-sm mx-4
+                  bg-[var(--color-surface-card)]
+                  rounded-[var(--radius-lg)]
+                  shadow-[var(--shadow-card)]
+                  p-6 space-y-4">
+
+        <h3 class="text-sm font-bold text-[var(--color-text-heading)]">
+          Confirm Action
+        </h3>
+        <p class="text-sm text-[var(--color-text-body)]"
+            data-modal-target="message">
+        </p>
+
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button data-action="click->modal#close"
+                  type="button"
+                  class="px-4 py-2 text-sm font-medium
+                        text-[var(--color-text-muted)]
+                        hover:text-[var(--color-text-heading)]
+                        transition-colors duration-200">
+            Cancel
+          </button>
+
+          <button data-modal-target="confirmBtn"
+                  data-action="click->modal#confirm"
+                  type="button"
+                  class="px-4 py-2 text-sm font-medium
+                        bg-[var(--color-danger)]
+                        hover:bg-[var(--color-btn-danger-hover)]
+                        text-white rounded-[var(--radius-md)]
+                        transition-colors duration-200">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+ 
   <body class="bg-[var(--bg-slate-50)] text-[var(--color-text-base)] min-h-screen">
     <div class="flex min-h-screen">
 
@@ -30,4 +77,5 @@
       </div>
     </div>
   </body>
+ </div>
 </html>
