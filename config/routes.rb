@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users,
-    controllers:{
+  devise_for :users,controllers:{
       #tell devise to use this custom controller
-      registration: "users/registrations"
+      registrations: "users/registrations"
     }
   
   get "pages/home"
