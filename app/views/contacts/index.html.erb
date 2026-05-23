@@ -1,18 +1,21 @@
 <%# Page Header %>
-<header class="mb-10 py-7 sticky top-10 z-40">
+<header class="mb-4 py-3 sticky top-12 z-40">
   <span class = "text-sm font-semibold uppercase tracking-widest mb-1">Welcome back,</span>
-  <span class="text-sm font-semibold text-accent uppercase tracking-widest mb-1">
+  <span class="text-[var(--color-accent)]">
      <%= current_user.fullname %>
   </span>
-  <h1 class="text-4xl font-black tracking-tight">
+  <h1 class="text-2xl font-black tracking-tight">
     My Contacts
   </h1>
-  <span class="">Total contacts: <%= current_user.contacts.count%></span>
+  <span class="text-sm text-[var(--color-text-muted)]">Total contacts: <%= current_user.contacts.count%></span>
 </header>
 
-<div data-controller="view-toggle export">
+<div data-controller="view-toggle export"
+    data-export-export-url="<%= export_selected_contacts_path %>"
+    data-export-delete-url="<%= bulk_destroy_contacts_path%>"
+  class= "sticky top-16 z-40">
 
-  <div class="flex flex-wrap items-center gap-3 mb-8 sticky top-43 z-40">
+  <div class="flex flex-wrap items-center gap-3 mb-3  z-40">
     <%= form_with url: contacts_path, method: :get, local: true, class: "flex-1 min-w-[200px]" do |form| %>
       <div class="flex gap-2">
         <%= form.text_field :search,
@@ -62,7 +65,7 @@
   </div>
 
   <%# Sort + Filter %>
-  <div class="flex items-center gap-[var(--spacing-3)] mb-[var(--spacing-6)] flex-wrap">
+  <div class="flex flex-wrap items-center gap-3 mb-4 ">
     <%# Sort %>
     <%= form_with url: contacts_path, method: :get, local:true do |form|%>
       <%= form.hidden_field :search, value: params[:search]%>
@@ -112,7 +115,7 @@
     </div>
   </div>
 
-  <div class="flex flex-wrap items-center gap-3 mb-4 sticky top-54 z-40">
+  <div class="ml-auto flex flex-wrap items-center gap-3 mb-0  z-40">
     <%# Export Selected button - disabled by default%>
     <%# <%= link_to "Export selected", export_selected_contacts_path, data: {disabled:true}%>
     <a id="export-btn",
@@ -146,23 +149,27 @@
     <%end%>
 
     <%#  next to export-btn %>
-    <a id="delete-btn"
-      class="hidden px-4 py-2 rounded-[var(--radius-md)]
-              outline outline-[var(--color-btn-danger)]
-              text-black
-              font-semibold text-sm
-              hover:bg-[var(--color-btn-danger-hover)] 
-              transition-colors duration-200"
-      data-turbo-method="delete"
-      data-turbo-confirm="Are you sure you want to delete these contacts?">
+    
+
+    <button id="delete-btn"
+        type="button"
+        data-action="click->export#deleteSelected"
+        class="hidden px-4 py-2 rounded-[var(--radius-md)]
+               outline outline-[var(--color-btn-danger)]
+               text-[var(--color-btn-danger)]
+               font-semibold text-sm
+               hover:bg-[var(--color-btn-danger)]
+               hover:text-white
+               cursor-pointer
+               transition-colors duration-200">
       Delete Selected
-    </a>
+    </button>
   </div>
 
     <div data-view-toggle-target="cardView">
       <%# Contacts grid %>
       <% if @contacts.any? %>
-         <div class="flex items-center gap-2 mb-4 sticky top-65">
+         <div class="flex items-center gap-2 mb-4 ">
           <input type="checkbox"
                 id="select-all-cards"
                 class="w-4 h-4 accent-[var(--color-accent)] cursor-pointer select-all-checkbox"
@@ -173,7 +180,7 @@
           </label>
         </div>
 
-        <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-5 overflow-y-auto max-h-[300px]">
+        <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 overflow-y-auto max-h-[300px]">
           <% @contacts.each do |contact| %>
           <div data-action="change->export#toggle">
             <%= render "contact_card", contact: contact %>
@@ -205,8 +212,8 @@
                     rounded-lg shadow overflow-hidden">
           <div class="max-h-99 overflow-y-auto">
 
-          <table class="w-full text-sm mb-9 sticky top-70">
-            <thead class="sticky top-0  bg-[var(--color-surface-card)] z-10">
+          <table class="w-full text-sm mb-9 ">
+            <thead class="  bg-[var(--color-surface-card)] z-10">
               <tr class="border-b border-[var(--color-border-subtle)]">
                 <%# New: checkbox column header with select-all %>
                 <th class="px-4 py-3 w-10">
@@ -261,7 +268,6 @@
                     <td class="px-6 py-4 text-right">
                       <%= link_to "View More", contact_path(contact),
                             class: "px-3 py-1 text-xs font-semibold whitespace-nowrap
-                                    /*bg-[var(--color-btn-card)] hover:bg-[var(--color-btn-card-hover)]*/
                                     bg-[var(--color-view-toggle)] hover:bg-[var(--color-view-toggle-hover)]
                                     text-[var(--color-text-white)] rounded-lg transition-colors duration-200" %>
                     </td>
@@ -291,13 +297,13 @@
   
 
     <%# Pagination footer %>
-  <div  class="fixed bottom-0 left-34 right-34 z-40
+  <div  class="fixed bottom-4 right-4 z-40
              bg-[var(--color-surface-raised)] 
-            border-t border-[var(--color-border-subtle)]
-            shadow-[var(--shadow-navbar)]">
+            border border-[var(--color-border-subtle)]
+            rounded-[var(--radius-lg)] px-3 py-1
+            shadow-[var(--shadow-navbar)] ">
 
-    <div class="max-w-6xl mx-auto px-6 py-[var(--spacing-3)]
-              flex items-center justify-between">
+    <div class="flex items-center gap-3">
           <% if @contacts.total_pages >= 1 %>
 
             <%# Contact count %>
@@ -333,12 +339,12 @@
                                     search: params[:search],
                                     sort: params[:sort],
                                     category: params[:category]),
-                      class: "px-4 py-2 text-sm font-semibold
+                      class: "px-2 py-1 text-sm font-semibold
                               bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
                               text-white rounded-[var(--radius-md)]
                               transition-colors duration-200" %>
               <% else %>
-                <span class="px-4 py-2 text-sm font-semibold
+                <span class="px-2 py-1 text-sm font-semibold
                             bg-[var(--color-surface-muted)]
                             text-[var(--color-text-muted)]
                             rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
@@ -358,12 +364,12 @@
                                     search: params[:search],
                                     sort: params[:sort],
                                     category: params[:category]),
-                      class: "px-4 py-2 text-sm font-semibold
+                      class: "px-2 py-1 text-sm font-semibold
                               bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
                               text-white rounded-[var(--radius-md)]
                               transition-colors duration-200" %>
               <% else %>
-                <span class="px-4 py-2 text-sm font-semibold
+                <span class="px-2 py-1 text-sm font-semibold
                             bg-[var(--color-surface-muted)]
                             text-[var(--color-text-muted)]
                             rounded-[var(--radius-md)] opacity-50 cursor-not-allowed">
