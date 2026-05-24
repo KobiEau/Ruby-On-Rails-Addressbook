@@ -10,6 +10,15 @@
       </div>
     <% end %>
 
+    <% if flash[:timedout] %>
+      <div class="bg-[var(--color-flash-alert-bg)]
+              border border-[var(--color-flash-alert-border)]
+              text-[var(--color-flash-alert-text)]
+              px-4 py-3 rounded-lg mb-[var(--spacing-4)] text-sm">
+        <%= flash[:timedout] %>
+      </div>
+    <% end %>
+
 <script>
   //Auto-hide message after 3 seconds
   document.querySelectorAll('.flash-message').forEach(element => {
