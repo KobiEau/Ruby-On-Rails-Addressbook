@@ -1,25 +1,97 @@
-<h2>Change your password</h2>
+<div class="min-h-screen flex items-center justify-center
+            bg-[var(--color-surface)]
+            px-4 py-[var(--spacing-8)]">
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+  <div class="w-full max-w-md">
 
-  <div class="field">
-    <p><%= f.label :password, "New password" %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
-    <% end %>
-    <p><%= f.password_field :password, autofocus: true, autocomplete: "new-password" %></p>
-  </div>
+    <%# ── Brand ── %>
+    <div class="text-center mb-[var(--spacing-6)]">
+      <h1 class="text-2xl font-bold tracking-tight
+                 text-[var(--color-text-base)]">
+        <span class="text-[var(--color-accent)]">A</span>ddressbook
+      </h1>
+      <p class="mt-1 text-sm text-[var(--color-text-muted)]">
+        Choose a new password
+      </p>
+    </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation, "Confirm new password" %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                px-[var(--spacing-8)] py-[var(--spacing-8)]">
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+      <%= render "shared/flash" %>
+
+      <%# Error block — shows if new password fails validation
+          e.g. too short, confirmation doesn't match %>
+      <%= render "shared/error_block",
+            record: resource,
+            message: "prevented your password from being reset" %>
+
+      <%# url: password_path(resource_name) with method PUT —
+          Devise's update password route %>
+      <%= form_for(resource,
+                   as: resource_name,
+                   url: password_path(resource_name),
+                   html: { method: :put }) do |form| %>
+
+        <%# reset_password_token is a hidden field — the user never
+            sees it but Devise needs it to verify the reset request
+            is legitimate and hasn't expired (tokens expire after
+            6 hours by default) %>
+        <%= form.hidden_field :reset_password_token %>
+
+        <div class="mb-[var(--spacing-4)]">
+          <%= form.label :password, "New password",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :password,
+                placeholder: "At least 6 characters" %>
+          <% if @minimum_password_length %>
+            <p class="mt-1 text-xs text-[var(--color-text-muted)]">
+              Minimum <%= @minimum_password_length %> characters
+            </p>
+          <% end %>
+        </div>
+
+        <div class="mb-[var(--spacing-6)]">
+          <%= form.label :password_confirmation, "Confirm new password",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :password_confirmation,
+                placeholder: "Re-enter new password" %>
+        </div>
+
+        <%= form.submit "Reset my password",
+              class: "w-full py-[var(--spacing-3)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      cursor-pointer
+                      transition-colors duration-200" %>
+
+      <% end %>
+    </div>
+
+    <p class="text-center mt-[var(--spacing-6)]
+              text-sm text-[var(--color-text-muted)]">
+      Remember your password?
+      <%= link_to "Sign in",
+            new_user_session_path,
+            class: "font-semibold text-[var(--color-accent)]
+                    hover:text-[var(--color-accent-hover)]
+                    transition-colors duration-200" %>
+    </p>
 
 <%= render "devise/shared/links" %>
+  </div>
+</div>
+
+
