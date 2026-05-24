@@ -1,42 +1,385 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<%# app/views/devise/registrations/edit.html.erb %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<%# This page has four cards:
+    1. Profile  — firstname, lastname (no password required)
+    2. Email    — email + current_password (password gates the change)
+    3. Password — current + new + confirmation
+    4. Danger zone — delete account via modal %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+<div class="min-h-screen px-4 py-[var(--spacing-8)]">
+  <div class="max-w-lg mx-auto">
+
+    <%# ── Back link ── %>
+    <%= render "shared/back_link",
+          text: "← Back to Contacts",
+          path: contacts_path %>
+
+    <%# ── Page heading ── %>
+    <div class="mb-[var(--spacing-6)]">
+      <h1 class="text-xl font-bold text-[var(--color-text-muted)]">
+        Account Settings
+      </h1>
+      <p class="text-sm text-[var(--color-text-muted)] mt-1">
+        Manage your profile, email and password
+      </p>
+    </div>
+
+    <%# ── Flash messages ── %>
+    <%# Devise puts success/failure messages here after redirecting back %>
+    <%= render "shared/flash" %>
+
+    <%# ════════════════════════════════════════════
+        CARD 1 — Profile (firstname, lastname)
+        No password required — low risk fields
+        Uses update_without_password path in controller
+        ════════════════════════════════════════════ %>
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                px-[var(--spacing-8)] py-[var(--spacing-6)]
+                mb-[var(--spacing-6)]">
+
+      <h2 class="text-base font-bold text-[var(--color-text-heading)]
+                 mb-[var(--spacing-6)]">
+        Profile
+      </h2>
+
+      <%# form_for with resource/resource_name is Devise's pattern.
+          method: :put tells Rails this is an update, not a create.
+          Each card is its own form — they submit independently. %>
+      <%= form_for(resource,
+                   as: resource_name,
+                   url: registration_path(resource_name),
+                   html: { method: :put }) do |form| %>
+
+        <%# Error block — shows if update_without_password fails validation %>
+        <%= render "shared/error_block",
+              record: resource,
+              message: "prevented your profile from being updated" %>
+
+        <div class="flex gap-[var(--spacing-3)] mb-[var(--spacing-4)]">
+          <div class="flex-1">
+            <%= form.label :firstname, "First name",
+                  class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                          text-[var(--color-label)]" %>
+            <%= form.text_field :firstname,
+                  autocomplete: "given-name",
+                  class: "w-full px-[var(--spacing-3)] py-[var(--spacing-3)]
+                          bg-[var(--color-input-bg)]
+                          border border-[var(--color-input-border)]
+                          rounded-[var(--radius-md)]
+                          text-sm text-[var(--color-text-heading)]
+                          focus:outline-none focus:ring-2
+                          focus:ring-[var(--color-input-focus)]
+                          transition-shadow duration-200" %>
+          </div>
+
+          <div class="flex-1">
+            <%= form.label :lastname, "Last name",
+                  class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                          text-[var(--color-label)]" %>
+            <%= form.text_field :lastname,
+                  autocomplete: "family-name",
+                  class: "w-full px-[var(--spacing-3)] py-[var(--spacing-3)]
+                          bg-[var(--color-input-bg)]
+                          border border-[var(--color-input-border)]
+                          rounded-[var(--radius-md)]
+                          text-sm text-[var(--color-text-heading)]
+                          focus:outline-none focus:ring-2
+                          focus:ring-[var(--color-input-focus)]
+                          transition-shadow duration-200" %>
+          </div>
+        </div>
+
+        <%# form.submit with no comma — documented Rails quirk %>
+        <%= form.submit "Save profile",
+              class: "px-[var(--spacing-6)] py-[var(--spacing-3)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      cursor-pointer
+                      transition-colors duration-200" %>
+
+      <% end %>
+    </div>
+
+    <%# ════════════════════════════════════════════
+        CARD 2 — Email
+        current_password is required here.
+        When current_password is present, the controller
+        calls super — Devise verifies the password then
+        saves the new email.
+        ════════════════════════════════════════════ %>
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                px-[var(--spacing-8)] py-[var(--spacing-6)]
+                mb-[var(--spacing-6)]">
+
+      <h2 class="text-base font-bold text-[var(--color-text-heading)]
+                 mb-1">
+        Email address
+      </h2>
+      <p class="text-sm text-[var(--color-text-muted)]
+                mb-[var(--spacing-6)]">
+        Current: <span class="font-medium text-[var(--color-text-body)]">
+          <%= current_user.email %>
+        </span>
+      </p>
+
+      <%= form_for(resource,
+                   as: resource_name,
+                   url: registration_path(resource_name),
+                   html: { method: :put }) do |form| %>
+
+        <div class="mb-[var(--spacing-4)]">
+          <%= form.label :email, "New email address",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= form.email_field :email,
+                autocomplete: "email",
+                placeholder: "new@example.com",
+                class: "w-full px-[var(--spacing-3)] py-[var(--spacing-3)]
+                        bg-[var(--color-input-bg)]
+                        border border-[var(--color-input-border)]
+                        rounded-[var(--radius-md)]
+                        text-sm text-[var(--color-text-heading)]
+                        placeholder:text-[var(--color-text-muted)]
+                        focus:outline-none focus:ring-2
+                        focus:ring-[var(--color-input-focus)]
+                        transition-shadow duration-200" %>
+        </div>
+
+        <%# current_password being present is what tells our controller
+            to take the super path — Devise's verified update.
+            Without it, the controller would call update_without_password
+            which only allows firstname/lastname. %>
+        <div class="mb-[var(--spacing-6)]">
+          <%= form.label :current_password, "Current password to confirm",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :current_password,
+                placeholder: "Enter your current password" %>
+          <p class="mt-1 text-xs text-[var(--color-text-muted)]">
+            We need your current password to confirm this change
+          </p>
+        </div>
+
+        <%= form.submit "Update email",
+              class: "px-[var(--spacing-6)] py-[var(--spacing-3)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      cursor-pointer
+                      transition-colors duration-200" %>
+
+      <% end %>
+    </div>
+
+    <%# ════════════════════════════════════════════
+        CARD 3 — Change Password
+        All three fields required. current_password being
+        present routes through super (Devise's verified update).
+        ════════════════════════════════════════════ %>
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                px-[var(--spacing-8)] py-[var(--spacing-6)]
+                mb-[var(--spacing-6)]">
+
+      <h2 class="text-base font-bold text-[var(--color-text-heading)]
+                 mb-[var(--spacing-6)]">
+        Change password
+      </h2>
+
+      <%= form_for(resource,
+                   as: resource_name,
+                   url: registration_path(resource_name),
+                   html: { method: :put }) do |form| %>
+
+        <div class="mb-[var(--spacing-4)]">
+          <%= form.label :current_password, "Current password",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :current_password,
+                placeholder: "Enter your current password" %>
+        </div>
+
+        <div class="mb-[var(--spacing-4)]">
+          <%= form.label :password, "New password",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :password,
+                placeholder: "At least 6 characters" %>
+          <% if @minimum_password_length %>
+            <p class="mt-1 text-xs text-[var(--color-text-muted)]">
+              Minimum <%= @minimum_password_length %> characters
+            </p>
+          <% end %>
+        </div>
+
+        <div class="mb-[var(--spacing-6)]">
+          <%= form.label :password_confirmation, "Confirm new password",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :password_confirmation,
+                placeholder: "Re-enter new password" %>
+        </div>
+
+        <%= form.submit "Update password",
+              class: "px-[var(--spacing-6)] py-[var(--spacing-3)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      cursor-pointer
+                      transition-colors duration-200" %>
+
+      <% end %>
+    </div>
+
+    <div class="bg-[var(--color-surface-card)]
+            rounded-[var(--radius-lg)]
+            shadow-[var(--shadow-card)]
+            px-[var(--spacing-8)] py-[var(--spacing-6)]
+            mb-[var(--spacing-6)]">
+
+  <h2 class="text-base font-bold text-[var(--color-text-heading)] mb-1">
+    Contacts data
+  </h2>
+  <p class="text-sm text-[var(--color-text-muted)] mb-[var(--spacing-6)]">
+    Import or export your contacts as a CSV file
+  </p>
+
+  <%# Export row %>
+  <div class="flex items-center justify-between
+              pb-[var(--spacing-4)]
+              border-b border-[var(--color-border-subtle)]
+              mb-[var(--spacing-4)]">
+    <div>
+      <p class="text-sm font-semibold text-[var(--color-text-heading)] mb-0">
+        Export all contacts
+      </p>
+      <p class="text-xs text-[var(--color-text-muted)] mb-0">
+        Download your entire addressbook as a CSV file
+      </p>
+    </div>
+
+    <%# export_contacts_path triggers send_data — downloads the file directly,
+        no page change. onclick confirm stops accidental downloads. %>
+    <%= link_to "Export CSV",
+          export_contacts_path,
+          onclick: "return confirm('Export all your contacts to CSV?')",
+          class: "shrink-0 px-4 py-2 text-sm font-semibold
+                  bg-[var(--color-btn-secondary)]
+                  hover:bg-[var(--color-btn-secondary-hover)]
+                  text-white
+                  rounded-[var(--radius-md)]
+                  transition-colors duration-200
+                  whitespace-nowrap" %>
   </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <%# Import row %>
+    <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold text-[var(--color-text-heading)] mb-0">
+            Import contacts
+          </p>
+          <p class="text-xs text-[var(--color-text-muted)] mb-0">
+            Add contacts from a CSV file
+          </p>
+        </div>
 
-  <div class="field">
-    <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i></p>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-    <% if @minimum_password_length %>
-      <p><em><%= @minimum_password_length %> characters minimum</em></p>
-    <% end %>
+        <%# Links to the dedicated import page %>
+        <%= link_to "Import CSV",
+              import_contacts_path,
+              class: "shrink-0 px-4 py-2 text-sm font-semibold
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      transition-colors duration-200
+                      whitespace-nowrap" %>
+      </div>
+
+    </div>
+
+
+
+    <%# ════════════════════════════════════════════
+        CARD 4 — Danger Zone
+        Delete account. The button triggers the modal
+        confirmation system (modal_controller.js).
+        Devise then requires current_password before
+        actually destroying the account — two barriers.
+        ════════════════════════════════════════════ %>
+    <div class="bg-[var(--color-error-bg)]
+                border border-[var(--color-error-border)]
+                rounded-[var(--radius-lg)]
+                px-[var(--spacing-8)] py-[var(--spacing-6)]">
+
+      <h2 class="text-base font-bold text-[var(--color-error-text)]
+                 mb-1">
+        Danger zone
+      </h2>
+      <p class="text-sm text-[var(--color-error-text)]
+                opacity-80 mb-[var(--spacing-6)]">
+        Permanently delete your account and all your contacts.
+        This cannot be undone.
+      </p>
+
+      <%=form_for(resource, as: resource_name, 
+                  url:registration_path(resource_name),
+                  html:{method: :delete, 
+                  id: "delete-account-form"}) do |form|%>
+          
+        <%= render "shared/error_block",
+            record: resource,
+            message: "prevented your profile from being updated" %>
+        
+        <div class="mb-[var(--spacing-4)]">
+          <%= form.label :current_password, "Enter password to confirm",
+              class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                    text-[var(--color-error-text)]"%>
+          <%= render "shared/password_field", form: form,
+              field_name: :current_password,  placeholder: "Your current password"%>
+        </div>
+        <%# button triggers the modal — it does NOT submit anything.
+            data-action tells Stimulus to call modal#open on click.
+            data-modal-* attributes are read by the modal controller
+            to populate the confirmation dialog. %>
+        <button type="button"
+                data-action="click->modal#open"
+                data-modal-message="Delete your account? This will permanently remove all your contacts too."
+                data-modal-form ="delete-account-form"
+                class="px-[var(--spacing-6)] py-[var(--spacing-3)]
+                      bg-[var(--color-btn-danger)]
+                      hover:bg-[var(--color-btn-danger-hover)]
+                      text-white text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      cursor-pointer
+                      transition-colors duration-200">
+          Delete my account
+        </button>
+      <% end %>
+    </div>
+
   </div>
-
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, autocomplete: "current-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>
