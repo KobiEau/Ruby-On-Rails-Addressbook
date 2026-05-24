@@ -1,26 +1,123 @@
-<h2>Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+<%# app/views/devise/sessions/new.html.erb %>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
+<div class="min-h-screen flex items-center justify-center
+            bg-[var(--color-surface)]
+            px-4 py-[var(--spacing-8)]">
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
+  <div class="w-full max-w-md">
+
+    <%# ── Logo / Brand ── %>
+    <div class="text-center mb-[var(--spacing-6)]">
+      <h1 class="text-2xl font-bold tracking-tight
+                 text-[var(--color-text-base)]">
+        <span class="text-[var(--color-accent)]">A</span>ddressbook
+      </h1>
+      <p class="mt-1 text-sm text-[var(--color-text-muted)]">
+        Sign in to your account
+      </p>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <%# ── Card ── %>
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                px-[var(--spacing-8)] py-[var(--spacing-8)]">
+
+      <%# Flash messages — alerts like "invalid email or password" %>
+      <%# These come from Devise automatically when login fails %>
+      <%= render "shared/flash" %>
+
+      <%# The sign in form %>
+      <%# form_for is Devise's preferred helper %>
+      <%# resource     = the User object Devise prepares for us %>
+      <%# resource_name = :user %>
+      <%# session_path(resource_name) = /users/sign_in (the POST route Devise creates) %>
+      <%= form_for(resource,
+                   as: resource_name,
+                   url: session_path(resource_name)) do |form| %>
+
+        <%# ── Email ── %>
+        <div class="mb-[var(--spacing-4)]">
+          <%= form.label :email, "Email address",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= form.email_field :email,
+                autofocus: true,
+                autocomplete: "email",
+                placeholder: "you@example.com",
+                class: "w-full px-4 py-2 pr-10 text-sm
+                  bg-[var(--color-input-bg)]
+                  text-[var(--color-text-heading)]
+                  border border-[var(--color-input-border)]
+                  rounded-lg
+                  focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)]
+                  transition" %>
+        </div>
+
+        <%# ── Password (with show/hide toggle) ── %>
+        <%# The shared/_password_field partial handles the eye icon button %>
+        <%# It accepts: form (the form builder), field_name, placeholder %>
+        <div class="mb-[var(--spacing-2)]">
+          <%= form.label :password, "Password",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= render "shared/password_field",
+                form: form,
+                field_name: :password,
+                placeholder: "Enter your password" %>
+        </div>
+
+        <%# ── Forgot password link ── %>
+        <div class="text-right mb-[var(--spacing-6)]">
+          <%= link_to "Forgot your password?",
+                new_user_password_path,
+                class: "text-xs text-[var(--color-text-muted)]
+                        hover:text-[var(--color-accent)]
+                        transition-colors duration-200" %>
+        </div>
+
+        <%# ── Remember me ── %>
+        <%# Devise's :rememberable module provides this — stores a cookie %>
+        <%# so the user stays signed in across browser sessions %>
+        <div class="flex items-center gap-[var(--spacing-2)] mb-[var(--spacing-6)]">
+          <%= form.check_box :remember_me,
+                class: "w-4 h-4 rounded accent-[var(--color-accent)] cursor-pointer" %>
+          <%= form.label :remember_me, "Remember me",
+                class: "text-sm text-[var(--color-text-body)] cursor-pointer" %>
+        </div>
+
+        <%# ── Submit ── %>
+        <%# form.submit with no comma — Rails quirk, documented in the project notes %>
+        <%= form.submit "Sign in",
+              class: "w-full py-[var(--spacing-3)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      cursor-pointer
+                      transition-colors duration-200" %>
+
+      <% end %>
+    </div>
+
+    <%# ── Sign up link (below the card) ── %>
+    <%# <div class="text-center mt-[var(--spacing-6)]
+              text-sm text-[var(--color-text-muted)]">
+      <p>
+      Don't have an account?
+      <%#= link_to "Sign up",
+            new_user_registration_path,
+            class: "font-semibold text-[var(--color-accent)]
+                    hover:text-[var(--color-accent-hover)]
+                    transition-colors duration-200"
+      </p>
+    </div> %>
+
+    
+  
+  <%= render "devise/shared/links" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
