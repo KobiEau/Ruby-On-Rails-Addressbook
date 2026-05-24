@@ -1,16 +1,85 @@
-<h2>Forgot your password?</h2>
+<div class="min-h-screen flex items-center justify-center
+            bg-[var(--color-surface)]
+            px-4 py-[var(--spacing-8)]">
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <div class="w-full max-w-md">
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+    <%# ── Logo / Brand ── %>
+    <div class="text-center mb-[var(--spacing-6)]">
+      <h1 class="text-2xl font-bold tracking-tight
+                 text-[var(--color-text-base)]">
+        <span class="text-[var(--color-accent)]">A</span>ddressbook
+      </h1>
+      <p class="mt-1 text-sm text-[var(--color-text-muted)]">
+        Reset your password
+      </p>
+    </div>
+
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                px-[var(--spacing-8)] py-[var(--spacing-8)]">
+
+      <%# Flash / errors %>
+      <%= render "shared/flash" %>
+      <%= render "shared/error_block",
+            record: resource,
+            message: "prevented this reset from being sent" %>
+
+      <p class="text-sm text-[var(--color-text-body)] mb-[var(--spacing-6)]">
+        Enter your email address and we'll send you a link to reset your password.
+      </p>
+
+      <%# url: password_path(resource_name) = POST /users/password (Devise route) %>
+      <%= form_for(resource,
+                   as: resource_name,
+                   url: password_path(resource_name),
+                   html: { method: :post }) do |form| %>
+
+        <div class="mb-[var(--spacing-6)]">
+          <%= form.label :email, "Email address",
+                class: "block text-sm font-semibold mb-[var(--spacing-2)]
+                        text-[var(--color-label)]" %>
+          <%= form.email_field :email,
+                autofocus: true,
+                autocomplete: "email",
+                placeholder: "you@example.com",
+                class: "w-full px-[var(--spacing-3)] py-[var(--spacing-3)]
+                        bg-[var(--color-input-bg)]
+                        border border-[var(--color-input-border)]
+                        rounded-[var(--radius-md)]
+                        text-sm text-[var(--color-text-heading)]
+                        placeholder:text-[var(--color-text-muted)]
+                        focus:outline-none focus:ring-2
+                        focus:ring-[var(--color-input-focus)]
+                        transition-shadow duration-200" %>
+        </div>
+
+        <%= form.submit "Send reset instructions",
+              class: "w-full py-[var(--spacing-3)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      cursor-pointer
+                      transition-colors duration-200" %>
+
+      <% end %>
+    </div>
+
+    <%# <p class="text-center mt-[var(--spacing-6)]
+              text-sm text-[var(--color-text-muted)]">
+      Remember your password?
+      <%= link_to "Sign in",
+            new_user_session_path,
+            class: "font-semibold text-[var(--color-accent)]
+                    hover:text-[var(--color-accent-hover)]
+                    transition-colors duration-200"
+    </p> %>
+
+    <%= render "devise/shared/links" %>
   </div>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Send me password reset instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
