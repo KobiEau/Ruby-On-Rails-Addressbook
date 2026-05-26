@@ -1,3 +1,4 @@
+<%= render "shared/home_button" %>
 <div class="min-h-screen flex items-center justify-center
             bg-[var(--color-surface)]
             px-4 py-[var(--spacing-8)]">
@@ -63,7 +64,7 @@
     <div class="text-center mt-[var(--spacing-6)]
                 text-sm text-[var(--color-text-muted)]
                 flex flex-col gap-[var(--spacing-2)]">
-      <%= link_to "Back to sign in",
+      <%#= link_to "Back to sign in",
           new_user_session_path,
           class: "font-semibold text-[var(--color-accent)]
                   hover:text-[var(--color-accent-hover)]
