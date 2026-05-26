@@ -39,6 +39,14 @@ Rails.application.routes.draw do
       delete :bulk_destroy
     end
   end
+
+  resource :account, only: [:show, :edit, :update, :destroy] do
+    get :edit_email, on: :member
+    patch :update_email, on: :member
+    get :edit_password, on: :member
+    patch :update_password, on: :member
+    get :danger, on: :member
+  end
  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
