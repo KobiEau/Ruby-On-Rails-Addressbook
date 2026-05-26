@@ -1,7 +1,84 @@
-<p>Hello <%= @resource.email %>!</p>
+<div style="max-width: 480px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            background-color: #ffffff;">
 
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+  <%# ── Brand header ── %>
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 20px;
+               font-weight: 800;
+               color: #0f172a;
+               margin: 0;">
+      <span style="color: #34d399;">A</span>ddressbook
+    </h1>
+  </div>
 
-<p>Click the link below to unlock your account:</p>
+  <%# ── Main content ── %>
+  <div style="background-color: #f8fafc;
+              border-radius: 12px;
+              padding: 32px;
+              margin-bottom: 24px;">
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+    <h2 style="font-size: 18px;
+               font-weight: 700;
+               color: #0f172a;
+               margin: 0 0 12px 0;">
+      Your account has been locked
+    </h2>
+
+    <%# @resource is the User Devise passes to the mailer %>
+    <p style="font-size: 14px;
+              color: #475569;
+              margin: 0 0 8px 0;">
+      Hi <%= @resource.firstname.present? ? @resource.firstname : @resource.email %>,
+    </p>
+
+    <p style="font-size: 14px;
+              color: #475569;
+              margin: 0 0 24px 0;">
+      Your account was locked due to too many failed sign in attempts.
+      Click the button below to unlock it.
+    </p>
+
+    <%# unlock_url generates an absolute URL — required in emails.
+        @resource is the locked user.
+        unlock_token is the secure token Devise generates — it's
+        verified server-side when the user clicks the link. %>
+    <div style="text-align: center; margin-bottom: 24px;">
+      <%= link_to "Unlock my account",
+            unlock_url(@resource, unlock_token: @token),
+            style: "display: inline-block;
+                    background-color: #34d399;
+                    color: #0f172a;
+                    font-size: 14px;
+                    font-weight: 700;
+                    text-decoration: none;
+                    padding: 12px 32px;
+                    border-radius: 8px;" %>
+    </div>
+
+    <%# If unlock_strategy includes :time, tell them about the auto-unlock too %>
+    <p style="font-size: 13px;
+              color: #94a3b8;
+              margin: 0 0 8px 0;">
+      Your account will also unlock automatically after 1 hour.
+    </p>
+
+    <p style="font-size: 13px;
+              color: #94a3b8;
+              margin: 0;">
+      If you didn't attempt to sign in, please contact support —
+      someone may be trying to access your account.
+    </p>
+
+  </div>
+
+  <%# ── Footer ── %>
+  <p style="font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+            margin: 0;">
+    Addressbook &mdash; your contacts, organised.
+  </p>
+
+</div>
