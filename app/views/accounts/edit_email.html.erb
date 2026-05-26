@@ -1,0 +1,69 @@
+<%# app/views/accounts/edit_email.html.erb %>
+
+<div class="max-w-lg mx-auto py-[var(--spacing-8)] px-[var(--spacing-4)]">
+
+  <%# Back link %>
+  <%= render "shared/back_link", text: "← Back to Account", path: account_path %>
+
+  <%# Form card %>
+  <div class="bg-[var(--color-surface-card)] rounded-[var(--radius-lg)] shadow-[var(--shadow-card)] p-[var(--spacing-6)]">
+
+    <h1 class="text-lg font-bold text-[var(--color-text-heading)] mb-[var(--spacing-2)]">Change Email</h1>
+    <p class="text-sm text-[var(--color-text-muted)] mb-[var(--spacing-6)]">
+      Your current email is <span class="font-semibold text-[var(--color-text-body)]"><%= current_user.email %></span>
+    </p>
+
+    <%# Error block %>
+    <%= render "shared/error_block", record: @user, message: "prevented your email from being updated" %>
+
+    <%= form_with model: @user, url: update_email_account_path, method: :patch do |form| %>
+
+      <%# New email %>
+      <div class="mb-[var(--spacing-4)]">
+        <%= form.label :email, "New Email Address",
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= form.email_field :email,
+              placeholder: "Enter new email address",
+              class: "w-full px-[var(--spacing-3)] py-[var(--spacing-2)]
+                      bg-[var(--color-input-bg)]
+                      border border-[var(--color-input-border)]
+                      rounded-[var(--radius-md)]
+                      text-sm text-[var(--color-text-heading)]
+                      focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)]" %>
+      </div>
+
+      <%# Current password %>
+      <div class="mb-[var(--spacing-6)]">
+        <%= form.label :current_password, "Current Password",
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= render "shared/password_field",
+              form: form,
+              field_name: :current_password,
+              placeholder: "Enter your current password" %>
+        <p class="text-xs text-[var(--color-text-muted)] mt-[var(--spacing-2)]">
+          Required to confirm this change
+        </p>
+      </div>
+
+      <%# Actions %>
+      <div class="flex items-center justify-between">
+        <%= link_to "Cancel", account_path,
+              class: "text-sm font-semibold text-[var(--color-text-muted)]
+                      hover:text-[var(--color-text-base)]
+                      transition-colors duration-200" %>
+        <%= form.submit "Update Email",
+              class: "px-[var(--spacing-4)] py-[var(--spacing-2)]
+                      bg-[var(--color-accent)]
+                      hover:bg-[var(--color-accent-hover)]
+                      text-[var(--color-text-on-accent)]
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      shadow-[var(--shadow-btn)]
+                      transition-colors duration-200
+                      cursor-pointer" %>
+      </div>
+
+    <% end %>
+  </div>
+
+</div>
