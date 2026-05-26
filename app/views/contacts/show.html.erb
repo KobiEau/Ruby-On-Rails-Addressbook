@@ -62,12 +62,20 @@
 <div class="flex items-center gap-[var(--spacing-3)]">
   <%= link_to "Edit Contact", edit_contact_path(@contact),
         class: "px-4 py-2 text-sm font-semibold
-                bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
-                text-white rounded-lg transition-colors duration-200" %>
+                bg-[var(--color-btn-secondary)] 
+                hover:bg-[var(--color-btn-secondary-hover)]
+                text-white rounded-[var(--radius-md)] transition-colors duration-200" %>
 
-  <%= button_to "Delete", @contact, method: :delete,
-        data: { turbo_confirm: "Are you sure?" },
-        class: "px-4 py-2 text-sm font-semibold
-                bg-[var(--color-btn-danger)] hover:bg-[var(--color-btn-danger-hover)]
-                text-white rounded-lg transition-colors duration-200" %>
+  <%= button_to "Delete", "#", method: :get,
+        data: { 
+          action: "click->modal#open",
+          modal_message: "Delete #{@contact.fullname}?",
+          modal_url: contact_path(@contact),
+          modal_method: :delete
+          },
+        class: "px-4 py-2 text-sm font-medium
+                bg-[var(--color-danger)]
+                hover:bg-[var(--color-btn-danger-hover)]
+                text-white rounded-[var(--radius-md)]
+                transition-colors duration-200" %>
 </div>
