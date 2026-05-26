@@ -6,15 +6,16 @@
       
       <%# LEFT GROUP: Branding & Global Links %>
       <div class="flex items-center justify-between lg:justify-start gap-6 border-b lg:border-b-0 border-[var(--color-border-subtle)] pb-2 lg:pb-0">
-        <div class="flex flex-col">
-          <span class="text-base font-bold text-[var(--color-text-base)] tracking-tight">
-            <span class="text-[var(--color-accent)]">A</span>ddressbook
-          </span>
-          <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold -mt-1">
-            Admin Panel
-          </span>
-        </div>
-
+        <%= link_to admin_root_path do%>
+          <div class="flex flex-col">
+            <span class="text-base font-bold text-[var(--color-text-base)] tracking-tight">
+              <span class="text-[var(--color-accent)]">A</span>ddressbook
+            </span>
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold -mt-1">
+              Admin Panel
+            </span>
+          </div>
+        <% end %>
         <nav class="flex items-center gap-1 sm:gap-2">
           <%= link_to "Dashboard", admin_root_path, 
                 class: "px-2 py-1 rounded-[var(--radius-sm)] text-xs font-medium transition-colors 
@@ -53,7 +54,7 @@
 
           <%= link_to "Sign Out", destroy_user_session_path, 
                 data: { turbo_method: :delete }, 
-                class: "text-[var(--color-text-muted)] hover:text-[var(--color-danger)] transition-colors" %>
+                class: "font-medium text-[var(--color-text-muted)] hover:text-[var(--color-danger)] transition-colors" %>
         </div>
       </div>
 
