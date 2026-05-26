@@ -1,5 +1,70 @@
-<p>Welcome <%= @email %>!</p>
+<div style="max-width: 480px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            background-color: #ffffff;">
 
-<p>You can confirm your account email through the link below:</p>
+  <%# ── Brand header ── %>
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 20px;
+               font-weight: 800;
+               color: #0f172a;
+               margin: 0;">
+      <span style="color: #34d399;">A</span>ddressbook
+    </h1>
+  </div>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <%# ── Main content ── %>
+  <div style="background-color: #f8fafc;
+              border-radius: 12px;
+              padding: 32px;
+              margin-bottom: 24px;">
+
+    <h2 style="font-size: 18px;
+               font-weight: 700;
+               color: #0f172a;
+               margin: 0 0 12px 0;">
+      Email confirmation
+    </h2>
+
+    <%# @resource is the User Devise passes to the mailer %>
+    <p style="font-size: 14px;
+              color: #475569;
+              margin: 0 0 8px 0;">
+      Hi <%= @resource.firstname.present? ? @resource.firstname : @resource.email %>,
+    </p>
+
+    <p style="font-size: 14px;
+              color: #475569;
+              margin: 0 0 24px 0;">
+      Confirm your email with the link below:
+    </p>
+
+    <%# unlock_url generates an absolute URL — required in emails.
+        @resource is the locked user.
+        unlock_token is the secure token Devise generates — it's
+        verified server-side when the user clicks the link. %>
+    <div style="text-align: center; margin-bottom: 24px;">
+      <%= link_to "Confirm my account",
+            confirmation_url(@resource, confirmation_token: @token),
+            style: "display: inline-block;
+                    background-color: #34d399;
+                    color: #0f172a;
+                    font-size: 14px;
+                    font-weight: 700;
+                    text-decoration: none;
+                    padding: 12px 32px;
+                    border-radius: 8px;" %>
+    </div>
+
+    <%# If unlock_strategy includes :time, tell them about the auto-unlock too %>
+  </div>
+
+  <%# ── Footer ── %>
+  <p style="font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+            margin: 0;">
+    Addressbook &mdash; your contacts, organised.
+  </p>
+
+</div>
