@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, 
-         :lockable, :trackable, :timeoutable
+         :lockable, :trackable, :timeoutable, :confirmable
  
   # :database_authenticatable — handles login with email/password
   # :registerable — allows users to sign up
@@ -18,7 +18,9 @@ class User < ApplicationRecord
 
   validates :firstname, presence: true
   validates :lastname,presence: true
-  validates :email, presence: true, uniqueness: {case_sensitive:false}
+  validates :email, presence: true, 
+            uniqueness: {case_sensitive:false}, 
+            format: {with: /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/}
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   def fullname
