@@ -1,6 +1,5 @@
 
-<%# app/views/devise/sessions/new.html.erb %>
-
+<%= render "shared/home_button"%>
 <div class="min-h-screen flex items-center justify-center
             bg-[var(--color-surface)]
             px-4 py-[var(--spacing-8)]">
@@ -24,9 +23,7 @@
                 shadow-[var(--shadow-card)]
                 px-[var(--spacing-8)] py-[var(--spacing-8)]">
 
-      <%# Flash messages — alerts like "invalid email or password" %>
-      <%# These come from Devise automatically when login fails %>
-      <%= render "shared/flash" %>
+     
 
       <%# The sign in form %>
       <%# form_for is Devise's preferred helper %>
