@@ -1,0 +1,82 @@
+<%# app/views/accounts/danger.html.erb %>
+
+<div class="max-w-lg mx-auto py-[var(--spacing-8)] px-[var(--spacing-4)]">
+
+  <%# Back link %>
+  <%= render "shared/back_link", text: "← Back to Account", path: account_path %>
+
+  <%# Warning card %>
+  <div class="bg-[var(--color-surface-card)] rounded-[var(--radius-lg)] shadow-[var(--shadow-card)] p-[var(--spacing-6)] mb-[var(--spacing-4)]">
+    <div class="flex items-start gap-[var(--spacing-3)] mb-[var(--spacing-4)]">
+      <span class="text-2xl">⚠️</span>
+      <div>
+        <h1 class="text-lg font-bold text-[var(--color-text-heading)] mb-[var(--spacing-2)]">
+          Delete Account
+        </h1>
+        <p class="text-sm text-[var(--color-text-body)]">
+          This will permanently delete your account and
+          <span class="font-semibold"><%= current_user.contacts.count %> contact(s)</span>.
+          This cannot be undone.
+        </p>
+      </div>
+    </div>
+
+    <%# What gets deleted list %>
+    <div class="bg-[var(--color-error-bg)] border border-[var(--color-error-border)]
+                rounded-[var(--radius-md)] p-[var(--spacing-4)] mb-[var(--spacing-6)]">
+      <p class="text-xs font-semibold text-[var(--color-error-text)] uppercase tracking-wide mb-[var(--spacing-2)]">
+        What gets deleted
+      </p>
+      <ul class="text-sm text-[var(--color-error-text)] space-y-[var(--spacing-1)]">
+        <li>Your account and login credentials</li>
+        <li>All <%= current_user.contacts.count %> of your contacts</li>
+        <li>All imported data</li>
+      </ul>
+    </div>
+
+    <%# Confirmation form %>
+    <%= form_with url: account_path, method: :delete, id:"delete-account-form" do |form| %>
+
+      <div class="mb-[var(--spacing-6)]">
+        <%= form.label :current_password, "Enter your password to confirm",
+              class: "block text-sm font-semibold text-[var(--color-label)] mb-[var(--spacing-2)]" %>
+        <%= render "shared/password_field",
+              form: form,
+              field_name: :current_password,
+              placeholder: "Enter your current password" %>
+      </div>
+
+      <%# Actions %>
+      <div class="flex items-center justify-between">
+        <%= link_to "Cancel", account_path,
+              class: "text-sm font-semibold text-[var(--color-text-muted)]
+                      hover:text-[var(--color-text-base)]
+                      transition-colors duration-200" %>
+        <%#= form.submit "Permanently Delete Account",
+              class: "px-[var(--spacing-4)] py-[var(--spacing-2)]
+                      bg-[var(--color-btn-danger)]
+                      hover:bg-[var(--color-btn-danger-hover)]
+                      text-white
+                      text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      transition-colors duration-200
+                      cursor-pointer" %>
+       <button type="button"
+                data-action="click->modal#open"
+                data-modal-message="Delete your account? This will permanently remove all your contacts too."
+                data-modal-form ="delete-account-form"
+                class="px-[var(--spacing-6)] py-[var(--spacing-3)]
+                      bg-[var(--color-btn-danger)]
+                      hover:bg-[var(--color-btn-danger-hover)]
+                      text-white text-sm font-semibold
+                      rounded-[var(--radius-md)]
+                      cursor-pointer
+                      transition-colors duration-200">
+          Delete my account
+        </button>
+      </div>
+
+    <% end %>
+  </div>
+
+</div>
