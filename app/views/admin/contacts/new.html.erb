@@ -1,13 +1,7 @@
 <% content_for :page_title,"New Contact"%>
 <div class="max-w-2xl mx-auto space-y-4 px-4 sm:px-0">
 
-  <div>
-    <%= link_to "← Back to Contacts", admin_contacts_path,
-          class: "text-sm text-[var(--color-text-body)]
-                  hover:text-[var(--color-accent)]
-                  transition-colors duration-200" %>
-  </div>
-
+  <%= render "shared/back_link", text:"← Back to Contacts",path: admin_contacts_path%>
   <div class="bg-[var(--color-surface-card)] border border-[var(--color-border-subtle)]
               rounded-[var(--radius-lg)] shadow-[var(--shadow-card)] p-4 sm:p-6">
     <h1 class="text-lg font-bold text-[var(--color-text-heading)]
