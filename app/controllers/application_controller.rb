@@ -12,7 +12,10 @@ class ApplicationController < ActionController::Base
 
   helper_method :admin?
   #Make admin? available in views as well as controllers
-
+  unless Rails.env.development?
+    rescue_from StandardError, with: :handle_error
+  end
+  
   private
   def configure_permitted_parameters
     #on signup
@@ -43,5 +46,14 @@ class ApplicationController < ActionController::Base
 
   def after_sign_up_path_for(user)
     user.admin? ? admin_root_path : contacts_path
+  end
+
+  def handle_error(exception)
+    ErrorLogger.log(exception, request, current_user)
+
+    respond_to do |format|
+       format.html { render file: Rails.root.join("public/500.html"), status: :internal_server_error, layout: false }
+      format.json { render json: { error: "Something went wrong" }, status: :internal_server_error }
+    end
   end
 end
