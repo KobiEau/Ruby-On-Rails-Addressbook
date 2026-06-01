@@ -9,6 +9,7 @@ Rails.application.routes.draw do
  
   namespace :admin do
     root "dashboard#index"
+    resources :error_logs, only: [:index, :destroy]
     resources :users do
       collection do
         delete :bulk_destroy
