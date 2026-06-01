@@ -1,0 +1,119 @@
+<%# app/views/admin/error_logs/index.html.erb %>
+
+<div class="p-6">
+
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg font-bold text-[var(--color-text-heading)]">Error Logs</h1>
+      <p class="text-sm text-[var(--color-text-muted)]">
+        <%= @error_logs.total_count %> unique error(s) recorded
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-[var(--color-surface-card)] rounded-[var(--radius-lg)]
+              shadow-[var(--shadow-card)] overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-[var(--color-border-subtle)] bg-gray-50">
+          <th class="text-left px-4 py-3 text-xs font-semibold
+                     text-[var(--color-text-muted)] uppercase tracking-wide">
+            Error
+          </th>
+          <th class="text-left px-4 py-3 text-xs font-semibold
+                     text-[var(--color-text-muted)] uppercase tracking-wide
+                     hidden sm:table-cell">
+            Path
+          </th>
+          <th class="text-left px-4 py-3 text-xs font-semibold
+                     text-[var(--color-text-muted)] uppercase tracking-wide">
+            Count
+          </th>
+          <th class="text-left px-4 py-3 text-xs font-semibold
+                     text-[var(--color-text-muted)] uppercase tracking-wide
+                     hidden md:table-cell">
+            Last Seen
+          </th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @error_logs.empty? %>
+          <tr>
+            <td colspan="5" class="px-4 py-12 text-center
+                                   text-sm text-[var(--color-text-muted)]">
+              No errors recorded. Everything is running smoothly.
+            </td>
+          </tr>
+        <% else %>
+          <% @error_logs.each do |log| %>
+            <tr class="border-b border-[var(--color-border-subtle)]
+                       hover:bg-gray-50 transition-colors duration-150">
+
+              <%# Error class + message %>
+              <td class="px-4 py-3">
+                <p class="font-semibold text-[var(--color-error-text)]">
+                  <%= log.error_class %>
+                </p>
+                <p class="text-xs text-[var(--color-text-muted)] mt-0.5 truncate max-w-xs">
+                  <%= log.message %>
+                </p>
+              </td>
+
+              <%# Path %>
+              <td class="px-4 py-3 hidden sm:table-cell">
+                <span class="font-mono text-xs bg-gray-100 px-2 py-1
+                             rounded text-[var(--color-text-body)]">
+                  <%= log.http_method %> <%= log.path %>
+                </span>
+              </td>
+
+              <%# Occurrences %>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs
+                             font-semibold
+                             <%= log.occurrences > 10 ?
+                               'bg-red-100 text-red-700' :
+                               'bg-gray-100 text-gray-600' %>">
+                  <%= log.occurrences %>×
+                </span>
+              </td>
+
+              <%# Last seen %>
+              <td class="px-4 py-3 text-xs text-[var(--color-text-muted)]
+                         hidden md:table-cell">
+                <%= time_ago_in_words(log.last_occurred_at) %> ago
+              </td>
+
+              <%# Delete %>
+              <td class="px-4 py-3 text-right">
+                <%= link_to "Clear",
+                      admin_error_log_path(log),
+                      data: {
+                        turbo_method: :delete,
+                        action: "click->modal#open",
+                        modal_message: "Clear this error log entry?",
+                        modal_url: admin_error_log_path(log),
+                        modal_method: "delete"
+                      },
+                      class: "text-xs font-medium
+                              text-[var(--color-text-muted)]
+                              hover:text-[var(--color-danger)]
+                              transition-colors duration-200" %>
+              </td>
+
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination %>
+  <%= render "admin/shared/admin_table_pagination",
+        collection: @error_logs,
+        per_page: @per_page,
+        path: ->(p) { admin_error_logs_path(p) } %>
+
+
+</div>
