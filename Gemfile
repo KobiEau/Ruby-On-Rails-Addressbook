@@ -76,3 +76,5 @@ gem 'kaminari'
 gem 'csv'
 
 gem 'devise'
+
+gem "rack-attack"
