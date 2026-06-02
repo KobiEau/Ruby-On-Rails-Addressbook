@@ -205,67 +205,15 @@ data-export-export-url="<%= export_selected_admin_contacts_path%>">
   <% end %>
 
   <%# Footer — per-page + pagination %>
-  <div class="flex items-center justify-between">
-    <p class="text-xs text-[var(--color-text-muted)]">
-      Showing <%= @contacts.count %> of <%= @contacts.total_count %> contacts
-    </p>
-
-    <div class="flex items-center gap-4">
-
-      <%# Per-page selector %>
-     <%= form_with url:admin_contacts_path, method: :get, local:true do |form|%>
-        <%= form.hidden_field :search, value: params[:search]%>
-        <%= form.hidden_field :page, value:1 %>
-        <label class="text-xs text-[var(--color-text-muted)]"> Show</label>
-        <%= form.number_field :per_page,
-            value: @per_page,
-            min: 1,
-            max: 50,
-            #onchange: "this.form.submit()",
-            class:"w-16 px-2 py-1 text-xs text-center
-                  bg-[var(--color-input-bg)]
-                  text-[var(--color-text-heading)]
-                  border border-[var(--color-border-subtle)]
-                  rounded-[var(--radius-md)]
-                  focus:outline-none focus:ring-2 focus:ring-[var(--color-input-focus)]"%>
-        <label class="text-sm text-[var(--color-text-muted)]">per page</label>
-
-        <%= form.submit "Go",
-             class:"px-3 py-1.5 text-xs font-medium
-                    bg-surface-muted text-[var(--color-text-white)]]
-                    rounded-[var(--radius-md)]
-                    cursor-pointer
-                    hover:bg-[var(--color-accent-hover)]
-                    transition-colors duration-200"%>
-
-      <%end%>
-
-      <%# Prev / Next %>
-      <% if @contacts.total_pages >= 1 %>
-        <div class="flex items-center gap-2">
-          <%= link_to "← Prev",
-                admin_contacts_path(page: @contacts.prev_page, search: params[:search]),
-                class: "px-3 py-1.5 text-xs font-medium
-                        border border-[var(--color-border-subtle)]
-                        rounded-[var(--radius-md)]
-                        text-[var(--color-text-muted)]
-                        hover:text-[var(--color-text-heading)]
-                        #{'opacity-40 pointer-events-none' unless @contacts.prev_page}" %>
-          <span class="text-xs text-[var(--color-text-muted)]">
-            <%= @contacts.current_page %> / <%= @contacts.total_pages %>
-          </span>
-          <%= link_to "Next →",
-                admin_contacts_path(page: @contacts.next_page, search: params[:search]),
-                class: "px-3 py-1.5 text-xs font-medium
-                        border border-[var(--color-border-subtle)]
-                        rounded-[var(--radius-md)]
-                        text-[var(--color-text-muted)]
-                        hover:text-[var(--color-text-heading)]
-                        #{'opacity-40 pointer-events-none' unless @contacts.next_page}" %>
-        </div>
-      <% end %>
-
-    </div>
-  </div>
-
+  <%= render "admin/shared/admin_table_pagination",
+        collection: @contacts,
+        per_page: @per_page,
+        path: ->(params_hash){
+          admin_contacts_path(
+            params_hash.merge(
+              search: params[:search]
+            )
+          )
+        }
+  %>
 </div>
