@@ -10,11 +10,14 @@ class ApplicationController < ActionController::Base
   # redirect to login page if no one is signed in
   # Runs before every action in every controller
 
-  helper_method :admin?
   #Make admin? available in views as well as controllers
-  unless Rails.env.development?
-    rescue_from StandardError, with: :handle_error
-  end
+  helper_method :admin?
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
+  #rescue_from StandardError, with: :handle_internal_error
+  
+  rescue_from StandardError, with: :handle_error
+
+
   
   private
   def configure_permitted_parameters
@@ -48,12 +51,36 @@ class ApplicationController < ActionController::Base
     user.admin? ? admin_root_path : contacts_path
   end
 
+  def handle_not_found(exception)
+    flash[:alert] = "That resource couldn't be found"
+    redirect_to contacts_path
+  end
+
+  def handle_internal_error(exception)
+    ErrorLogger.log(exception, request, current_user)
+    render "errors/500", status: :internal_server_error
+  end
   def handle_error(exception)
     ErrorLogger.log(exception, request, current_user)
 
-    respond_to do |format|
-       format.html { render file: Rails.root.join("public/500.html"), status: :internal_server_error, layout: false }
-      format.json { render json: { error: "Something went wrong" }, status: :internal_server_error }
+    if Rails.env.test?
+      # re-raises the original error
+    # Rails catches it again and shows its own detailed error page
+    # your logger already ran before this line so the error IS recorded
+      raise exception
+    else 
+      case exception
+      when ActiveRecord::RecordNotFound
+        redirect_to contacts_path, alert: "That resource couldn't be found."
+      
+      when ActionController::RoutingError
+        redirect_to contacts_path, alert: "Page doesn't exist."
+      else
+       @error_log = ErrorLogger.log(exception, request, current_user)
+       render "errors/500",
+              status: :internal_server_error,
+              layout: "application"
+      end
     end
   end
 end
