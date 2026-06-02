@@ -4,6 +4,10 @@ class Admin::ErrorLogsController < Admin::BaseController
     @error_logs = ErrorLog.recent.page(params[:page]).per(@per_page)
   end
 
+  def show
+    @error_log= ErrorLog.find(params[:id])
+  end
+
   def destroy
     @error_log = ErrorLog.find(params[:id])
     @error_log.destroy
