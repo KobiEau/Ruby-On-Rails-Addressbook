@@ -190,10 +190,12 @@
                     text-white rounded-[var(--radius-md)]
                     transition-colors duration-200" %>
         <% unless @user == current_user%>
-          <%= link_to "Delete", admin_user_path(@user),
+          <%= link_to "Delete", "#",
                 data:{
-                  turbo_method: :delete,
-                  turbo_confirm: "Delete #{@user.fullname}? This also deletes all their contacts."
+                   action: "click->modal#open",
+                   modal_message:"Delete #{@user.fullname}? This also deletes all their contacts.",
+                   modal_url: admin_user_path(@user),
+                   modal_method: :delete,
                 },
                 class:"px-3 py-1.5 text-xs font-medium 
                       text-white bg-[var(--color-danger)]
