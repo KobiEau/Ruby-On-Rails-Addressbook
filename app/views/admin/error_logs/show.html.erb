@@ -1,0 +1,163 @@
+<%# app/views/admin/error_logs/show.html.erb %>
+
+<div class="p-6 space-y-[var(--spacing-4)]">
+
+  <%# Back link %>
+  <%= render "shared/back_link",
+        text: "← Back to Error Logs",
+        path: admin_error_logs_path %>
+
+  <%# Header card %>
+  <div class="bg-[var(--color-surface-card)]
+              rounded-[var(--radius-lg)]
+              shadow-[var(--shadow-card)]
+              p-[var(--spacing-6)]">
+
+    <div class="flex items-start justify-between mb-[var(--spacing-4)]">
+      <div>
+        <span class="inline-block text-xs font-semibold px-2 py-0.5
+                     rounded-full bg-red-100 text-red-700 mb-2">
+          <%= @error_log.error_class %>
+        </span>
+        <h1 class="text-lg font-bold text-[var(--color-text-heading)]">
+          <%= @error_log.message %>
+        </h1>
+      </div>
+
+      <%# Clear button %>
+      <%= link_to "Clear Log", "#",
+            data: {
+              action: "click->modal#open",
+              modal_message: "Clear this error log entry?",
+              modal_url: admin_error_log_path(@error_log),
+              modal_method: "delete"
+            },
+            class: "text-xs font-medium px-3 py-1.5
+                    border border-[var(--color-danger)]
+                    text-[var(--color-danger)]
+                    hover:bg-[var(--color-danger)] hover:text-white
+                    rounded-[var(--radius-md)]
+                    transition-colors duration-200" %>
+    </div>
+
+    <%# Details grid %>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-[var(--spacing-4)]
+                border-t border-[var(--color-border-subtle)]
+                pt-[var(--spacing-4)]">
+
+      <div>
+        <p class="text-xs font-semibold text-[var(--color-text-muted)]
+                  uppercase tracking-wide mb-1">Path</p>
+        <p class="text-sm font-mono text-[var(--color-text-body)]">
+          <%= @error_log.http_method %> <%= @error_log.path %>
+        </p>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold text-[var(--color-text-muted)]
+                  uppercase tracking-wide mb-1">Occurrences</p>
+        <p class="text-sm font-bold text-[var(--color-text-heading)]">
+          <%= @error_log.occurrences %>×
+        </p>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold text-[var(--color-text-muted)]
+                  uppercase tracking-wide mb-1">Last Seen</p>
+        <p class="text-sm text-[var(--color-text-body)]">
+          <%= time_ago_in_words(@error_log.last_occurred_at) %> ago
+        </p>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold text-[var(--color-text-muted)]
+                  uppercase tracking-wide mb-1">IP Address</p>
+        <p class="text-sm font-mono text-[var(--color-text-body)]">
+          <%= @error_log.ip_address || "—" %>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <%# User card — only shown if a user was logged in when error occurred %>
+  <% if @error_log.user %>
+    <div class="bg-[var(--color-surface-card)]
+                rounded-[var(--radius-lg)]
+                shadow-[var(--shadow-card)]
+                p-[var(--spacing-6)]">
+      <p class="text-xs font-semibold text-[var(--color-text-muted)]
+                uppercase tracking-wide mb-[var(--spacing-3)]">
+        Triggered By
+      </p>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-[var(--spacing-3)]">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center
+                      text-xs font-bold"
+               style="background: var(--color-accent-subtle);
+                      color: var(--color-accent);">
+            <%= @error_log.user.firstname[0] %><%= @error_log.user.lastname[0] %>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-[var(--color-text-heading)]">
+              <%= @error_log.user.firstname %> <%= @error_log.user.lastname %>
+            </p>
+            <p class="text-xs text-[var(--color-text-muted)]">
+              <%= @error_log.user.email %>
+            </p>
+          </div>
+        </div>
+        <%= link_to "View User →", admin_user_path(@error_log.user),
+              class: "text-xs font-semibold
+                      text-[var(--color-accent)]
+                      hover:text-[var(--color-accent-hover)]
+                      transition-colors duration-200" %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# Backtrace card %>
+  <div class="bg-[var(--color-surface-card)]
+              rounded-[var(--radius-lg)]
+              shadow-[var(--shadow-card)]
+              p-[var(--spacing-6)]">
+
+    <p class="text-xs font-semibold text-[var(--color-text-muted)]
+              uppercase tracking-wide mb-[var(--spacing-4)]">
+      Backtrace
+    </p>
+
+    <% if @error_log.backtrace.present? %>
+      <div class="bg-gray-50 rounded-[var(--radius-md)]
+                  p-[var(--spacing-4)] overflow-x-auto">
+        <ol class="space-y-[var(--spacing-2)]">
+          <% @error_log.backtrace.each_with_index do |line, index| %>
+            <li class="flex items-start gap-[var(--spacing-3)]">
+
+              <%# Line number %>
+              <span class="text-xs text-[var(--color-text-muted)]
+                           font-mono w-5 shrink-0 mt-0.5">
+                <%= index + 1 %>
+              </span>
+
+              <%# Backtrace line — highlight the first line as the crash point %>
+              <span class="text-xs font-mono break-all
+                           <%= index == 0 ?
+                             'text-red-600 font-semibold' :
+                             'text-[var(--color-text-body)]' %>">
+                <%= line.gsub(Rails.root.to_s + "/", "") %>
+              </span>
+
+            </li>
+          <% end %>
+        </ol>
+      </div>
+    <% else %>
+      <p class="text-sm text-[var(--color-text-muted)]">
+        No backtrace available for this error.
+      </p>
+    <% end %>
+
+  </div>
+
+</div>
