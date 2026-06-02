@@ -32,7 +32,7 @@ class User < ApplicationRecord
   end
 
   def regular_user?
-    role_code == "adm"
+    role_code == "usr"
   end
 
   def active?
