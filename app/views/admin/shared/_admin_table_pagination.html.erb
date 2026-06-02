@@ -46,8 +46,8 @@
               class: "px-3 py-1.5 text-xs font-medium
                       border border-[var(--color-border-subtle)]
                       rounded-[var(--radius-md)]
-                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
-                      text-white
+                      text-[var(--color-text-muted)]
+                      hover:text-[var(--color-text-heading)]
                       transition-colors duration-200
                       #{'opacity-40 pointer-events-none' unless collection.prev_page}" %>
 
@@ -61,10 +61,10 @@
         <%= link_to "Next →",
               path.call(page: collection.next_page, search: params[:search], per_page: per_page),
               class: "px-3 py-1.5 text-xs font-medium
-                      bg-[var(--color-btn-secondary)] hover:bg-[var(--color-btn-secondary-hover)]
                       border border-[var(--color-border-subtle)]
                       rounded-[var(--radius-md)]
-                      text-white
+                      text-[var(--color-text-muted)]
+                      hover:text-[var(--color-text-heading)]
                       transition-colors duration-200
                       #{'opacity-40 pointer-events-none' unless collection.next_page}" %>
       </div>
