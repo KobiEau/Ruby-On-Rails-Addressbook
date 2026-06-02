@@ -1,0 +1,52 @@
+<%# app/views/errors/500.html.erb %>
+
+<div class="min-h-[80vh] flex items-center justify-center px-[var(--spacing-4)]">
+  <div class="max-w-md w-full text-center">
+
+    <%# Error code %>
+    <p class="text-8xl font-bold text-[var(--color-accent)] mb-[var(--spacing-4)]"
+       style="font-family: 'Fraunces', serif;">
+      500
+    </p>
+
+    <%# Heading %>
+    <h1 class="text-2xl font-bold text-[var(--color-text-base)]
+               mb-[var(--spacing-3)]">
+      Something went wrong
+    </h1>
+
+    <%# Message %>
+    <p class="text-sm text-[var(--color-text-muted)]
+              mb-[var(--spacing-8)] leading-relaxed">
+      An unexpected error occurred on our end.
+      We've logged it and will look into it.
+    </p>
+
+    <%# Reference number — only shown when we have a log record %>
+    <% if @error_log&.id %>
+      <div class="inline-block bg-[var(--color-surface-raised)]
+                  border border-[var(--color-border)]
+                  rounded-[var(--radius-md)]
+                  px-[var(--spacing-4)] py-[var(--spacing-3)]
+                  mb-[var(--spacing-8)]">
+        <p class="text-xs text-[var(--color-text-muted)] mb-1">
+          Reference number
+        </p>
+        <p class="text-sm font-mono font-bold text-[var(--color-text-base)]">
+          #<%= @error_log.id %>
+        </p>
+      </div>
+    <% end %>
+
+    <%# Action %>
+    <%= link_to "Back to Contacts", contacts_path,
+          class: "inline-block px-[var(--spacing-6)] py-[var(--spacing-3)]
+                  text-sm font-semibold
+                  bg-[var(--color-accent)]
+                  hover:bg-[var(--color-accent-hover)]
+                  text-[var(--color-text-on-accent)]
+                  rounded-[var(--radius-md)]
+                  transition-colors duration-200" %>
+
+  </div>
+</div>
