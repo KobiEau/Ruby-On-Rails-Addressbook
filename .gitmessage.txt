@@ -1,0 +1,26 @@
+# Commit message format:
+# type(scope): short summary
+#
+# body (optional)
+# - explain what changed
+# - explain why it changed
+#
+# footer (optional)
+# - include issue/PR references
+# - BREAKING CHANGE: if applicable
+#
+# Types:
+# feat:     new feature
+# fix:      bug fix
+# docs:     documentation only changes
+# style:    formatting, missing semicolons, lint
+# refactor: code change that neither fixes bug nor adds feature
+# perf:     performance improvements
+# test:     adding or updating tests
+# chore:    maintenance tasks
+#
+# Example:
+# fix(contacts): prevent duplicate phone numbers when saving
+#
+# Add validation for duplicate phone numbers in Contact model.
+# This avoids duplicate records in the address book.
