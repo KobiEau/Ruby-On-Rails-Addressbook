@@ -114,7 +114,7 @@ A fullstack contact management application built with Rails 8, featuring:
 
 ### Prerequisites
 
-- Ruby 3.4.x
+- Ruby 3.4+
 - Rails 8.0+
 - PostgreSQL 14+
 - Node.js 18+
@@ -153,6 +153,31 @@ ADDRESSBOOK_DATABASE_USERNAME=db_username
 DEV_DB_NAME=(any db name of your choice)
 TEST_DB_NAME=(any db name of your choice)
 ```
+### 4. Create Database
+```bash
+rails db:create 
+```
+
+### 5. Run Migrations 
+```bash
+rails db:migrate
+```
+
+### 6. Seed Database
+```bash
+rails db:seed
+```
+
+### 7. Start Application
+```bash
+bin/dev
+```
+
+Visit:
+```url
+http://localhost:3000
+```
+
 
 ## Long commit message style
 
