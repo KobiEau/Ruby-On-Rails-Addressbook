@@ -35,8 +35,8 @@
 
 1. [Project Overview](#project-overview)
 2. [Features List](#features-list)
-3. [Prerequisites](#prerequisites)
-4. [Setup instructions](#setup-instructions)
+3. [Setup instructions](#setup-instructions)
+4. [Prerequisites](#prerequisites)
 5. [Environment Setup](#environment-setup)
 6. [Key Commands](#key-commands)
 7. [Architecture notes](#architecture-notes)
@@ -46,8 +46,9 @@
 ---
 
 ## Project Overview
+> A full-stack Rails application designed to help users manage personal contacts efficiently.
 
-A fullstack contact management application built with Rails 8, featuring:
+Built with Rails 8, featuring:
 
 - User Accont Management
 - CSV import/export
@@ -122,6 +123,36 @@ A fullstack contact management application built with Rails 8, featuring:
 
 > **Note**: If you are using Windows, ensure you have **WSL2** (Windows Subsystem for Linux) or Git Bash installed for optimal compatibility.
 
+## Environment setup
+### 1. Verify Ruby
+```bash
+ruby -v
+```
+
+Expected
+```text
+ruby 3.4.x
+```
+### 2. Verify Rails
+```bash
+rails -v
+```
+
+Expected:
+```text
+Rails 8.1.x
+```
+
+### Verify PostgreSQL
+```bash
+psql --version
+```
+
+Expected:
+```text
+PostgreSQL 14+
+```
+
 ## Setup instructions
 
 ### 1. Clone the Repository
@@ -139,7 +170,7 @@ bundle install
 
 ### 3.Configure Environment variables
 
-Creat a .env file in the project root
+Create a .env file in the project root
 
 ```bash
 touch .env
@@ -176,6 +207,25 @@ bin/dev
 Visit:
 ```url
 http://localhost:3000
+```
+### Default Accounts
+The seed creates demo accounts
+
+#### Admin
+```text
+email = admin@example.com
+Firstname = TheAdmin
+Lastname = Admin
+password = password123
+```
+#### Users 
+__Five users are created in the seed__
+
+```text
+email = user2@example.com
+firstname = user
+lastname = 2
+password = user_password_2
 ```
 
 
