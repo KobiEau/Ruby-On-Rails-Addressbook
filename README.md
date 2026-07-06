@@ -339,7 +339,33 @@ Can:
 - View application statistics
 
 ---
+## Useful Commands
+### Start server
+```bash
+bin/dev
+```
 
+### Open Rails console
+```bash
+bin/rails console
+or
+bin/rails c
+```
+### View Routes
+```bash
+bin/rails routes
+or
+bin/rails r
+```
+### Create Migration
+```bash
+bin/rails generate migration MigrationName
+```
+
+### Reset Database
+```bash
+bin/rails db:reset
+```
 
 ## Long commit message style
 
@@ -370,3 +396,8 @@ Example:
 
     Prevent duplicate contact records by validating phone numbers at the model
     level.
+
+
+## Roadmap 
+Planned improvements: 
+- Audit Logging
