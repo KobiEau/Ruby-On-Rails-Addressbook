@@ -227,6 +227,118 @@ firstname = user
 lastname = 2
 password = user_password_2
 ```
+The other users are users 3 to 6
+
+## Architecture Overview
+```text
+
+├───.github
+│   └───workflows
+├───.kamal
+│   └───hooks
+├───app
+│   ├───assets
+│   │   ├───builds
+│   │   │   └───tailwind
+│   │   ├───images
+│   │   ├───stylesheets
+│   │   └───tailwind
+│   ├───channels
+│   │   └───application_cable
+│   ├───controllers
+│   │   ├───admin
+│   │   ├───concerns
+│   │   └───users
+│   ├───helpers
+│   │   └───admin
+│   ├───javascript
+│   │   └───controllers
+│   ├───jobs
+│   ├───mailers
+│   ├───models
+│   │   └───concerns
+│   ├───services
+│   └───views
+│       ├───accounts
+│       ├───accounts2
+│       ├───admin
+│       │   ├───contacts
+│       │   ├───dashboard
+│       │   ├───error_logs
+│       │   ├───shared
+│       │   └───users
+│       ├───contacts
+│       ├───devise
+│       │   ├───confirmations
+│       │   ├───mailer
+│       │   ├───passwords
+│       │   ├───registrations
+│       │   ├───sessions
+│       │   ├───shared
+│       │   └───unlocks
+│       ├───errors
+│       ├───layouts
+│       ├───pages
+│       ├───passwords
+│       ├───passwords_mailer
+│       ├───pwa
+│       ├───shared
+│       └───users
+├───bin
+├───config
+│   ├───environments
+│   ├───initializers
+│   └───locales
+├───db
+│   └───migrate
+├───lib
+│   └───tasks
+```
+
+## Database Relationships
+### User
+```ruby
+has_many :contacts
+belongs_to :role
+``` 
+
+### Contact
+```ruby
+belongs_to :user
+```
+
+### Role
+```ruby
+has_many :users
+```
+---
+
+## Authorization Rules
+### Standard User
+Can: 
+- Manage own contacts
+- Import contacts
+- Export contacts
+- Edit profile
+- Delete account
+
+Cannot:
+- Access admin portal
+- Manage other users
+- Manage contacts belonging to others
+
+---
+
+### Administrator
+Can: 
+- Manage all users
+- Manage all contacts
+- Access admin dashboard
+- Lock and unlock accounts
+- Change user roles
+- View application statistics
+
+---
 
 
 ## Long commit message style
