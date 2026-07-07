@@ -39,7 +39,7 @@
 4. [Prerequisites](#prerequisites)
 5. [Environment Setup](#environment-setup)
 6. [Key Commands](#key-commands)
-7. [Architecture notes](#architecture-notes)
+7. [Architecture Overview](#architecture-overview)
 8. [Roadmap/pending](#roadmap)
 9. [Resources](#resources)
 
@@ -339,7 +339,7 @@ Can:
 - View application statistics
 
 ---
-## Useful Commands
+## Key Commands
 ### Start server
 ```bash
 bin/dev
