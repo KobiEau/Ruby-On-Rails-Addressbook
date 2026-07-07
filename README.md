@@ -401,3 +401,32 @@ Example:
 ## Roadmap 
 Planned improvements: 
 - Audit Logging
+- Notifications
+
+## Learning Outcomes
+Through this project, I gained practical experience with:
+- Rails MVC architecture
+- Authentication using Devise
+- Authorization and role management
+- PostgreSQL DB design
+- Pagination
+- Searching, sorting and filtering
+
+## Challenges Faced
+- Building reusable UI
+- Managing bulk actions safely
+
+## Resources
+### Rails
+- [Rails Docs](https://rubyonrails.org/docs)
+- [Rails API Docs](https://api.rubyonrails.org/)
+
+### Frontend 
+- [Getting Started With Tailwind](https://tailwindcss.com/docs/installation/using-vite)
+- [Tailwind for Rails Installation Guide](http://tailwindcss.com/docs/installation/framework-guides/ruby-on-rails)
+
+### Authentication
+- [Devise Docs](https://rubydoc.info/github/heartcombo/devise/main/frames)
+
+### Database
+- [PostgreSQL Docs](https://rubydoc.info/github/heartcombo/devise/main/frames)
