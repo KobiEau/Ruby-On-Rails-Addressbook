@@ -9,8 +9,8 @@
 
 ### Backend
 
-- Ruby 3.4
-- Rails 8.1
+- Ruby 3.4.7
+- Rails 8.1.3
 - PostgreSQL
 
 ### Authentication
