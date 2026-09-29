@@ -1,8 +1,6 @@
 # Rails Addressbok Project - Complete Guide
 
 **Project Type:** Full-stack Rails application  
-**Framework:** Rails 8.1
-
 ---
 
 ## Tech Stack
@@ -14,21 +12,17 @@
 - PostgreSQL
 
 ### Authentication
-
 - Devise
 
 ### Frontend
-
 - ERB
 - Tailwind CSS
 
 ### Gems
-
 - Devise
 - Kaminari
 - CSV
 - Turbo Rails
-
 ---
 
 ## Table of Contents
@@ -115,11 +109,13 @@ Built with Rails 8, featuring:
 
 ### Prerequisites
 
-- Ruby 3.4+
-- Rails 8.0+
+- Ruby 3.4.7
+- Rails 8.1.3
 - PostgreSQL 14+
-- Node.js 18+
-- Bundler 2.x
+- Bundler 2.6.9
+- Git
+
+Rails 8.1.3 is installed through Bundler from `Gemfile.lock` it does not need to be installed globally
 
 > **Note**: If you are using Windows, ensure you have **WSL2** (Windows Subsystem for Linux) or Git Bash installed for optimal compatibility.
 
@@ -131,7 +127,7 @@ ruby -v
 
 Expected
 ```text
-ruby 3.4.x
+ruby 3.4.7
 ```
 ### 2. Verify Rails
 ```bash
@@ -140,7 +136,7 @@ rails -v
 
 Expected:
 ```text
-Rails 8.1.x
+Rails 8.1.3
 ```
 
 ### Verify PostgreSQL
@@ -159,7 +155,23 @@ PostgreSQL 14+
 
 ```bash
 git clone <repository-url>
-cd addressbook
+cd Ruby-On-Rails-Addressbook
+```
+### 2. Install programs
+This project uses RVM
+
+1. Install Ruby
+```bash
+rvm install ruby-3.4.7
+rvm use ruby-3.4.7
+ruby -v
+```
+
+2. Install Bundler and Rails
+```bash
+gem install bundler -v 2.6.9
+bundle _2.6.9_ install
+bin/rails -v
 ```
 
 ### 2. Install dependencies
@@ -179,8 +191,8 @@ touch .env
 Populate the env with the following variables
 
 ```env
-ADDRESSBOOK_DATABASE_PASSWORD=password
-ADDRESSBOOK_DATABASE_USERNAME=db_username
+ADDRESSBOOK_DATABASE_USERNAME=your_postgres_username
+ADDRESSBOOK_DATABASE_PASSWORD=your_postgres_password
 DEV_DB_NAME=(any db name of your choice)
 TEST_DB_NAME=(any db name of your choice)
 ```
