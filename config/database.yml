@@ -88,18 +88,18 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: addressbook_production
-    username: postgres
+    database: <%= ENV["PROD_DB_NAME"]%>
+    username: <%= ENV["ADDRESSBOOK_DATABASE_USERNAME"]%>
     password: <%= ENV["ADDRESSBOOK_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: addressbook_production_cache
+    database: rails_addressbook_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: addressbook_production_queue
+    database: rails_addressbook_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: addressbook_production_cable
+    database: rails_addressbook_production_cable
     migrations_paths: db/cable_migrate
