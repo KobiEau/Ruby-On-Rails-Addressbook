@@ -65,16 +65,10 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'dotenv-rails', groups: [:development, :test]
-
+gem "dotenv-rails", groups: [:development, :test]
 gem "tailwindcss-rails"
-
-gem 'letter_opener' , group: [:development, :test]
-
-gem 'kaminari'
-
-gem 'csv'
-
-gem 'devise'
-
+gem "letter_opener_web", group: [:development]
+gem "kaminari"
+gem "csv"
+gem "devise"
 gem "rack-attack"
