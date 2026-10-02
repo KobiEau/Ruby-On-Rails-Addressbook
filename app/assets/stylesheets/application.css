@@ -8,3 +8,101 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ @import "tailwindcss";
+
+@layer base{
+  h1 { margin-bottom: var(--spacing-2); }
+  h2 { margin-bottom: var(--spacing-2); }
+  p  { margin-bottom: var(--spacing-4); }
+}
+
+@theme {
+  /* Backgrounds */
+  --bg-slate-50:          #f8fafc;
+  --bg-slate-100:         #f1f5f9;
+  --bg-white:             #ffffff;
+  --bg-gray-50:           #f9fafb;
+  /* ── Surfaces ── */
+  --color-surface:        #0d1f1a;
+  --color-surface-raised: #132b23;
+  --color-surface-muted:  #1a3a2e;
+  --color-surface-card:   #ffffff;
+  --color-surface-input:  #0d1f1a;
+
+  /* ── Accent (Mint) ── */
+  --color-accent:         #34d399;
+  --color-accent-hover:   #10b981;
+  --color-accent-subtle:  #d1fae5;
+  --color-text-on-accent: #0d1f1a;
+
+  /* ── Text ── */
+  --color-text-base:      #ecfdf5;
+  --color-text-muted:     #9ca3af;
+  --color-text-heading:   #0d1f1a;
+  --color-text-body:      #4b5563;
+
+  /* ── Borders ── */
+  --color-border:         #1a3a2e;
+  --color-border-subtle:  #e5e7eb;
+  --color-divider:        #f3f4f6;
+
+  /* ── Inputs ── */
+  --color-input-bg:       #ffffff;
+  --color-input-border:   #d1d5db;
+  --color-input-focus:    var(--color-accent);
+  --color-label:          var(--color-text-heading);
+
+  /* ── Buttons — each function gets its own colour ── */
+  --color-btn-card:            #0891b2;  /* cyan — view */
+  --color-btn-card-hover:      #0e7490;
+  --color-btn-secondary:       #1a3a2e;  /* forest — edit */
+  --color-btn-secondary-hover: #132b23;
+  --color-btn-cancel:          #6b7280;  /* grey — cancel */
+  --color-btn-cancel-hover:    #4b5563;
+  --color-btn-danger:          #991b1b;  /* red — delete */
+  --color-btn-danger-hover:    #7f1d1d;
+  --color-view-toggle:         #0369a1;  /* sky — toggle */
+  --color-view-toggle-hover:   #075985;
+  --color-btn-tertiary:        #132b23;
+  --color-btn-tertiary-hover:  #0d1f1a;
+  --color-btn-tertiary-2:      #34d399;
+  --color-btn-tertiary-2-hover:#10b981;
+  --color-btn-tertiary-3:      #0891b2;
+  --color-btn-tertiary-3-hover:#0e7490;
+
+  /* ── Status ── */
+  --color-danger:         #f87171;
+  --color-danger-hover:   #ef4444;
+  --color-success:        #34d399;
+  --color-error-bg:       #fef2f2;
+  --color-error-border:   #fca5a5;
+  --color-error-text:     #991b1b;
+  --color-warning:        #ca8a04;
+  /* ── Shadows ── */
+  --shadow-navbar: 0 4px 24px 0 rgba(0,0,0,0.5);
+  --shadow-card:   0 2px 16px 0 rgba(0,0,0,0.15);
+  --shadow-btn:    0 2px 8px 0 rgba(52,211,153,0.4);
+
+  /* ── Radius ── */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   1rem;
+  --radius-full: 9999px;
+
+  /* ── Spacing ── */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+
+  --breakpoint-xs: 484px;
+
+
+  --color-text-white:     #ffffff;
+  --color-text-black:     #000000;
+}
+
+
