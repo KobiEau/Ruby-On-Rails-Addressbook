@@ -22,9 +22,10 @@ Role.all.each {|r| puts "#{r.code}- #{r.name}"}
 
 # Seeding admin
 puts "Creating admin"
-admin = User.find_or_create_by!(
+User.find_or_create_by!(
   email: "admin@example.com"
 )do |user|
+  user.skip_confirmation!
   user.firstname = "System"
   user.lastname = "Admin"
   user.password = "password123"
@@ -38,9 +39,10 @@ end
   User.find_or_create_by!(
     email: "user#{i+1}@exmaple.com"
   ) do |user|
+    user.skip_confirmation!
     user.firstname = "user"
     user.lastname = "#{i+1}"
-    user.password = "user_password_#{i+1}"
+    user.password = "userpassword#{i+1}"
     user.password_confirmation = "userpassword#{i+1}"
     user.role = user_role
   end
