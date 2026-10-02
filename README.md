@@ -198,17 +198,17 @@ TEST_DB_NAME=(any db name of your choice)
 ```
 ### 4. Create Database
 ```bash
-rails db:create 
+bin/rails db:create 
 ```
 
 ### 5. Run Migrations 
 ```bash
-rails db:migrate
+bin/rails db:migrate
 ```
 
 ### 6. Seed Database
 ```bash
-rails db:seed
+bin/rails db:seed
 ```
 
 ### 7. Start Application
