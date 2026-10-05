@@ -9,9 +9,8 @@ class Admin::UsersController < Admin::BaseController
     cookies[:admin_users_per_page] = @per_page
     @users = @users.where(
       "firstanme ILIKE ? OR lastname ILIKE? OR email ILIKE?",
-      "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%"
+      "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%"
     )if params[:search].present?
-    
     @users = @users.where(role_code: params[:role_filter]) if params[:role_filter].present?
     @users = @users.page(params[:page]).per(@per_page)
   end
@@ -26,7 +25,7 @@ class Admin::UsersController < Admin::BaseController
     @user = User.new(new_user_params)
 
     if @user.save
-      redirect_to admin_users_path, notice:"User created successfully"
+      redirect_to admin_users_path, notice: "User created successfully"
     else
       render :new, status: :unprocessable_entity
     end
@@ -37,11 +36,11 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-  
+    @user.skip_confirmation!
     if @user.update(user_params)
-      redirect_to admin_users_path, notice:"User updated."
+      redirect_to admin_users_path, notice: "User updated."
     else
-      render :edit, stauts: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -51,7 +50,6 @@ class Admin::UsersController < Admin::BaseController
       redirect_to admin_users_path, alert: "You cannot delete your own account"
       return
     end
-    
     #prevent last admin deletion
     if @user.admin? && User.where(role_code:"adm").count == 1
       redirect_to admin_users_path, alert:"Can't delete this admin."
@@ -62,14 +60,14 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def bulk_destroy
-    super(User.all,admin_users_path)
+    super(User.all, admin_users_path)
   end
 
   def export_selected
-    bulk_export(User.all,"users",
-    ["First Name", "Last Name", "Email", "Role", "Joined"],
-    ->(u) {[u.firstname, u.lastname, u.email, u.role_code,
-    u.created_at.strftime("%b %d, %Y")]})
+    bulk_export(User.all, "users",
+    [ "First Name", "Last Name", "Email", "Role", "Joined" ],
+    ->(u) { [ u.firstname, u.lastname, u.email, u.role_code,
+    u.created_at.strftime("%b %d, %Y") ] })
   end
 
   # lock and unlock accounts
@@ -88,11 +86,11 @@ class Admin::UsersController < Admin::BaseController
     @user=User.find(params[:id])
   end
   def user_params
-    params.expect(user: [:email, :role_code])
+    params.expect(user: [ :email, :role_code, :firstname, :lastname ])
   end
 
   def new_user_params
-    params.expect(user:[:firstname, :lastname, :email,
-                  :password, :password_confirmation, :role_code])
+    params.expect(user: [ :firstname, :lastname, :email,
+                  :password, :password_confirmation, :role_code ])
   end
 end
