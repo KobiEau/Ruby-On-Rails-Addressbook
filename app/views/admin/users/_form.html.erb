@@ -108,49 +108,49 @@
                       focus:ring-[var(--color-accent)]
                       focus:border-transparent" %>
       </div>
+      <% unless @user.persisted? %>
+        <!-- Password -->
+        <div>
+          <%= f.label :password,
+                class: "block mb-1.5
+                        text-sm font-medium
+                        text-[var(--color-text-heading)]" %>
 
-      <!-- Password -->
-      <div>
-        <%= f.label :password,
-              class: "block mb-1.5
-                      text-sm font-medium
-                      text-[var(--color-text-heading)]" %>
+          <%= f.password_field :password,
+                class: "w-full
+                        rounded-[var(--radius-md)]
+                        border border-[var(--color-border-subtle)]
+                        bg-[var(--color-surface-base)]
+                        px-3 py-2
+                        text-sm
+                        text-[var(--color-text-body)]
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-[var(--color-accent)]
+                        focus:border-transparent" %>
+        </div>
 
-        <%= f.password_field :password,
-              class: "w-full
-                      rounded-[var(--radius-md)]
-                      border border-[var(--color-border-subtle)]
-                      bg-[var(--color-surface-base)]
-                      px-3 py-2
-                      text-sm
-                      text-[var(--color-text-body)]
-                      focus:outline-none
-                      focus:ring-2
-                      focus:ring-[var(--color-accent)]
-                      focus:border-transparent" %>
-      </div>
+        <!-- Password Confirmation -->
+        <div>
+          <%= f.label :password_confirmation,
+                class: "block mb-1.5
+                        text-sm font-medium
+                        text-[var(--color-text-heading)]" %>
 
-      <!-- Password Confirmation -->
-      <div>
-        <%= f.label :password_confirmation,
-              class: "block mb-1.5
-                      text-sm font-medium
-                      text-[var(--color-text-heading)]" %>
-
-        <%= f.password_field :password_confirmation,
-              class: "w-full
-                      rounded-[var(--radius-md)]
-                      border border-[var(--color-border-subtle)]
-                      bg-[var(--color-surface-base)]
-                      px-3 py-2
-                      text-sm
-                      text-[var(--color-text-body)]
-                      focus:outline-none
-                      focus:ring-2
-                      focus:ring-[var(--color-accent)]
-                      focus:border-transparent" %>
-      </div>
-
+          <%= f.password_field :password_confirmation,
+                class: "w-full
+                        rounded-[var(--radius-md)]
+                        border border-[var(--color-border-subtle)]
+                        bg-[var(--color-surface-base)]
+                        px-3 py-2
+                        text-sm
+                        text-[var(--color-text-body)]
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-[var(--color-accent)]
+                        focus:border-transparent" %>
+        </div>
+      <% end %>
     </div>
 
     <!-- Actions -->
