@@ -8,7 +8,7 @@ class Admin::UsersController < Admin::BaseController
     @per_page = (params[:per_page] || cookies[:admin_users_per_page] || 10).to_i
     cookies[:admin_users_per_page] = @per_page
     @users = @users.where(
-      "firstanme ILIKE ? OR lastname ILIKE? OR email ILIKE?",
+      "firstname ILIKE ? OR lastname ILIKE? OR email ILIKE?",
       "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%"
     )if params[:search].present?
     @users = @users.where(role_code: params[:role_filter]) if params[:role_filter].present?
