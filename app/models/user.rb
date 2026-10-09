@@ -17,10 +17,10 @@ class User < ApplicationRecord
   belongs_to :role, foreign_key: :role_code, primary_key: :code
 
   validates :firstname, presence: true
-  validates :lastname,presence: true
-  validates :email, presence: true, 
-            uniqueness: {case_sensitive:false}, 
-            format: {with: /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/}
+  validates :lastname, presence: true
+  validates :email, presence: true,
+            uniqueness: { case_sensitive: false },
+            format: { with: /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/ }
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   def fullname
@@ -50,5 +50,4 @@ class User < ApplicationRecord
   def unlock_account!
     update!(locked_at: nil, failed_attempts: 0)
   end
-
 end
