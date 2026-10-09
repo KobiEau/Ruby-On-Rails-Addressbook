@@ -52,6 +52,14 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "dotenv-rails"
+  gem "letter_opener_web"
+
+  gem "ruby-lsp-rspec", require: false
+  # testing gems
+  gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -65,9 +73,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "dotenv-rails", groups: [:development, :test]
 gem "tailwindcss-rails"
-gem "letter_opener_web", group: [:development]
 gem "kaminari"
 gem "csv"
 gem "devise"
