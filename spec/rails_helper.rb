@@ -71,4 +71,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include FactoryBot::Syntax::Methods
+  # provides a sign-in (auth) helper when tests are called
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
