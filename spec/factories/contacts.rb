@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :contact do
     firstname { "test" }
     lastname  { "contact" }
-    phone_number { "0251234567" }
+    phone_number { "251234567" }
     category     { "Friends" }
     association  :user
   end
