@@ -10,6 +10,7 @@ FactoryBot.define do
       user.role = Role.find_or_create_by(code: "usr") do |r|
         r.name = "User"
       end
+      user.skip_confirmation!
     end
   end
 end
