@@ -16,4 +16,27 @@ RSpec.describe "Contacts", type: :request do
       expect(response.body).not_to include(contact2.firstname)
     end
   end
+
+  describe "POST /contacts" do
+    before { sign_in user }
+    context "with valid params" do
+    it "creates a new contact" do
+       expect {
+        post contacts_path, params: { contact: attributes_for(:contact) }
+      }.to change { Contact.count }.by(1)
+    end
+
+    it "redirects after creating" do
+      post contacts_path, params: { contact: attributes_for(:contact) }
+      expect(response).to have_http_status(:found)
+    end
+    end
+
+    context "with invalid params" do
+      it "returns 422" do
+        post contacts_path, params: { contact: { firstname: "", lastname: "", phone_number: "", category: "" } }
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+  end
 end
