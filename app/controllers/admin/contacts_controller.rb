@@ -12,7 +12,7 @@ class Admin::ContactsController <Admin::BaseController
       OR contacts.phone_number ILIKE :q OR users.email ILIKE :q",
       q: "%#{params[:search]}%"
     ).references(:user) if params[:search].present?
- 
+
     @contacts=@contacts.page(params[:page]).per(@per_page)
   end
 

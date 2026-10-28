@@ -6,31 +6,31 @@ class ContactsController < ApplicationController
   @per_page = (params[:per_page] || 10).to_i
   @contacts = current_user.contacts
 
-  #filtering by category
+  # filtering by category
   @contacts = @contacts.where(category: params[:category]) if params[:category].present?
 
-  #search
+  # search
   @contacts = @contacts.where(
     "firstname ILIKE ? OR lastname ILIKE ?",
     "%#{params[:search]}%", "%#{params[:search]}%"
   ) if params[:search].present?
 
-  #sorting
+  # sorting
   @contacts = case params[:sort]
-   when "name_asc" then @contacts.order(firstname: :asc,lastname: :asc)
-   when "name_desc" then @contacts.order(firstname: :desc,lastname: :desc)
-   when "newest" then @contacts.order(created_at: :desc)
-   when "oldest" then @contacts.order(created_at: :asc)
-   else               @contacts.order(firstname: :asc, lastname: :asc)
+  when "name_asc" then @contacts.order(firstname: :asc,lastname: :asc)
+  when "name_desc" then @contacts.order(firstname: :desc,lastname: :desc)
+  when "newest" then @contacts.order(created_at: :desc)
+  when "oldest" then @contacts.order(created_at: :asc)
+  else               @contacts.order(firstname: :asc, lastname: :asc)
   end
 
   @contacts = @contacts.page(params[:page]).per(@per_page)
   end
-  
+
   def show
     @user = current_user
   end
-  
+
   def new
     @contact = Contact.new
   end
