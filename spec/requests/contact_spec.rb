@@ -39,4 +39,32 @@ RSpec.describe "Contacts", type: :request do
       end
     end
   end
+
+  describe "PATCH /contacts" do
+    
+  end
+
+  describe "DELETE /contacts" do
+    before { sign_in user } 
+
+    it "decreseas the contact count by 1" do
+      contact = create(:contact, user: user)
+      expect {
+        delete contact_path(contact)
+    }.to change { Contact.count }.by(-1)
+    end
+
+     it "redirects after creating" do
+      contact = create(:contact, user: user)
+      delete contact_path(contact)
+      expect(response).to have_http_status(:found)
+    end
+
+    it "prevents User A from deleting user B's contact" do
+      contact2 = create(:contact, user: other_user, firstname: "Test2", phone_number: "0234526372")
+       expect {
+        delete contact_path(contact2)
+      }.not_to change { Contact.count }
+    end
+  end
 end
