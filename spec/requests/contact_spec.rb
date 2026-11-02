@@ -10,7 +10,6 @@ RSpec.describe "Contacts", type: :request do
       contact = create(:contact, user: user)
       contact2 = create(:contact, user: other_user, firstname: "Test2", phone_number: "0234526372")
       get contacts_path
-      puts response.headers["Location"]
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(contact.firstname)
       expect(response.body).not_to include(contact2.firstname)
@@ -20,17 +19,17 @@ RSpec.describe "Contacts", type: :request do
   describe "POST /contacts" do
     before { sign_in user }
     context "with valid params" do
-    it "creates a new contact" do
-       expect {
-        post contacts_path, params: { contact: attributes_for(:contact) }
-      }.to change { Contact.count }.by(1)
-    end
+      it "creates a new contact" do
+        expect {
+          post contacts_path, params: { contact: attributes_for(:contact) }
+        }.to change { Contact.count }.by(1)
+      end
 
-    it "redirects after creating" do
-      post contacts_path, params: { contact: attributes_for(:contact) }
-      expect(response).to have_http_status(:found)
-    end
-    end
+      it "redirects after creating" do
+        post contacts_path, params: { contact: attributes_for(:contact) }
+        expect(response).to have_http_status(:found)
+      end
+   end
 
     context "with invalid params" do
       it "returns 422" do
@@ -41,20 +40,38 @@ RSpec.describe "Contacts", type: :request do
   end
 
   describe "PATCH /contacts" do
-    
+    before { sign_in user }
+
+    it "saves and redirects with valid params" do
+      contact = create(:contact, user: user)
+      patch contact_path(contact), params: { contact:  { firstname: "patch", lastname: "name", phone_number: "0201234567", category: "Uncategorised" } }
+      expect(response).to have_http_status(:found)
+    end
+
+    it "doesn't save and returns 422" do
+      contact = create(:contact, user: user)
+      patch contact_path(contact), params: { contact:  { firstname: "", lastname: "", phone_number: "", category: "" } }
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
+    it "prevents user A from editing user B's contact" do
+      contact2 = create(:contact, user: other_user, firstname: "Test2", phone_number: "0234526372")
+      patch contact_path(contact2), params: { contact: { firstname: "patch", lastname: "name", phone_number: "0201234567", category: "Uncategorised" } }
+      expect(response).to have_http_status(:not_found)
+    end
   end
 
   describe "DELETE /contacts" do
-    before { sign_in user } 
+    before { sign_in user }
 
     it "decreseas the contact count by 1" do
       contact = create(:contact, user: user)
       expect {
         delete contact_path(contact)
-    }.to change { Contact.count }.by(-1)
+      }.to change { Contact.count }.by(-1)
     end
 
-     it "redirects after creating" do
+     it "redirects after deleting" do
       contact = create(:contact, user: user)
       delete contact_path(contact)
       expect(response).to have_http_status(:found)
@@ -62,7 +79,7 @@ RSpec.describe "Contacts", type: :request do
 
     it "prevents User A from deleting user B's contact" do
       contact2 = create(:contact, user: other_user, firstname: "Test2", phone_number: "0234526372")
-       expect {
+      expect {
         delete contact_path(contact2)
       }.not_to change { Contact.count }
     end
